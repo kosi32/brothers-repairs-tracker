@@ -72,6 +72,9 @@ button:disabled{opacity:.65;cursor:wait}
         <h2>Repair Progress</h2>
         <div class="progress-head"><strong id="progressLabel">—</strong><span id="progressPercent">0%</span></div>
         <div class="bar"><div id="progressBar" style="width:0%"></div></div>
+        <div style="font-size:12px;color:var(--muted);margin:-14px 0 18px">
+          Status refreshes automatically every 30 seconds while this ticket is open.
+        </div>
         <div id="timeline"></div>
         <div id="pickup" class="pickup" style="display:none">📅 <b>Estimated Pickup:</b> <span id="pickupText"></span></div>
       </div>
@@ -106,22 +109,27 @@ const steps=[
  ["Picked Up","This repair has been completed."]
 ];
 
-const order=steps.map(x=>x[0].toLowerCase());
+const statusMap={
+ "received":{index:0,percent:5},
+ "diagnosing":{index:1,percent:20},
+ "repairing":{index:2,percent:40},
+ "testing":{index:3,percent:60},
+ "waiting parts":{index:4,percent:70},
+ "waiting for parts":{index:4,percent:70},
+ "ready":{index:5,percent:90},
+ "picked up":{index:6,percent:100}
+};
 
 function esc(v){
  return String(v??"—").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 }
 
 function timeline(status){
- const s=String(status||"").trim().toLowerCase();
- let idx=order.indexOf(s);
- if(idx<0) idx=0;
+ const s=String(status||"").trim().toLowerCase().replace(/\s+/g," ");
+ const info=statusMap[s]||{index:0,percent:5};
+ const idx=info.index;
+ const percent=info.percent;
 
- // Waiting Parts means the repair has progressed through Repairing,
- // but is temporarily paused for a required part.
- if(s==="waiting parts") idx=4;
-
- const percent=Math.round((idx/(steps.length-1))*100);
  document.getElementById("progressBar").style.width=percent+"%";
  document.getElementById("progressPercent").textContent=percent+"%";
  document.getElementById("progressLabel").textContent=steps[idx]?.[0]||status||"In Progress";
@@ -203,6 +211,18 @@ async function track(){
 
 document.getElementById("track").onclick=track;
 document.getElementById("ticket").onkeydown=e=>{if(e.key==="Enter")track()};
+
+let refreshTimer=null;
+async function refreshOpenTicket(){
+  const result=document.getElementById("result");
+  if(result.style.display==="block"){
+    await track();
+  }
+}
+document.getElementById("track").addEventListener("click",()=>{
+  clearInterval(refreshTimer);
+  refreshTimer=setInterval(refreshOpenTicket,30000);
+});
 </script>
 </body>
 </html>
