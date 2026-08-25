@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Brother's iRepairs — Track Your Repair</title>
+<title>Brother's iRepairs — Customer Display</title>
+
 <style>
 :root{
   --blue:#1677ff;
@@ -11,469 +12,2197 @@
   --muted:#657184;
   --line:#e4eaf2;
   --soft:#f6f9fd;
+  --green:#18a957;
+  --orange:#f59e0b;
 }
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
 body{
   margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
-  background:linear-gradient(180deg,#edf6ff 0,#fff 72%);
+  width:100%;
+  min-height:100%;
+}
+
+body{
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "Segoe UI",
+    sans-serif;
+
+  background:
+    linear-gradient(
+      180deg,
+      #edf6ff 0%,
+      #ffffff 72%
+    );
+
   color:var(--ink);
 }
-.wrap{max-width:880px;margin:auto;padding:22px}
-.head{display:flex;align-items:center;gap:12px;padding:8px 0 18px}
+
+button,
+input{
+  font:inherit;
+}
+
+.wrap{
+  max-width:880px;
+  margin:auto;
+  padding:22px;
+}
+
+.head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:8px 0 18px;
+}
+
 .logo{
-  width:46px;height:46px;border-radius:14px;background:var(--blue);
-  color:#fff;display:grid;place-items:center;font-size:23px;
-  box-shadow:0 8px 22px #1677ff30
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:var(--blue);
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:23px;
+  box-shadow:0 8px 22px #1677ff30;
 }
-.brand{font-weight:850;font-size:18px}
-.sub{color:var(--muted);font-size:14px;margin-top:2px}
-.hero{text-align:center;padding:25px 12px 30px}
+
+.brand{
+  font-weight:850;
+  font-size:18px;
+}
+
+.sub{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:2px;
+}
+
+.hero{
+  text-align:center;
+  padding:25px 12px 30px;
+}
+
 .badge{
-  display:inline-flex;align-items:center;gap:6px;background:#e4f0ff;
-  color:#0958b8;border-radius:999px;padding:8px 14px;font-weight:750;font-size:13px
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:#e4f0ff;
+  color:#0958b8;
+  border-radius:999px;
+  padding:8px 14px;
+  font-weight:750;
+  font-size:13px;
 }
-h1{font-size:clamp(42px,7vw,64px);line-height:.98;margin:18px 0 13px;letter-spacing:-2.8px}
-.hero p{font-size:17px;color:var(--muted);max-width:650px;margin:auto;line-height:1.45}
-.panel,.card{
-  background:#fff;border:1px solid var(--line);border-radius:26px;
-  box-shadow:0 18px 55px #15345a14
+
+h1{
+  font-size:clamp(42px,7vw,64px);
+  line-height:.98;
+  margin:18px 0 13px;
+  letter-spacing:-2.8px;
 }
-.search{padding:22px}
-label{display:block;font-weight:800;margin-bottom:7px}
-.hint{font-size:13px;color:var(--muted);margin-bottom:12px}
-.row{display:flex;gap:10px}
+
+.hero p{
+  font-size:17px;
+  color:var(--muted);
+  max-width:650px;
+  margin:auto;
+  line-height:1.45;
+}
+
+.panel,
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:26px;
+  box-shadow:0 18px 55px #15345a14;
+}
+
+.search{
+  padding:22px;
+}
+
+label{
+  display:block;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+.hint{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:12px;
+}
+
+.row{
+  display:flex;
+  gap:10px;
+}
+
 .input{
-  flex:1;border:1px solid #d6dfe9;border-radius:16px;padding:16px;
-  font-size:18px;outline:none;background:#fff
+  flex:1;
+  border:1px solid #d6dfe9;
+  border-radius:16px;
+  padding:16px;
+  font-size:18px;
+  outline:none;
+  background:#fff;
 }
-.input:focus{border-color:var(--blue);box-shadow:0 0 0 4px #1677ff12}
+
+.input:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 4px #1677ff12;
+}
+
 button{
-  border:0;border-radius:16px;padding:0 25px;background:var(--blue);
-  color:#fff;font-size:16px;font-weight:850;cursor:pointer;min-height:54px
+  border:0;
+  border-radius:16px;
+  padding:0 25px;
+  background:var(--blue);
+  color:#fff;
+  font-size:16px;
+  font-weight:850;
+  cursor:pointer;
+  min-height:54px;
 }
-button:disabled{opacity:.65;cursor:wait}
+
+button:disabled{
+  opacity:.65;
+  cursor:wait;
+}
+
 .error{
-  display:none;color:#b42318;background:#fff1f0;border:1px solid #ffd2ce;
-  padding:13px 14px;border-radius:13px;margin-top:14px;font-weight:650
+  display:none;
+  color:#b42318;
+  background:#fff1f0;
+  border:1px solid #ffd2ce;
+  padding:13px 14px;
+  border-radius:13px;
+  margin-top:14px;
+  font-weight:650;
 }
-.result{display:none;margin-top:22px}
+
+.result{
+  display:none;
+  margin-top:22px;
+}
+
 .top{
-  padding:23px;border-bottom:1px solid var(--line);display:flex;
-  justify-content:space-between;gap:15px;align-items:center
+  padding:23px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center;
 }
-.greeting{font-size:25px;font-weight:850;margin-bottom:7px}
-.greeting span{color:var(--blue)}
-.ticket{color:var(--muted);font-size:14px}
+
+.greeting{
+  font-size:25px;
+  font-weight:850;
+  margin-bottom:7px;
+}
+
+.greeting span{
+  color:var(--blue);
+}
+
+.ticket{
+  color:var(--muted);
+  font-size:14px;
+}
+
 .ticket strong{
-  display:block;color:var(--ink);font-size:20px;margin-top:3px
+  display:block;
+  color:var(--ink);
+  font-size:20px;
+  margin-top:3px;
 }
+
 .status{
-  background:#e9f8ef;color:#087c3e;border-radius:999px;
-  padding:9px 14px;font-weight:850;white-space:nowrap
+  background:#e9f8ef;
+  color:#087c3e;
+  border-radius:999px;
+  padding:9px 14px;
+  font-weight:850;
+  white-space:nowrap;
 }
-.section{padding:24px;border-bottom:1px solid var(--line)}
-.section:last-child{border:0}
-.section h2{font-size:18px;margin:0 0 18px}
+
+.section{
+  padding:24px;
+  border-bottom:1px solid var(--line);
+}
+
+.section:last-child{
+  border:0;
+}
+
+.section h2{
+  font-size:18px;
+  margin:0 0 18px;
+}
+
 .progress-head{
-  display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:9px
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  margin-bottom:9px;
 }
-.progress-head span{color:var(--muted);font-size:13px;font-weight:700}
+
+.progress-head span{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
+
 .bar{
-  height:9px;background:#e9eef5;border-radius:999px;overflow:hidden;margin-bottom:23px
+  height:9px;
+  background:#e9eef5;
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:23px;
 }
+
 .bar>div{
-  height:100%;background:var(--blue);border-radius:999px;transition:width .3s
+  height:100%;
+  background:var(--blue);
+  border-radius:999px;
+  transition:width .3s;
 }
-.refresh-note{font-size:12px;color:var(--muted);margin:-14px 0 18px}
-.step{display:flex;gap:13px;min-height:62px;position:relative}
+
+.refresh-note{
+  font-size:12px;
+  color:var(--muted);
+  margin:-14px 0 18px;
+}
+
+.step{
+  display:flex;
+  gap:13px;
+  min-height:62px;
+  position:relative;
+}
+
 .dot{
-  width:19px;height:19px;border-radius:50%;border:3px solid #d7e0ea;
-  background:#fff;z-index:2;flex:none
+  width:19px;
+  height:19px;
+  border-radius:50%;
+  border:3px solid #d7e0ea;
+  background:#fff;
+  z-index:2;
+  flex:none;
 }
+
 .step:not(:last-child):before{
-  content:"";position:absolute;left:8px;top:21px;bottom:0;
-  width:3px;background:#e4eaf1;border-radius:3px
+  content:"";
+  position:absolute;
+  left:8px;
+  top:21px;
+  bottom:0;
+  width:3px;
+  background:#e4eaf1;
+  border-radius:3px;
 }
-.step.done .dot{border-color:#18a957;background:#18a957}
-.step.done:not(:last-child):before{background:#18a957}
+
+.step.done .dot{
+  border-color:var(--green);
+  background:var(--green);
+}
+
+.step.done:not(:last-child):before{
+  background:var(--green);
+}
+
 .step.current .dot{
-  border-color:var(--blue);box-shadow:0 0 0 5px #1677ff18
+  border-color:var(--blue);
+  box-shadow:0 0 0 5px #1677ff18;
 }
-.step.current .name{color:var(--blue)}
-.name{font-weight:850}
-.desc{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
-.device{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+.step.current .name{
+  color:var(--blue);
+}
+
+.name{
+  font-weight:850;
+}
+
+.desc{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px;
+  line-height:1.35;
+}
+
+.device{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
 .info{
-  background:var(--soft);border:1px solid #edf1f5;border-radius:16px;padding:15px
+  background:var(--soft);
+  border:1px solid #edf1f5;
+  border-radius:16px;
+  padding:15px;
 }
-.info small{display:block;color:var(--muted);margin-bottom:5px}
-.info b{font-size:15px}
-.footer{text-align:center;color:var(--muted);font-size:13px;padding:26px 10px}
-.footer b{color:var(--ink)}
+
+.info small{
+  display:block;
+  color:var(--muted);
+  margin-bottom:5px;
+}
+
+.info b{
+  font-size:15px;
+}
+
+.footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  padding:26px 10px;
+}
+
+.footer b{
+  color:var(--ink);
+}
+
+/* ============================================================
+   CUSTOMER DISPLAY MODE
+   ============================================================ */
+
+.display-mode{
+  display:none;
+  min-height:100vh;
+  padding:35px;
+  align-items:center;
+  justify-content:center;
+}
+
+.display-card{
+  width:min(1100px,100%);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:35px;
+  box-shadow:0 25px 80px #15345a18;
+  padding:55px;
+  text-align:center;
+}
+
+.display-icon{
+  width:100px;
+  height:100px;
+  border-radius:30px;
+  margin:0 auto 25px;
+  display:grid;
+  place-items:center;
+  background:#e4f0ff;
+  color:var(--blue);
+  font-size:52px;
+}
+
+.display-title{
+  font-size:clamp(38px,6vw,72px);
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-2px;
+  margin:0 0 18px;
+}
+
+.display-subtitle{
+  color:var(--muted);
+  font-size:clamp(18px,3vw,28px);
+  margin-bottom:35px;
+}
+
+.display-ticket{
+  display:inline-block;
+  background:var(--soft);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:18px 30px;
+  font-size:clamp(24px,4vw,40px);
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.display-customer{
+  font-size:clamp(26px,4vw,42px);
+  font-weight:850;
+  margin-top:30px;
+}
+
+.display-device{
+  color:var(--muted);
+  font-size:clamp(18px,3vw,28px);
+  margin-top:8px;
+}
+
+.display-status{
+  display:inline-block;
+  margin-top:35px;
+  padding:15px 28px;
+  border-radius:999px;
+  font-size:clamp(20px,3vw,30px);
+  font-weight:900;
+  background:#e9f8ef;
+  color:#087c3e;
+}
+
+.display-footer{
+  margin-top:45px;
+  font-size:18px;
+  color:var(--muted);
+}
+
+.display-footer strong{
+  color:var(--ink);
+}
+
+.connection{
+  position:fixed;
+  top:14px;
+  right:18px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  font-weight:800;
+  color:var(--muted);
+}
+
+.connection-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#f59e0b;
+}
+
+.connection.connected .connection-dot{
+  background:#18a957;
+}
+
+.connection.error .connection-dot{
+  background:#dc2626;
+}
+
 @media(max-width:620px){
-  .wrap{padding:16px}
-  h1{letter-spacing:-2px}
-  .row{flex-direction:column}
-  .row button{width:100%}
-  .top{flex-direction:column;align-items:flex-start}
-  .device{grid-template-columns:1fr}
-  .greeting{font-size:22px}
+
+  .wrap{
+    padding:16px;
+  }
+
+  h1{
+    letter-spacing:-2px;
+  }
+
+  .row{
+    flex-direction:column;
+  }
+
+  .row button{
+    width:100%;
+  }
+
+  .top{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .device{
+    grid-template-columns:1fr;
+  }
+
+  .greeting{
+    font-size:22px;
+  }
+
+  .display-mode{
+    padding:18px;
+  }
+
+  .display-card{
+    padding:35px 20px;
+    border-radius:25px;
+  }
 }
 </style>
 </head>
 
 <body>
-<div class="wrap">
 
-  <div class="head">
-    <div class="logo">📱</div>
-    <div>
-      <div class="brand">Brother's iRepairs</div>
-      <div class="sub">Apple device specialists</div>
-    </div>
-  </div>
+<!-- ============================================================
+     CONNECTION STATUS
+     ============================================================ -->
 
-  <div class="hero">
-    <div class="badge">🔒 Secure repair tracking</div>
-    <h1>Track Your Repair</h1>
-    <p>Enter your repair ticket number to see the latest update on your device.</p>
-  </div>
+<div id="connection" class="connection">
+  <span class="connection-dot"></span>
+  <span id="connectionText">CONNECTING</span>
+</div>
 
-  <div class="panel search">
-    <label for="ticket">Repair Ticket Number</label>
-    <div class="hint">Example: BR-000001</div>
+<!-- ============================================================
+     NORMAL TRACKING PAGE
+     ============================================================ -->
 
-    <div class="row">
-      <input
-        id="ticket"
-        class="input"
-        value=""
-        placeholder="Enter ticket number, e.g. BR-000001"
-        autocomplete="off"
-      >
-      <button id="track">🔎 Track Repair</button>
-    </div>
+<div id="normalPage">
 
-    <div id="error" class="error"></div>
-  </div>
+  <div class="wrap">
 
-  <div id="result" class="result">
-    <div class="card">
+    <div class="head">
 
-      <!-- CUSTOMER NAME + TICKET NUMBER -->
-      <div class="top">
-        <div>
-          <div class="greeting">
-            Hello, <span id="customerTop">there</span>! 👋
-          </div>
-
-          <div class="ticket">
-            Repair Ticket
-            <strong id="ticketOut">—</strong>
-          </div>
-        </div>
-
-        <div id="status" class="status">—</div>
+      <div class="logo">
+        📱
       </div>
 
-      <div class="section">
-        <h2>Repair Progress</h2>
-
-        <div class="progress-head">
-          <strong id="progressLabel">—</strong>
-          <span id="progressPercent">0%</span>
+      <div>
+        <div class="brand">
+          Brother's iRepairs
         </div>
 
-        <div class="bar">
-          <div id="progressBar" style="width:0%"></div>
-        </div>
-
-        <div class="refresh-note">
-          Status refreshes automatically every 30 seconds while this ticket is open.
-        </div>
-
-        <div id="timeline"></div>
-      </div>
-
-      <div class="section">
-        <h2>Device Information</h2>
-
-        <div class="device">
-          <div class="info">
-            <small>Customer</small>
-            <b id="customer">—</b>
-          </div>
-
-          <div class="info">
-            <small>Device</small>
-            <b id="device">—</b>
-          </div>
-
-          <div class="info">
-            <small>Model</small>
-            <b id="model">—</b>
-          </div>
-
-          <div class="info">
-            <small>Color</small>
-            <b id="color">—</b>
-          </div>
-
-          <div class="info">
-            <small>Storage</small>
-            <b id="storage">—</b>
-          </div>
+        <div class="sub">
+          Apple device specialists
         </div>
       </div>
 
     </div>
+
+    <div class="hero">
+
+      <div class="badge">
+        🔒 Secure repair tracking
+      </div>
+
+      <h1>
+        Track Your Repair
+      </h1>
+
+      <p>
+        Enter your repair ticket number to see the latest update on your device.
+      </p>
+
+    </div>
+
+    <div class="panel search">
+
+      <label for="ticket">
+        Repair Ticket Number
+      </label>
+
+      <div class="hint">
+        Example: BR-000001
+      </div>
+
+      <div class="row">
+
+        <input
+          id="ticket"
+          class="input"
+          value=""
+          placeholder="Enter ticket number, e.g. BR-000001"
+          autocomplete="off"
+        >
+
+        <button id="track">
+          🔎 Track Repair
+        </button>
+
+      </div>
+
+      <div id="error" class="error"></div>
+
+    </div>
+
+    <div id="result" class="result">
+
+      <div class="card">
+
+        <div class="top">
+
+          <div>
+
+            <div class="greeting">
+              Hello,
+              <span id="customerTop">there</span>! 👋
+            </div>
+
+            <div class="ticket">
+              Repair Ticket
+
+              <strong id="ticketOut">
+                —
+              </strong>
+            </div>
+
+          </div>
+
+          <div id="status" class="status">
+            —
+          </div>
+
+        </div>
+
+        <div class="section">
+
+          <h2>
+            Repair Progress
+          </h2>
+
+          <div class="progress-head">
+
+            <strong id="progressLabel">
+              —
+            </strong>
+
+            <span id="progressPercent">
+              0%
+            </span>
+
+          </div>
+
+          <div class="bar">
+
+            <div
+              id="progressBar"
+              style="width:0%"
+            ></div>
+
+          </div>
+
+          <div class="refresh-note">
+            Status updates automatically.
+          </div>
+
+          <div id="timeline"></div>
+
+        </div>
+
+        <div class="section">
+
+          <h2>
+            Device Information
+          </h2>
+
+          <div class="device">
+
+            <div class="info">
+              <small>Customer</small>
+              <b id="customer">—</b>
+            </div>
+
+            <div class="info">
+              <small>Device</small>
+              <b id="device">—</b>
+            </div>
+
+            <div class="info">
+              <small>Model</small>
+              <b id="model">—</b>
+            </div>
+
+            <div class="info">
+              <small>Color</small>
+              <b id="color">—</b>
+            </div>
+
+            <div class="info">
+              <small>Storage</small>
+              <b id="storage">—</b>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+
+      <b>
+        Brother's iRepairs
+      </b>
+
+      <br>
+
+      We fix it right. The first time.
+
+    </div>
+
   </div>
 
-  <div class="footer">
-    <b>Brother's iRepairs</b><br>
-    We fix it right. The first time.
+</div>
+
+<!-- ============================================================
+     CUSTOMER DISPLAY MODE
+     ============================================================ -->
+
+<div id="displayMode" class="display-mode">
+
+  <div class="display-card">
+
+    <div id="displayIcon" class="display-icon">
+      ✓
+    </div>
+
+    <div id="displayTitle" class="display-title">
+      CHECK-IN COMPLETE
+    </div>
+
+    <div id="displaySubtitle" class="display-subtitle">
+      Your device has been received.
+    </div>
+
+    <div id="displayTicket" class="display-ticket">
+      Waiting for next customer
+    </div>
+
+    <div
+      id="displayCustomer"
+      class="display-customer"
+      style="display:none;"
+    ></div>
+
+    <div
+      id="displayDevice"
+      class="display-device"
+      style="display:none;"
+    ></div>
+
+    <div
+      id="displayStatus"
+      class="display-status"
+      style="display:none;"
+    ></div>
+
+    <div class="display-footer">
+
+      <strong>
+        BROTHER'S iREPAIRS
+      </strong>
+
+      <br>
+
+      WE FIX IT RIGHT. THE FIRST TIME.
+
+    </div>
+
   </div>
 
 </div>
 
 <script>
+
+/* ============================================================
+   SUPABASE
+   ============================================================ */
+
 const SUPABASE_URL =
   "https://uyladmvbqoeqwtdfiuqr.supabase.co";
 
 const SUPABASE_KEY =
   "sb_publishable_9CPop4CNMAzM_DtWyzO4LQ_RURFRMF2";
 
+
+/* ============================================================
+   DISPLAY SETTINGS
+   ============================================================ */
+
+const DISPLAY_ID = "main";
+
+const DISPLAY_POLL_MS = 2000;
+
+const REPAIR_POLL_MS = 5000;
+
+
+/* ============================================================
+   REPAIR STEPS
+   ============================================================ */
+
 const steps = [
-  ["Received", "Your device has been received by Brother's iRepairs."],
-  ["Diagnosing", "Our technician is checking the device."],
-  ["Repairing", "Your device is currently being repaired."],
-  ["Testing", "The repair is complete and the device is being tested."],
-  ["Waiting Parts", "We are waiting for a required part."],
-  ["Ready", "Your device is ready for pickup."],
-  ["Picked Up", "This repair has been completed."]
+
+  [
+    "Received",
+    "Your device has been received by Brother's iRepairs."
+  ],
+
+  [
+    "Diagnosing",
+    "Our technician is checking the device."
+  ],
+
+  [
+    "Repairing",
+    "Your device is currently being repaired."
+  ],
+
+  [
+    "Testing",
+    "The repair is complete and the device is being tested."
+  ],
+
+  [
+    "Waiting Parts",
+    "We are waiting for a required part."
+  ],
+
+  [
+    "Ready",
+    "Your device is ready for pickup."
+  ],
+
+  [
+    "Picked Up",
+    "This repair has been completed."
+  ]
+
 ];
 
+
+/* ============================================================
+   STATUS MAP
+   ============================================================ */
+
 const statusMap = {
-  "received":       { index: 0, percent: 5 },
-  "diagnosing":     { index: 1, percent: 20 },
-  "repairing":      { index: 2, percent: 40 },
-  "testing":        { index: 3, percent: 60 },
-  "waiting parts":  { index: 4, percent: 70 },
-  "waiting for parts": { index: 4, percent: 70 },
-  "ready":          { index: 5, percent: 90 },
-  "picked up":      { index: 6, percent: 100 }
+
+  "received":
+    {
+      index:0,
+      percent:5
+    },
+
+  "diagnosing":
+    {
+      index:1,
+      percent:20
+    },
+
+  "repairing":
+    {
+      index:2,
+      percent:40
+    },
+
+  "testing":
+    {
+      index:3,
+      percent:60
+    },
+
+  "waiting parts":
+    {
+      index:4,
+      percent:70
+    },
+
+  "waiting for parts":
+    {
+      index:4,
+      percent:70
+    },
+
+  "ready":
+    {
+      index:5,
+      percent:90
+    },
+
+  "picked up":
+    {
+      index:6,
+      percent:100
+    }
+
 };
 
-function safe(value) {
-  return String(value ?? "—");
+
+/* ============================================================
+   CURRENT STATE
+   ============================================================ */
+
+let activeTicket = "";
+
+let lastDisplaySignature = "";
+
+let repairTimer = null;
+
+let displayTimer = null;
+
+
+/* ============================================================
+   SAFE TEXT
+   ============================================================ */
+
+function safe(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    String(value).trim() === ""
+  ){
+
+    return "—";
+
+  }
+
+  return String(value);
+
 }
 
-function makeTimeline(status) {
+
+/* ============================================================
+   CONNECTION STATUS
+   ============================================================ */
+
+function setConnection(state, text){
+
+  const connection =
+    document.getElementById("connection");
+
+  const connectionText =
+    document.getElementById("connectionText");
+
+  connection.classList.remove(
+    "connected",
+    "error"
+  );
+
+  if(state === "connected"){
+
+    connection.classList.add(
+      "connected"
+    );
+
+  }
+
+  if(state === "error"){
+
+    connection.classList.add(
+      "error"
+    );
+
+  }
+
+  connectionText.textContent =
+    text;
+
+}
+
+
+/* ============================================================
+   SUPABASE REQUEST
+   ============================================================ */
+
+async function supabaseGet(path){
+
+  const response =
+    await fetch(
+      SUPABASE_URL + path,
+      {
+        method:"GET",
+
+        headers:{
+          "apikey":SUPABASE_KEY,
+          "Authorization":
+            "Bearer " + SUPABASE_KEY,
+          "Content-Type":
+            "application/json"
+        }
+      }
+    );
+
+  let data = null;
+
+  try{
+
+    data =
+      await response.json();
+
+  }catch{
+
+    data = null;
+
+  }
+
+  if(!response.ok){
+
+    throw new Error(
+      data?.message ||
+      data?.error ||
+      "Supabase request failed."
+    );
+
+  }
+
+  return data;
+
+}
+
+
+/* ============================================================
+   NORMALIZE STATUS
+   ============================================================ */
+
+function normalizeStatus(status){
+
+  return String(status || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g," ");
+
+}
+
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+
+function makeTimeline(status){
+
   const normalized =
-    String(status || "")
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, " ");
+    normalizeStatus(status);
 
   const info =
-    statusMap[normalized] || { index: 0, percent: 5 };
+    statusMap[normalized] ||
+    {
+      index:0,
+      percent:5
+    };
 
-  document.getElementById("progressBar").style.width =
+
+  document.getElementById(
+    "progressBar"
+  ).style.width =
     info.percent + "%";
 
-  document.getElementById("progressPercent").textContent =
+
+  document.getElementById(
+    "progressPercent"
+  ).textContent =
     info.percent + "%";
 
-  document.getElementById("progressLabel").textContent =
-    steps[info.index]?.[0] || status || "In Progress";
 
-  document.getElementById("timeline").innerHTML =
-    steps.map((step, i) => `
-      <div class="step ${i < info.index ? "done" : ""} ${i === info.index ? "current" : ""}">
-        <div class="dot"></div>
-        <div>
-          <div class="name">${safe(step[0])}</div>
-          <div class="desc">${safe(step[1])}</div>
-        </div>
-      </div>
-    `).join("");
+  document.getElementById(
+    "progressLabel"
+  ).textContent =
+    steps[info.index]?.[0] ||
+    status ||
+    "In Progress";
+
+
+  const timeline =
+    document.getElementById(
+      "timeline"
+    );
+
+
+  timeline.innerHTML = "";
+
+
+  steps.forEach(
+    (step,i) => {
+
+      const wrapper =
+        document.createElement(
+          "div"
+        );
+
+      wrapper.className =
+        "step " +
+        (
+          i < info.index
+            ? "done "
+            : ""
+        ) +
+        (
+          i === info.index
+            ? "current"
+            : ""
+        );
+
+
+      const dot =
+        document.createElement(
+          "div"
+        );
+
+      dot.className =
+        "dot";
+
+
+      const content =
+        document.createElement(
+          "div"
+        );
+
+
+      const name =
+        document.createElement(
+          "div"
+        );
+
+      name.className =
+        "name";
+
+      name.textContent =
+        step[0];
+
+
+      const desc =
+        document.createElement(
+          "div"
+        );
+
+      desc.className =
+        "desc";
+
+      desc.textContent =
+        step[1];
+
+
+      content.appendChild(
+        name
+      );
+
+      content.appendChild(
+        desc
+      );
+
+
+      wrapper.appendChild(
+        dot
+      );
+
+      wrapper.appendChild(
+        content
+      );
+
+
+      timeline.appendChild(
+        wrapper
+      );
+
+    }
+  );
+
 }
 
-async function trackRepair() {
+
+/* ============================================================
+   UPDATE NORMAL REPAIR PAGE
+   ============================================================ */
+
+function showRepair(repair){
+
+  if(!repair){
+
+    return;
+
+  }
+
+
+  const customerName =
+    repair.customer_name &&
+    String(
+      repair.customer_name
+    ).trim()
+      ? String(
+          repair.customer_name
+        ).trim()
+      : "there";
+
+
+  document.getElementById(
+    "customerTop"
+  ).textContent =
+    customerName;
+
+
+  document.getElementById(
+    "customer"
+  ).textContent =
+    customerName === "there"
+      ? "—"
+      : customerName;
+
+
+  document.getElementById(
+    "ticketOut"
+  ).textContent =
+    repair.ticket_number ||
+    activeTicket;
+
+
+  document.getElementById(
+    "status"
+  ).textContent =
+    repair.status ||
+    "Unknown";
+
+
+  document.getElementById(
+    "device"
+  ).textContent =
+    repair.device ||
+    "—";
+
+
+  document.getElementById(
+    "model"
+  ).textContent =
+    repair.model ||
+    "—";
+
+
+  document.getElementById(
+    "color"
+  ).textContent =
+    repair.color ||
+    "—";
+
+
+  document.getElementById(
+    "storage"
+  ).textContent =
+    repair.storage ||
+    "—";
+
+
+  makeTimeline(
+    repair.status
+  );
+
+
+  document.getElementById(
+    "result"
+  ).style.display =
+    "block";
+
+}
+
+
+/* ============================================================
+   GET REPAIR
+   ============================================================ */
+
+async function getRepair(ticket){
+
+  const url =
+    "/rest/v1/repairs" +
+    "?ticket_number=eq." +
+    encodeURIComponent(ticket) +
+    "&select=" +
+    "ticket_number," +
+    "customer_name," +
+    "status," +
+    "device," +
+    "model," +
+    "color," +
+    "storage";
+
+
+  const data =
+    await supabaseGet(url);
+
+
+  if(
+    !Array.isArray(data) ||
+    data.length === 0
+  ){
+
+    return null;
+
+  }
+
+
+  return data[0];
+
+}
+
+
+/* ============================================================
+   TRACK REPAIR MANUALLY
+   ============================================================ */
+
+async function trackRepair(){
+
+  const input =
+    document.getElementById(
+      "ticket"
+    );
+
+
   const ticket =
-    document.getElementById("ticket").value
+    input.value
       .trim()
       .toUpperCase();
 
-  const errorBox = document.getElementById("error");
-  const button = document.getElementById("track");
 
-  errorBox.style.display = "none";
+  const errorBox =
+    document.getElementById(
+      "error"
+    );
 
-  if (!/^BR-\d{6}$/.test(ticket)) {
+
+  const button =
+    document.getElementById(
+      "track"
+    );
+
+
+  errorBox.style.display =
+    "none";
+
+
+  if(
+    !/^BR-\d{6}$/.test(ticket)
+  ){
+
     errorBox.textContent =
       "Please enter a valid ticket number, such as BR-000001.";
-    errorBox.style.display = "block";
+
+    errorBox.style.display =
+      "block";
+
     return;
+
   }
 
-  button.disabled = true;
-  button.textContent = "Checking...";
 
-  try {
-    const url =
-      SUPABASE_URL +
-      "/rest/v1/repairs?ticket_number=eq." +
-      encodeURIComponent(ticket) +
-      "&select=ticket_number,customer_name,status,device,model,color,storage";
+  button.disabled =
+    true;
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "apikey": SUPABASE_KEY,
-        "Authorization": "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json"
-      }
-    });
+  button.textContent =
+    "Checking...";
 
-    const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(
-        data.message ||
-        data.error ||
-        "Unable to check this repair."
-      );
-    }
+  try{
 
     const repair =
-      Array.isArray(data) ? data[0] : data;
+      await getRepair(ticket);
 
-    if (!repair) {
+
+    if(!repair){
+
       throw new Error(
         "We couldn't find that repair ticket. Please check the ticket number."
       );
+
     }
 
-    /*
-      IMPORTANT:
-      customer_name comes directly from the Supabase
-      public.repairs.customer_name column.
-    */
 
-    const customerName =
-      repair.customer_name &&
-      String(repair.customer_name).trim()
-        ? String(repair.customer_name).trim()
-        : "there";
+    activeTicket =
+      ticket;
 
-    // Name at the TOP
-    document.getElementById("customerTop").textContent =
-      customerName;
 
-    // Name in Device Information
-    document.getElementById("customer").textContent =
-      customerName === "there" ? "—" : customerName;
+    showRepair(
+      repair
+    );
 
-    // Ticket
-    document.getElementById("ticketOut").textContent =
-      repair.ticket_number || ticket;
 
-    // Status
-    document.getElementById("status").textContent =
-      repair.status || "Unknown";
+    setConnection(
+      "connected",
+      "CONNECTED"
+    );
 
-    // Device information
-    document.getElementById("device").textContent =
-      repair.device || "—";
 
-    document.getElementById("model").textContent =
-      repair.model || "—";
+  }catch(error){
 
-    document.getElementById("color").textContent =
-      repair.color || "—";
+    console.error(
+      error
+    );
 
-    document.getElementById("storage").textContent =
-      repair.storage || "—";
-
-    // Progress
-    makeTimeline(repair.status);
-
-    document.getElementById("result").style.display =
-      "block";
-
-  } catch (error) {
-    console.error(error);
 
     errorBox.textContent =
-      error.message || "Something went wrong.";
+      error.message ||
+      "Something went wrong.";
 
-    errorBox.style.display = "block";
 
-  } finally {
-    button.disabled = false;
-    button.textContent = "🔎 Track Repair";
+    errorBox.style.display =
+      "block";
+
+
+    setConnection(
+      "error",
+      "CONNECTION ERROR"
+    );
+
+  }finally{
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "🔎 Track Repair";
+
   }
+
 }
 
-// ============================================================
-// CUSTOMER LINK AUTO-LOAD
-// Reads ?ticket=BR-000002 from the address bar.
-// ============================================================
 
-function getTicketFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const ticket = params.get("ticket");
+/* ============================================================
+   REFRESH ACTIVE REPAIR
+   ============================================================ */
 
-  if (!ticket) {
-    return "";
-  }
+async function refreshActiveRepair(){
 
-  const normalized = ticket.trim().toUpperCase();
+  if(!activeTicket){
 
-  return /^BR-\d{6}$/.test(normalized) ? normalized : "";
-}
-
-function loadTicketFromURL() {
-  const ticket = getTicketFromURL();
-
-  if (!ticket) {
     return;
+
   }
 
-  const input = document.getElementById("ticket");
 
-  if (!input) {
-    return;
-  }
+  try{
 
-  // Put the customer's ticket into the search box.
-  input.value = ticket;
-  input.dispatchEvent(new Event("input", { bubbles: true }));
+    const repair =
+      await getRepair(
+        activeTicket
+      );
 
-  // Automatically load that customer's repair.
-  trackRepair();
-}
 
-document.getElementById("track").addEventListener(
-  "click",
-  trackRepair
-);
+    if(repair){
 
-document.getElementById("ticket").addEventListener(
-  "keydown",
-  function(event) {
-    if (event.key === "Enter") {
-      trackRepair();
+      showRepair(
+        repair
+      );
+
+      setConnection(
+        "connected",
+        "CONNECTED"
+      );
+
     }
+
+  }catch(error){
+
+    console.error(
+      "Repair refresh error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   CUSTOMER DISPLAY DEFAULT SCREEN
+   ============================================================ */
+
+function showWaitingScreen(){
+
+  document.getElementById(
+    "displayMode"
+  ).style.display =
+    "flex";
+
+
+  document.getElementById(
+    "normalPage"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "displayIcon"
+  ).textContent =
+    "✓";
+
+
+  document.getElementById(
+    "displayTitle"
+  ).textContent =
+    "CHECK-IN COMPLETE";
+
+
+  document.getElementById(
+    "displaySubtitle"
+  ).textContent =
+    "Your device has been received.";
+
+
+  document.getElementById(
+    "displayTicket"
+  ).textContent =
+    "Waiting for next customer";
+
+
+  document.getElementById(
+    "displayCustomer"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "displayDevice"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "displayStatus"
+  ).style.display =
+    "none";
+
+}
+
+
+/* ============================================================
+   CUSTOMER DISPLAY REPAIR
+   ============================================================ */
+
+function showDisplayRepair(repair){
+
+  document.getElementById(
+    "displayMode"
+  ).style.display =
+    "flex";
+
+
+  document.getElementById(
+    "normalPage"
+  ).style.display =
+    "none";
+
+
+  const status =
+    repair.status ||
+    "Received";
+
+
+  document.getElementById(
+    "displayIcon"
+  ).textContent =
+    status === "Ready"
+      ? "✓"
+      : "📱";
+
+
+  document.getElementById(
+    "displayTitle"
+  ).textContent =
+    status === "Ready"
+      ? "REPAIR READY"
+      : "REPAIR IN PROGRESS";
+
+
+  document.getElementById(
+    "displaySubtitle"
+  ).textContent =
+    getDisplayStatusDescription(
+      status
+    );
+
+
+  document.getElementById(
+    "displayTicket"
+  ).textContent =
+    repair.ticket_number ||
+    activeTicket;
+
+
+  const customer =
+    repair.customer_name &&
+    String(
+      repair.customer_name
+    ).trim()
+      ? String(
+          repair.customer_name
+        ).trim()
+      : "";
+
+
+  const customerElement =
+    document.getElementById(
+      "displayCustomer"
+    );
+
+
+  if(customer){
+
+    customerElement.textContent =
+      customer;
+
+    customerElement.style.display =
+      "block";
+
+  }else{
+
+    customerElement.style.display =
+      "none";
+
+  }
+
+
+  const deviceParts = [];
+
+
+  if(repair.device){
+
+    deviceParts.push(
+      repair.device
+    );
+
+  }
+
+
+  if(repair.model){
+
+    deviceParts.push(
+      repair.model
+    );
+
+  }
+
+
+  const deviceElement =
+    document.getElementById(
+      "displayDevice"
+    );
+
+
+  if(deviceParts.length){
+
+    deviceElement.textContent =
+      deviceParts.join(
+        " • "
+      );
+
+    deviceElement.style.display =
+      "block";
+
+  }else{
+
+    deviceElement.style.display =
+      "none";
+
+  }
+
+
+  const statusElement =
+    document.getElementById(
+      "displayStatus"
+    );
+
+
+  statusElement.textContent =
+    status;
+
+
+  statusElement.style.display =
+    "inline-block";
+
+
+  const normalized =
+    normalizeStatus(
+      status
+    );
+
+
+  if(normalized === "ready"){
+
+    statusElement.style.background =
+      "#e9f8ef";
+
+    statusElement.style.color =
+      "#087c3e";
+
+  }else if(
+    normalized === "waiting parts" ||
+    normalized === "waiting for parts"
+  ){
+
+    statusElement.style.background =
+      "#fff7e6";
+
+    statusElement.style.color =
+      "#b45309";
+
+  }else{
+
+    statusElement.style.background =
+      "#e4f0ff";
+
+    statusElement.style.color =
+      "#0958b8";
+
+  }
+
+}
+
+
+/* ============================================================
+   CUSTOMER STATUS DESCRIPTION
+   ============================================================ */
+
+function getDisplayStatusDescription(
+  status
+){
+
+  switch(
+    normalizeStatus(status)
+  ){
+
+    case "received":
+
+      return "Your device has been received.";
+
+    case "diagnosing":
+
+      return "Our technician is diagnosing your device.";
+
+    case "repairing":
+
+      return "Your device is currently being repaired.";
+
+    case "testing":
+
+      return "Your device is being tested.";
+
+    case "waiting parts":
+
+    case "waiting for parts":
+
+      return "We are waiting for the parts needed for your repair.";
+
+    case "ready":
+
+      return "Great news! Your device is ready for pickup.";
+
+    case "picked up":
+
+      return "Your repair has been completed.";
+
+    default:
+
+      return "We are working on your repair.";
+
+  }
+
+}
+
+
+/* ============================================================
+   READ CUSTOMER DISPLAY RECORD
+   ============================================================ */
+
+async function getCustomerDisplay(){
+
+  const url =
+    "/rest/v1/customer_display" +
+    "?display_id=eq." +
+    encodeURIComponent(
+      DISPLAY_ID
+    ) +
+    "&select=id,display_id,mode,ticket_number" +
+    "&limit=1";
+
+
+  const data =
+    await supabaseGet(
+      url
+    );
+
+
+  if(
+    !Array.isArray(data) ||
+    data.length === 0
+  ){
+
+    return null;
+
+  }
+
+
+  return data[0];
+
+}
+
+
+/* ============================================================
+   LOAD CUSTOMER DISPLAY
+   ============================================================ */
+
+async function updateCustomerDisplay(){
+
+  try{
+
+    const display =
+      await getCustomerDisplay();
+
+
+    setConnection(
+      "connected",
+      "CONNECTED"
+    );
+
+
+    if(!display){
+
+      showWaitingScreen();
+
+      activeTicket = "";
+
+      return;
+
+    }
+
+
+    const ticket =
+      display.ticket_number
+        ? String(
+            display.ticket_number
+          )
+            .trim()
+            .toUpperCase()
+        : "";
+
+
+    const mode =
+      String(
+        display.mode || ""
+      )
+        .trim()
+        .toLowerCase();
+
+
+    /*
+      If Supabase has no ticket,
+      show the waiting/check-in screen.
+    */
+
+    if(!ticket){
+
+      showWaitingScreen();
+
+      activeTicket = "";
+
+      lastDisplaySignature =
+        "waiting";
+
+      return;
+
+    }
+
+
+    /*
+      Ticket has changed.
+      Load the new repair immediately.
+    */
+
+    const signature =
+      ticket +
+      "|" +
+      mode;
+
+
+    if(
+      signature ===
+      lastDisplaySignature &&
+      activeTicket === ticket
+    ){
+
+      await refreshActiveRepair();
+
+      return;
+
+    }
+
+
+    lastDisplaySignature =
+      signature;
+
+
+    activeTicket =
+      ticket;
+
+
+    const repair =
+      await getRepair(
+        ticket
+      );
+
+
+    if(!repair){
+
+      showWaitingScreen();
+
+      document.getElementById(
+        "displayTitle"
+      ).textContent =
+        "CHECK-IN COMPLETE";
+
+
+      document.getElementById(
+        "displaySubtitle"
+      ).textContent =
+        "Waiting for the repair information.";
+
+
+      return;
+
+    }
+
+
+    /*
+      The separate customer iPad
+      now displays this repair.
+    */
+
+    showDisplayRepair(
+      repair
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Customer display error:",
+      error
+    );
+
+
+    setConnection(
+      "error",
+      "CONNECTION ERROR"
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   URL TICKET SUPPORT
+   ============================================================ */
+
+function getTicketFromURL(){
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const ticket =
+    params.get(
+      "ticket"
+    );
+
+
+  if(!ticket){
+
+    return "";
+
+  }
+
+
+  const normalized =
+    ticket
+      .trim()
+      .toUpperCase();
+
+
+  return /^BR-\d{6}$/.test(
+    normalized
+  )
+    ? normalized
+    : "";
+
+}
+
+
+/* ============================================================
+   LOAD URL TICKET
+   ============================================================ */
+
+async function loadTicketFromURL(){
+
+  const ticket =
+    getTicketFromURL();
+
+
+  if(!ticket){
+
+    return;
+
+  }
+
+
+  const input =
+    document.getElementById(
+      "ticket"
+    );
+
+
+  if(!input){
+
+    return;
+
+  }
+
+
+  input.value =
+    ticket;
+
+
+  await trackRepair();
+
+}
+
+
+/* ============================================================
+   EVENT LISTENERS
+   ============================================================ */
+
+document
+  .getElementById("track")
+  .addEventListener(
+    "click",
+    trackRepair
+  );
+
+
+document
+  .getElementById("ticket")
+  .addEventListener(
+    "keydown",
+    function(event){
+
+      if(
+        event.key === "Enter"
+      ){
+
+        trackRepair();
+
+      }
+
+    }
+  );
+
+
+/* ============================================================
+   START CUSTOMER DISPLAY
+   ============================================================ */
+
+async function startCustomerDisplay(){
+
+  /*
+    Show the waiting screen immediately.
+  */
+
+  showWaitingScreen();
+
+
+  /*
+    Check Supabase immediately.
+  */
+
+  await updateCustomerDisplay();
+
+
+  /*
+    Keep checking the display table.
+    This is what allows the separate iPad
+    to react when the staff iPad changes
+    the ticket_number.
+  */
+
+  displayTimer =
+    setInterval(
+      updateCustomerDisplay,
+      DISPLAY_POLL_MS
+    );
+
+}
+
+
+/* ============================================================
+   START NORMAL REPAIR REFRESH
+   ============================================================ */
+
+function startRepairRefresh(){
+
+  if(repairTimer){
+
+    clearInterval(
+      repairTimer
+    );
+
+  }
+
+
+  repairTimer =
+    setInterval(
+      refreshActiveRepair,
+      REPAIR_POLL_MS
+    );
+
+}
+
+
+/* ============================================================
+   PAGE START
+   ============================================================ */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async function(){
+
+    /*
+      First support the normal
+      ?ticket=BR-000001 tracking page.
+    */
+
+    const urlTicket =
+      getTicketFromURL();
+
+
+    if(urlTicket){
+
+      document.getElementById(
+        "normalPage"
+      ).style.display =
+        "block";
+
+
+      document.getElementById(
+        "displayMode"
+      ).style.display =
+        "none";
+
+
+      await loadTicketFromURL();
+
+
+      startRepairRefresh();
+
+
+      return;
+
+    }
+
+
+    /*
+      Otherwise this is the
+      separate customer display iPad.
+    */
+
+    await startCustomerDisplay();
+
   }
 );
+
 </script>
 
 </body>
 </html>
-
-<script>
-document.addEventListener("DOMContentLoaded", loadTicketFromURL);
-</script>
