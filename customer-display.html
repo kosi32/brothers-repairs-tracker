@@ -1,596 +1,951 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
-
-<title>Brother's iRepairs</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Display",
-        "Helvetica Neue",
-        Arial,
-        sans-serif;
-    background: #050505;
-    color: white;
-}
-
-body {
-    min-height: 100vh;
-}
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-#app {
-    width: 100vw;
-    height: 100vh;
-    min-height: 100vh;
-    position: relative;
-    overflow: hidden;
-}
-
-/* =========================================================
-   BACKGROUND
-   ========================================================= */
-
-.background {
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(
-            circle at 50% 15%,
-            rgba(40, 120, 255, 0.18),
-            transparent 38%
-        ),
-        radial-gradient(
-            circle at 15% 90%,
-            rgba(0, 90, 255, 0.10),
-            transparent 35%
-        ),
-        #050505;
-    z-index: 0;
-}
-
-/* =========================================================
-   CONTENT
-   ========================================================= */
-
-.content {
-    position: relative;
-    z-index: 2;
-
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-
-    padding:
-        clamp(25px, 4vw, 60px)
-        clamp(30px, 6vw, 90px);
-
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-/* =========================================================
-   LOGO
-   ========================================================= */
-
-.logo-section {
-    width: 100%;
+    <meta charset="UTF-8">
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    <meta
+        name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 maximum-scale=1.0,
+                 user-scalable=no"
+    >
 
-    margin-bottom: 25px;
-}
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#050505">
 
-.logo {
-    max-width: min(420px, 65vw);
-    max-height: 150px;
+    <title>Brother's iRepairs</title>
 
-    object-fit: contain;
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    display: none;
-}
+    <style>
 
-.logo-text {
-    text-align: center;
-}
+        /* =====================================================
+           RESET
+        ===================================================== */
 
-.logo-text h1 {
-    margin: 0;
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    font-size: clamp(32px, 5vw, 58px);
-    font-weight: 800;
-    letter-spacing: -1.8px;
-}
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
 
-.logo-text p {
-    margin: 8px 0 0;
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    #242018 0%,
+                    #0d0c0a 35%,
+                    #050505 75%
+                );
 
-    font-size: clamp(13px, 1.6vw, 20px);
-    font-weight: 600;
+            color: white;
 
-    letter-spacing: 2px;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "SF Pro Display",
+                "SF Pro Text",
+                Helvetica,
+                Arial,
+                sans-serif;
 
-    color: rgba(255,255,255,.55);
-}
+            overflow: hidden;
 
-/* =========================================================
-   WELCOME
-   ========================================================= */
+            -webkit-user-select: none;
+            user-select: none;
+        }
 
-.welcome {
-    text-align: center;
-    margin-top: 5px;
-    margin-bottom: 25px;
-}
 
-.welcome-small {
-    font-size: clamp(15px, 2vw, 24px);
-    color: rgba(255,255,255,.55);
-    font-weight: 500;
-}
+        /* =====================================================
+           MAIN APP
+        ===================================================== */
 
-.customer-name {
-    margin-top: 5px;
+        #app {
+            width: 100%;
+            height: 100%;
 
-    font-size: clamp(34px, 5vw, 62px);
-    font-weight: 800;
+            min-height: 100vh;
+            min-height: 100dvh;
 
-    letter-spacing: -1px;
-}
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-/* =========================================================
-   TICKET
-   ========================================================= */
+            position: relative;
 
-.ticket {
-    text-align: center;
-    margin-bottom: 30px;
-}
+            overflow: hidden;
+        }
 
-.ticket-label {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
 
-    color: rgba(255,255,255,.4);
-}
+        /* =====================================================
+           BACKGROUND GLOW
+        ===================================================== */
 
-.ticket-number {
-    margin-top: 5px;
+        .background-glow {
+            position: absolute;
 
-    font-size: clamp(22px, 3vw, 34px);
-    font-weight: 700;
+            width: 500px;
+            height: 500px;
 
-    letter-spacing: 2px;
-}
+            border-radius: 50%;
 
-/* =========================================================
-   DEVICE CARD
-   ========================================================= */
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(214, 157, 54, 0.15),
+                    rgba(214, 157, 54, 0.03) 45%,
+                    transparent 70%
+                );
 
-.device-card {
-    width: 100%;
-    max-width: 900px;
+            filter: blur(15px);
 
-    margin: 0 auto 25px;
+            top: -220px;
+            left: 50%;
 
-    padding: clamp(25px, 4vw, 45px);
+            transform: translateX(-50%);
 
-    display: flex;
-    align-items: center;
+            pointer-events: none;
+        }
 
-    gap: 25px;
 
-    background: rgba(255,255,255,.065);
+        .background-glow-bottom {
+            position: absolute;
 
-    border: 1px solid rgba(255,255,255,.08);
+            width: 600px;
+            height: 300px;
 
-    border-radius: 28px;
+            border-radius: 50%;
 
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.35);
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255, 255, 255, 0.035),
+                    transparent 70%
+                );
 
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
+            bottom: -220px;
+            left: 50%;
 
-.device-icon {
-    width: 85px;
-    height: 85px;
+            transform: translateX(-50%);
 
-    flex-shrink: 0;
+            pointer-events: none;
+        }
 
-    border-radius: 24px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        /* =====================================================
+           CONTENT
+        ===================================================== */
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(0,122,255,.22),
-            rgba(0,122,255,.06)
-        );
+        .screen {
+            width: 100%;
+            height: 100%;
 
-    border: 1px solid rgba(0,122,255,.25);
+            display: flex;
+            flex-direction: column;
 
-    font-size: 42px;
-}
+            align-items: center;
 
-.device-info {
-    flex: 1;
-}
+            position: relative;
 
-.device-title {
-    font-size: clamp(22px, 3vw, 34px);
-    font-weight: 750;
-}
+            z-index: 2;
 
-.device-model {
-    margin-top: 6px;
+            padding:
+                clamp(25px, 5vw, 70px)
+                clamp(20px, 5vw, 70px);
 
-    font-size: clamp(16px, 2vw, 22px);
+            overflow-y: auto;
+            overflow-x: hidden;
 
-    color: rgba(255,255,255,.55);
-}
+            scrollbar-width: none;
+        }
 
-/* =========================================================
-   MAIN MESSAGE
-   ========================================================= */
+        .screen::-webkit-scrollbar {
+            display: none;
+        }
 
-.message-card {
-    width: 100%;
-    max-width: 900px;
 
-    margin: 0 auto;
+        /* =====================================================
+           LOGO
+        ===================================================== */
 
-    padding:
-        clamp(30px, 5vw, 55px);
+        .logo-container {
+            display: flex;
 
-    text-align: center;
+            align-items: center;
+            justify-content: center;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.075),
-            rgba(255,255,255,.035)
-        );
+            width: 100%;
 
-    border: 1px solid rgba(255,255,255,.08);
+            margin-top: 10px;
+            margin-bottom: 12px;
 
-    border-radius: 30px;
+            animation: logoAppear 0.8s ease;
+        }
 
-    box-shadow:
-        0 25px 70px rgba(0,0,0,.4);
-}
 
-.message-icon {
-    width: 92px;
-    height: 92px;
+        .logo {
+            width: min(240px, 55vw);
+            max-height: 145px;
 
-    margin: 0 auto 20px;
+            object-fit: contain;
 
-    border-radius: 50%;
+            filter:
+                drop-shadow(
+                    0 10px 25px
+                    rgba(0, 0, 0, 0.45)
+                );
+        }
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    font-size: 45px;
+        /* =====================================================
+           BRAND NAME
+        ===================================================== */
 
-    background: rgba(0,122,255,.14);
+        .brand-name {
+            font-size:
+                clamp(24px, 4vw, 42px);
 
-    border: 1px solid rgba(0,122,255,.25);
+            font-weight: 800;
 
-    color: #4da3ff;
-}
+            letter-spacing:
+                clamp(1px, 0.3vw, 3px);
 
-.message-title {
-    font-size: clamp(30px, 5vw, 55px);
-    font-weight: 800;
+            text-align: center;
 
-    letter-spacing: -1px;
-}
+            color: #f4d28b;
 
-.message {
-    max-width: 720px;
+            margin-top: 4px;
 
-    margin: 15px auto 0;
+            text-transform: uppercase;
+        }
 
-    font-size: clamp(17px, 2.2vw, 26px);
-    line-height: 1.45;
 
-    color: rgba(255,255,255,.62);
-}
+        .tagline {
+            font-size:
+                clamp(11px, 1.8vw, 18px);
 
-/* =========================================================
-   BOTTOM
-   ========================================================= */
+            letter-spacing:
+                clamp(1px, 0.3vw, 2px);
 
-.footer {
-    margin-top: auto;
+            color:
+                rgba(255, 255, 255, 0.58);
 
-    padding-top: 30px;
+            text-align: center;
 
-    text-align: center;
-}
+            margin-top: 8px;
 
-.footer-main {
-    font-size: clamp(15px, 1.8vw, 21px);
+            text-transform: uppercase;
+        }
 
-    font-weight: 600;
 
-    color: rgba(255,255,255,.65);
-}
+        /* =====================================================
+           GOLD DIVIDER
+        ===================================================== */
 
-.footer-slogan {
-    margin-top: 7px;
+        .gold-line {
+            width:
+                clamp(100px, 30vw, 260px);
 
-    font-size: clamp(11px, 1.4vw, 16px);
+            height: 2px;
 
-    letter-spacing: 1.5px;
+            margin-top: 24px;
+            margin-bottom: 30px;
 
-    color: rgba(255,255,255,.35);
-}
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #d8a947,
+                    #f5d58a,
+                    #d8a947,
+                    transparent
+                );
 
-/* =========================================================
-   IDLE SCREEN
-   ========================================================= */
+            box-shadow:
+                0 0 15px
+                rgba(216, 169, 71, 0.25);
+        }
 
-.idle {
-    position: absolute;
-    inset: 0;
 
-    z-index: 5;
+        /* =====================================================
+           IDLE SCREEN
+        ===================================================== */
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        .welcome {
+            width: min(850px, 100%);
 
-    text-align: center;
+            text-align: center;
 
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(0,100,255,.16),
-            transparent 45%
-        ),
-        #050505;
-}
+            margin-top: auto;
+            margin-bottom: auto;
 
-.idle-inner {
-    width: 90%;
-    max-width: 800px;
-}
+            animation: fadeUp 0.7s ease;
+        }
 
-.idle-logo {
-    max-width: 430px;
-    max-height: 180px;
 
-    object-fit: contain;
+        .welcome-title {
+            font-size:
+                clamp(34px, 7vw, 72px);
 
-    margin-bottom: 25px;
+            font-weight: 800;
 
-    display: none;
-}
+            letter-spacing: -1px;
 
-.idle-title {
-    font-size: clamp(40px, 7vw, 80px);
-    font-weight: 850;
+            margin-bottom: 18px;
+        }
 
-    letter-spacing: -2px;
-}
 
-.idle-slogan {
-    margin-top: 15px;
+        .welcome-subtitle {
+            font-size:
+                clamp(17px, 3vw, 28px);
 
-    font-size: clamp(15px, 2vw, 24px);
+            line-height: 1.5;
 
-    letter-spacing: 2px;
+            color:
+                rgba(255, 255, 255, 0.65);
 
-    color: rgba(255,255,255,.48);
-}
+            max-width: 650px;
 
-.idle-message {
-    margin-top: 45px;
+            margin:
+                0 auto;
+        }
 
-    font-size: clamp(18px, 2.4vw, 28px);
 
-    color: rgba(255,255,255,.65);
-}
+        .welcome-badge {
+            display: inline-flex;
 
-/* =========================================================
-   ERROR
-   ========================================================= */
+            align-items: center;
 
-#error {
-    position: fixed;
+            gap: 10px;
 
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
+            margin-top: 32px;
 
-    z-index: 100;
+            padding:
+                12px 22px;
 
-    text-align: center;
+            border-radius: 100px;
 
-    font-size: 12px;
+            background:
+                rgba(255, 255, 255, 0.055);
 
-    color: rgba(255,255,255,.25);
-}
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.08);
 
-/* =========================================================
-   MOBILE / SMALL IPAD
-   ========================================================= */
+            color:
+                rgba(255, 255, 255, 0.55);
 
-@media (max-width: 700px) {
+            font-size:
+                clamp(13px, 2vw, 17px);
+        }
 
-    .content {
-        padding: 25px;
-    }
 
-    .device-card {
-        padding: 22px;
-        gap: 18px;
-    }
+        .gold-dot {
+            width: 8px;
+            height: 8px;
 
-    .device-icon {
-        width: 65px;
-        height: 65px;
-        border-radius: 18px;
-        font-size: 32px;
-    }
+            border-radius: 50%;
 
-    .message-card {
-        padding: 28px 22px;
-    }
+            background: #e2b65b;
 
-    .message-icon {
-        width: 72px;
-        height: 72px;
-        font-size: 34px;
-    }
-}
+            box-shadow:
+                0 0 12px
+                rgba(226, 182, 91, 0.8);
+        }
 
-/* =========================================================
-   HIDE SCROLLBAR
-   ========================================================= */
 
-::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-</style>
+        /* =====================================================
+           REPAIR DISPLAY
+        ===================================================== */
+
+        .repair-container {
+            width: min(850px, 100%);
+
+            margin:
+                auto 0;
+
+            animation: fadeUp 0.6s ease;
+        }
+
+
+        .hello {
+            text-align: center;
+
+            font-size:
+                clamp(15px, 2.5vw, 22px);
+
+            font-weight: 600;
+
+            color:
+                rgba(255, 255, 255, 0.48);
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 8px;
+        }
+
+
+        .customer-name {
+            text-align: center;
+
+            font-size:
+                clamp(34px, 7vw, 68px);
+
+            line-height: 1.05;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 12px;
+
+            color: white;
+        }
+
+
+        .ticket {
+            text-align: center;
+
+            font-size:
+                clamp(14px, 2.2vw, 20px);
+
+            color:
+                #d8a947;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* =====================================================
+           DEVICE CARD
+        ===================================================== */
+
+        .device-card {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 24px;
+
+            padding:
+                clamp(24px, 5vw, 40px);
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.09),
+                    rgba(255,255,255,0.035)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,0.35),
+
+                inset 0 1px 0
+                rgba(255,255,255,0.05);
+
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+
+            margin-bottom: 20px;
+        }
+
+
+        .device-icon {
+
+            width:
+                clamp(70px, 12vw, 110px);
+
+            height:
+                clamp(70px, 12vw, 110px);
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 26px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(224,178,83,0.22),
+                    rgba(224,178,83,0.06)
+                );
+
+            border:
+                1px solid
+                rgba(224,178,83,0.22);
+
+            font-size:
+                clamp(35px, 7vw, 60px);
+        }
+
+
+        .device-info {
+            min-width: 0;
+        }
+
+
+        .device-label {
+            font-size:
+                clamp(12px, 1.8vw, 16px);
+
+            color:
+                rgba(255,255,255,0.42);
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .device-name {
+            font-size:
+                clamp(24px, 4.5vw, 40px);
+
+            font-weight: 750;
+
+            line-height: 1.1;
+
+            margin-bottom: 6px;
+        }
+
+
+        .device-model {
+            font-size:
+                clamp(16px, 2.7vw, 23px);
+
+            color:
+                rgba(255,255,255,0.58);
+        }
+
+
+        /* =====================================================
+           MESSAGE CARD
+        ===================================================== */
+
+        .message-card {
+
+            width: 100%;
+
+            text-align: center;
+
+            padding:
+                clamp(30px, 6vw, 50px);
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(216,169,71,0.13),
+                    rgba(216,169,71,0.035)
+                );
+
+            border:
+                1px solid
+                rgba(216,169,71,0.20);
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,0.25);
+
+            margin-bottom: 25px;
+        }
+
+
+        .message-icon {
+
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 20px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(216,169,71,0.15);
+
+            color:
+                #e4bb67;
+
+            font-size: 32px;
+        }
+
+
+        .message-title {
+
+            font-size:
+                clamp(24px, 4.5vw, 40px);
+
+            font-weight: 800;
+
+            margin-bottom: 12px;
+        }
+
+
+        .message-text {
+
+            font-size:
+                clamp(16px, 2.7vw, 23px);
+
+            line-height: 1.55;
+
+            color:
+                rgba(255,255,255,0.62);
+
+            max-width: 650px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            margin-top: auto;
+
+            padding-top: 30px;
+
+            text-align: center;
+
+            color:
+                rgba(255,255,255,0.38);
+
+            font-size:
+                clamp(12px, 1.8vw, 16px);
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .footer strong {
+            color:
+                rgba(255,255,255,0.65);
+        }
+
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        .loading {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 100%;
+            height: 100%;
+        }
+
+
+        .loading-logo {
+            width: 190px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .spinner {
+
+            width: 32px;
+            height: 32px;
+
+            border-radius: 50%;
+
+            border:
+                3px solid
+                rgba(255,255,255,0.12);
+
+            border-top-color:
+                #d8a947;
+
+            animation:
+                spin 0.8s linear infinite;
+        }
+
+
+        /* =====================================================
+           ANIMATIONS
+        ===================================================== */
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        @keyframes fadeUp {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        @keyframes logoAppear {
+
+            from {
+                opacity: 0;
+                transform: scale(0.92);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+        /* =====================================================
+           IPAD MINI
+        ===================================================== */
+
+        @media
+        only screen
+        and (max-width: 768px) {
+
+            .screen {
+
+                padding:
+                    30px 20px;
+            }
+
+            .logo {
+
+                width: 190px;
+                max-height: 115px;
+            }
+
+            .brand-name {
+
+                font-size: 27px;
+            }
+
+            .tagline {
+
+                font-size: 11px;
+            }
+
+            .gold-line {
+
+                margin-top: 18px;
+                margin-bottom: 22px;
+            }
+
+            .device-card {
+
+                border-radius: 24px;
+
+                padding: 22px;
+
+                gap: 17px;
+            }
+
+            .device-icon {
+
+                border-radius: 20px;
+            }
+
+            .message-card {
+
+                border-radius: 24px;
+
+                padding: 30px 22px;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL HEIGHT
+        ===================================================== */
+
+        @media
+        only screen
+        and (max-height: 650px) {
+
+            .screen {
+
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+            .logo {
+
+                width: 145px;
+                max-height: 85px;
+            }
+
+            .gold-line {
+
+                margin-top: 10px;
+                margin-bottom: 15px;
+            }
+
+            .device-card {
+
+                padding: 18px;
+            }
+
+            .message-card {
+
+                padding: 22px;
+            }
+        }
+
+    </style>
 </head>
+
 
 <body>
 
 <div id="app">
 
-    <div class="background"></div>
+    <div class="background-glow"></div>
+    <div class="background-glow-bottom"></div>
 
     <!-- =====================================================
-         IDLE SCREEN
-         ===================================================== -->
+         LOADING
+    ====================================================== -->
 
-    <div
-        id="idleScreen"
-        class="idle"
-    >
+    <div id="loadingScreen" class="loading">
 
-        <div class="idle-inner">
+        <img
+            src="logo.png"
+            class="loading-logo"
+            alt="Brother's iRepairs"
+        >
 
-            <!--
-                IMPORTANT:
-                Replace "logo.png" with your actual logo filename.
-                Put logo.png in the same GitHub folder as this HTML.
-            -->
-
-            <img
-                id="idleLogo"
-                class="idle-logo"
-                src="logo.png"
-                alt="Brother's iRepairs"
-                onload="showLogos()"
-            >
-
-            <div
-                id="idleLogoText"
-                class="idle-title"
-            >
-                BROTHER'S iREPAIRS
-            </div>
-
-            <div class="idle-slogan">
-                WE FIX IT RIGHT. THE FIRST TIME.
-            </div>
-
-            <div class="idle-message">
-                Welcome
-                <br>
-                <span style="color:rgba(255,255,255,.4)">
-                    Your repair information will appear here.
-                </span>
-            </div>
-
-        </div>
+        <div class="spinner"></div>
 
     </div>
 
 
     <!-- =====================================================
-         REPAIR SCREEN
-         ===================================================== -->
+         MAIN SCREEN
+    ====================================================== -->
 
-    <main
-        id="repairScreen"
-        class="content"
-        style="display:none;"
-    >
+    <main id="mainScreen" class="screen" style="display:none;">
 
         <!-- LOGO -->
 
-        <div class="logo-section">
+        <div class="logo-container">
 
             <img
-                id="mainLogo"
-                class="logo"
                 src="logo.png"
+                class="logo"
                 alt="Brother's iRepairs"
-                onload="showLogos()"
             >
-
-            <div
-                id="mainLogoText"
-                class="logo-text"
-            >
-                <h1>BROTHER'S iREPAIRS</h1>
-
-                <p>
-                    WE FIX IT RIGHT. THE FIRST TIME.
-                </p>
-            </div>
 
         </div>
 
 
-        <!-- CUSTOMER -->
+        <div class="brand-name">
+            BROTHER'S iREPAIRS
+        </div>
 
-        <section class="welcome">
 
-            <div class="welcome-small">
-                HELLO
+        <div class="tagline">
+            WE FIX IT RIGHT. THE FIRST TIME.
+        </div>
+
+
+        <div class="gold-line"></div>
+
+
+        <!-- =================================================
+             IDLE SCREEN
+        ================================================== -->
+
+        <section
+            id="idleView"
+            class="welcome"
+        >
+
+            <div class="welcome-title">
+                Welcome
             </div>
+
+            <div class="welcome-subtitle">
+                Your repair information will appear here.
+                <br>
+                Thank you for choosing Brother's iRepairs.
+            </div>
+
+            <div class="welcome-badge">
+
+                <span class="gold-dot"></span>
+
+                We're ready to help
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             REPAIR SCREEN
+        ================================================== -->
+
+        <section
+            id="repairView"
+            class="repair-container"
+            style="display:none;"
+        >
+
+            <div class="hello">
+                Welcome
+            </div>
+
 
             <div
                 id="customerName"
@@ -599,82 +954,70 @@ body {
                 Customer
             </div>
 
-        </section>
-
-
-        <!-- TICKET -->
-
-        <section class="ticket">
-
-            <div class="ticket-label">
-                REPAIR TICKET
-            </div>
 
             <div
                 id="ticketNumber"
-                class="ticket-number"
+                class="ticket"
             >
-                —
+                BR-000000
             </div>
 
-        </section>
 
+            <!-- DEVICE -->
 
-        <!-- DEVICE -->
-
-        <section class="device-card">
-
-            <div
-                id="deviceIcon"
-                class="device-icon"
-            >
-                📱
-            </div>
-
-            <div class="device-info">
+            <div class="device-card">
 
                 <div
-                    id="device"
-                    class="device-title"
+                    id="deviceIcon"
+                    class="device-icon"
                 >
-                    Device
+                    📱
                 </div>
 
-                <div
-                    id="model"
-                    class="device-model"
-                >
-                    Model
+
+                <div class="device-info">
+
+                    <div class="device-label">
+                        Your Device
+                    </div>
+
+                    <div
+                        id="deviceName"
+                        class="device-name"
+                    >
+                        iPhone
+                    </div>
+
+                    <div
+                        id="deviceModel"
+                        class="device-model"
+                    >
+                        Device model
+                    </div>
+
                 </div>
 
             </div>
 
-        </section>
 
+            <!-- MESSAGE -->
 
-        <!-- MAIN MESSAGE -->
+            <div class="message-card">
 
-        <section class="message-card">
+                <div class="message-icon">
+                    ✓
+                </div>
 
-            <div
-                id="messageIcon"
-                class="message-icon"
-            >
-                ✓
-            </div>
+                <div class="message-title">
+                    We're Taking Care of It
+                </div>
 
-            <div
-                id="messageTitle"
-                class="message-title"
-            >
-                We're Working On It
-            </div>
+                <div class="message-text">
+                    Our team is currently working on your
+                    device. We appreciate your patience and
+                    trust in Brother's iRepairs.
+                </div>
 
-            <div
-                id="message"
-                class="message"
-            >
-                Your device is currently being worked on by our technician.
             </div>
 
         </section>
@@ -684,13 +1027,11 @@ body {
 
         <footer class="footer">
 
-            <div class="footer-main">
-                Thank you for choosing Brother's iRepairs
-            </div>
+            <strong>Brother's iRepairs</strong>
 
-            <div class="footer-slogan">
-                WE FIX IT RIGHT. THE FIRST TIME.
-            </div>
+            <br>
+
+            Professional Apple Device Repair
 
         </footer>
 
@@ -699,401 +1040,444 @@ body {
 </div>
 
 
-<div id="error"></div>
-
-
 <script>
 
-/* ============================================================
-   SUPABASE
-   ============================================================ */
+    /* ========================================================
+       SUPABASE CONFIGURATION
+    ======================================================== */
 
-const SUPABASE_URL =
-    "https://uyladmvbqoeqwtdfiuqr.supabase.co";
+    /*
+       IMPORTANT:
 
-const SUPABASE_KEY =
-    "sb_publishable_9CPop4CNMAzM_DtWyzO4LQ_RURFRMF2";
+       Put your existing Supabase URL and anon key here.
 
-const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+       Example:
 
+       const SUPABASE_URL =
+           "https://xxxxxxxx.supabase.co";
 
-/* ============================================================
-   DISPLAY ID
-   ============================================================ */
+       const SUPABASE_ANON_KEY =
+           "your-anon-key";
+    */
 
-const DISPLAY_ID = "main";
+    const SUPABASE_URL = "YOUR_SUPABASE_URL";
 
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
-/* ============================================================
-   LOGO
-   ============================================================ */
 
-function showLogos() {
+    /* ========================================================
+       CREATE SUPABASE CLIENT
+    ======================================================== */
 
-    const idleLogo =
-        document.getElementById("idleLogo");
-
-    const mainLogo =
-        document.getElementById("mainLogo");
-
-    const idleText =
-        document.getElementById("idleLogoText");
-
-    const mainText =
-        document.getElementById("mainLogoText");
-
-    if (idleLogo) {
-        idleLogo.style.display = "block";
-    }
-
-    if (mainLogo) {
-        mainLogo.style.display = "block";
-    }
-
-    if (idleText) {
-        idleText.style.display = "none";
-    }
-
-    if (mainText) {
-        mainText.style.display = "none";
-    }
-}
-
-
-/* ============================================================
-   SHOW IDLE
-   ============================================================ */
-
-function showIdle() {
-
-    document.getElementById(
-        "idleScreen"
-    ).style.display = "flex";
-
-    document.getElementById(
-        "repairScreen"
-    ).style.display = "none";
-}
-
-
-/* ============================================================
-   SHOW REPAIR
-   ============================================================ */
-
-function showRepair() {
-
-    document.getElementById(
-        "idleScreen"
-    ).style.display = "none";
-
-    document.getElementById(
-        "repairScreen"
-    ).style.display = "flex";
-}
-
-
-/* ============================================================
-   DEVICE ICON
-   ============================================================ */
-
-function getDeviceIcon(device) {
-
-    const value =
-        (device || "").toLowerCase();
-
-    if (value.includes("ipad")) {
-        return "▣";
-    }
-
-    if (
-        value.includes("mac") ||
-        value.includes("macbook")
-    ) {
-        return "▱";
-    }
-
-    if (value.includes("watch")) {
-        return "⌚";
-    }
-
-    return "📱";
-}
-
-
-/* ============================================================
-   STATUS INFORMATION
-   ============================================================ */
-
-function getStatusInfo(status) {
-
-    switch (status) {
-
-        case "Received":
-
-            return {
-                icon: "✓",
-                title: "Device Received",
-                message:
-                    "We've received your device and it is ready for diagnosis."
-            };
-
-        case "Diagnosing":
-
-            return {
-                icon: "⌕",
-                title: "We're Checking Your Device",
-                message:
-                    "Our technician is diagnosing your device and identifying the problem."
-            };
-
-        case "Repairing":
-
-            return {
-                icon: "🔧",
-                title: "Repair In Progress",
-                message:
-                    "Our technician is currently working on your device."
-            };
-
-        case "Waiting Parts":
-
-            return {
-                icon: "📦",
-                title: "Waiting For Parts",
-                message:
-                    "We're waiting for the required parts needed to complete your repair."
-            };
-
-        case "Testing":
-
-            return {
-                icon: "✓",
-                title: "Final Testing",
-                message:
-                    "Your repair is complete and we're performing our final checks."
-            };
-
-        case "Ready":
-
-            return {
-                icon: "✓",
-                title: "Ready For Pickup",
-                message:
-                    "Great news! Your device is repaired and ready for pickup."
-            };
-
-        case "Picked Up":
-
-            return {
-                icon: "✓",
-                title: "Thank You",
-                message:
-                    "Your device has been picked up. Thank you for choosing Brother's iRepairs!"
-            };
-
-        default:
-
-            return {
-                icon: "✓",
-                title: "We're Working On It",
-                message:
-                    "Your device is currently being worked on by our technician."
-            };
-    }
-}
-
-
-/* ============================================================
-   LOAD DISPLAY
-   ============================================================ */
-
-async function refreshDisplay() {
-
-    try {
-
-        const { data, error } =
-            await supabaseClient
-                .from("customer_display")
-                .select(
-                    "display_id, mode, ticket_number"
-                )
-                .eq(
-                    "display_id",
-                    DISPLAY_ID
-                )
-                .single();
-
-        if (error) {
-            throw error;
-        }
-
-        if (
-            !data ||
-            !data.ticket_number ||
-            data.mode === "idle"
-        ) {
-
-            showIdle();
-
-            return;
-        }
-
-        await loadRepair(
-            data.ticket_number
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
         );
 
-    } catch (error) {
 
-        console.error(
-            "Customer display error:",
-            error
-        );
+    /* ========================================================
+       DISPLAY ID
+    ======================================================== */
 
+    const DISPLAY_ID = "main";
+
+
+    /* ========================================================
+       ELEMENTS
+    ======================================================== */
+
+    const loadingScreen =
         document.getElementById(
-            "error"
-        ).textContent =
-            "Display connection issue";
+            "loadingScreen"
+        );
 
-    }
-}
+    const mainScreen =
+        document.getElementById(
+            "mainScreen"
+        );
 
+    const idleView =
+        document.getElementById(
+            "idleView"
+        );
 
-/* ============================================================
-   LOAD REPAIR
-   ============================================================ */
+    const repairView =
+        document.getElementById(
+            "repairView"
+        );
 
-async function loadRepair(ticketNumber) {
-
-    try {
-
-        const { data, error } =
-            await supabaseClient
-                .from("repairs")
-                .select("*")
-                .eq(
-                    "ticket_number",
-                    ticketNumber
-                )
-                .single();
-
-        if (error) {
-            throw error;
-        }
-
-        if (!data) {
-            showIdle();
-            return;
-        }
-
-
-        /* CUSTOMER */
-
-        const fullName =
-            (
-                (data.customer_first_name || "") +
-                " " +
-                (data.customer_last_name || "")
-            ).trim();
-
+    const customerName =
         document.getElementById(
             "customerName"
-        ).textContent =
-            fullName || "Customer";
+        );
 
-
-        /* TICKET */
-
+    const ticketNumber =
         document.getElementById(
             "ticketNumber"
-        ).textContent =
-            data.ticket_number || ticketNumber;
+        );
 
-
-        /* DEVICE */
-
+    const deviceName =
         document.getElementById(
-            "device"
-        ).textContent =
-            data.device_type || "Device";
+            "deviceName"
+        );
 
-
+    const deviceModel =
         document.getElementById(
-            "model"
-        ).textContent =
-            data.model || "Model";
+            "deviceModel"
+        );
 
-
-        /* DEVICE ICON */
-
+    const deviceIcon =
         document.getElementById(
             "deviceIcon"
-        ).textContent =
-            getDeviceIcon(
-                data.device_type
+        );
+
+
+    /* ========================================================
+       START
+    ======================================================== */
+
+    async function startDisplay() {
+
+        loadingScreen.style.display =
+            "none";
+
+        mainScreen.style.display =
+            "flex";
+
+        await refreshDisplay();
+
+        /*
+           Refresh every 2 seconds.
+        */
+
+        setInterval(
+            refreshDisplay,
+            2000
+        );
+    }
+
+
+    /* ========================================================
+       REFRESH CUSTOMER DISPLAY
+    ======================================================== */
+
+    async function refreshDisplay() {
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+
+                    .from(
+                        "customer_display"
+                    )
+
+                    .select(
+                        "display_id, mode, ticket_number"
+                    )
+
+                    .eq(
+                        "display_id",
+                        DISPLAY_ID
+                    )
+
+                    .single();
+
+
+            if (error) {
+
+                console.error(
+                    "Customer display error:",
+                    error
+                );
+
+                showIdle();
+
+                return;
+            }
+
+
+            /*
+               If display is idle,
+               show welcome screen.
+            */
+
+            if (
+                !data ||
+                data.mode === "idle" ||
+                !data.ticket_number
+            ) {
+
+                showIdle();
+
+                return;
+            }
+
+
+            /*
+               Otherwise load repair.
+            */
+
+            await loadRepair(
+                data.ticket_number
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Display error:",
+                error
+            );
+
+            showIdle();
+        }
+    }
+
+
+    /* ========================================================
+       LOAD REPAIR
+    ======================================================== */
+
+    async function loadRepair(
+        ticket
+    ) {
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+
+                    .from(
+                        "repairs"
+                    )
+
+                    .select(
+                        "*"
+                    )
+
+                    .eq(
+                        "ticket_number",
+                        ticket
+                    )
+
+                    .single();
+
+
+            if (error) {
+
+                console.error(
+                    "Repair load error:",
+                    error
+                );
+
+                showIdle();
+
+                return;
+            }
+
+
+            if (!data) {
+
+                showIdle();
+
+                return;
+            }
+
+
+            /*
+               CUSTOMER
+            */
+
+            const firstName =
+                data.customer_first_name ||
+                "";
+
+            const lastName =
+                data.customer_last_name ||
+                "";
+
+            const fullName =
+                `${firstName} ${lastName}`
+                    .trim();
+
+
+            customerName.textContent =
+                fullName ||
+                "Customer";
+
+
+            /*
+               TICKET
+            */
+
+            ticketNumber.textContent =
+                data.ticket_number ||
+                ticket;
+
+
+            /*
+               DEVICE
+            */
+
+            const device =
+                data.device ||
+                data.device_type ||
+                "Apple Device";
+
+
+            const model =
+                data.model ||
+                "";
+
+
+            deviceName.textContent =
+                device;
+
+
+            deviceModel.textContent =
+                model;
+
+
+            /*
+               DEVICE ICON
+            */
+
+            setDeviceIcon(
+                device
             );
 
 
-        /* MESSAGE */
+            /*
+               SHOW REPAIR VIEW
+            */
 
-        const status =
-            data.status || "";
+            idleView.style.display =
+                "none";
 
-        const info =
-            getStatusInfo(status);
+            repairView.style.display =
+                "block";
 
-        document.getElementById(
-            "messageIcon"
-        ).textContent =
-            info.icon;
+        }
 
-        document.getElementById(
-            "messageTitle"
-        ).textContent =
-            info.title;
+        catch (error) {
 
-        document.getElementById(
-            "message"
-        ).textContent =
-            info.message;
+            console.error(
+                "Repair error:",
+                error
+            );
 
-
-        /* SHOW */
-
-        showRepair();
-
-    } catch (error) {
-
-        console.error(
-            "Repair load error:",
-            error
-        );
-
-        showIdle();
+            showIdle();
+        }
     }
-}
 
 
-/* ============================================================
-   START
-   ============================================================ */
+    /* ========================================================
+       SHOW IDLE
+    ======================================================== */
 
-showIdle();
+    function showIdle() {
 
-refreshDisplay();
+        idleView.style.display =
+            "block";
+
+        repairView.style.display =
+            "none";
+    }
 
 
-/* ============================================================
-   REFRESH EVERY 2 SECONDS
-   ============================================================ */
+    /* ========================================================
+       DEVICE ICON
+    ======================================================== */
 
-setInterval(
-    refreshDisplay,
-    2000
-);
+    function setDeviceIcon(
+        device
+    ) {
+
+        const value =
+            String(device)
+                .toLowerCase();
+
+
+        if (
+            value.includes("ipad")
+        ) {
+
+            deviceIcon.textContent =
+                "▣";
+
+            return;
+        }
+
+
+        if (
+            value.includes("mac")
+        ) {
+
+            deviceIcon.textContent =
+                "▱";
+
+            return;
+        }
+
+
+        if (
+            value.includes("watch")
+        ) {
+
+            deviceIcon.textContent =
+                "◉";
+
+            return;
+        }
+
+
+        if (
+            value.includes("airpods")
+        ) {
+
+            deviceIcon.textContent =
+                "◌";
+
+            return;
+        }
+
+
+        deviceIcon.textContent =
+            "📱";
+    }
+
+
+    /* ========================================================
+       PREVENT SCREEN SLEEP WHEN POSSIBLE
+    ======================================================== */
+
+    document.addEventListener(
+        "click",
+        function () {
+
+            /*
+               Keeps the page interactive
+               for iPad display use.
+            */
+
+        }
+    );
+
+
+    /* ========================================================
+       START APPLICATION
+    ======================================================== */
+
+    startDisplay();
 
 </script>
 
