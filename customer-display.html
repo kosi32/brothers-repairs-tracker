@@ -62,7 +62,6 @@ body {
     user-select: none;
 }
 
-
 /* =========================================================
    APP
 ========================================================= */
@@ -77,7 +76,6 @@ body {
     overflow: hidden;
 }
 
-
 /* =========================================================
    BACKGROUND
 ========================================================= */
@@ -85,10 +83,10 @@ body {
 .glow-top {
     position: absolute;
 
-    width: 550px;
-    height: 550px;
+    width: 600px;
+    height: 600px;
 
-    top: -300px;
+    top: -350px;
     left: 50%;
 
     transform: translateX(-50%);
@@ -98,8 +96,8 @@ body {
     background:
         radial-gradient(
             circle,
-            rgba(220,170,70,.16),
-            rgba(220,170,70,.04) 45%,
+            rgba(220,170,70,.18),
+            rgba(220,170,70,.05) 45%,
             transparent 70%
         );
 
@@ -109,10 +107,10 @@ body {
 .glow-bottom {
     position: absolute;
 
-    width: 600px;
-    height: 300px;
+    width: 650px;
+    height: 350px;
 
-    bottom: -250px;
+    bottom: -280px;
     left: 50%;
 
     transform: translateX(-50%);
@@ -128,7 +126,6 @@ body {
 
     pointer-events: none;
 }
-
 
 /* =========================================================
    MAIN SCREEN
@@ -151,7 +148,7 @@ body {
     padding:
         25px
         clamp(18px, 5vw, 60px)
-        30px;
+        40px;
 
     scrollbar-width: none;
 }
@@ -160,7 +157,6 @@ body {
     display: none;
 }
 
-
 /* =========================================================
    HEADER
 ========================================================= */
@@ -168,7 +164,6 @@ body {
 .header {
     width: 100%;
     text-align: center;
-
     flex-shrink: 0;
 }
 
@@ -216,7 +211,7 @@ body {
 
 .gold-line {
     width:
-        min(240px, 55vw);
+        min(260px, 55vw);
 
     height: 2px;
 
@@ -234,9 +229,8 @@ body {
         );
 }
 
-
 /* =========================================================
-   WELCOME SCREEN
+   WELCOME
 ========================================================= */
 
 #welcomeView {
@@ -255,7 +249,7 @@ body {
 
 .welcome-title {
     font-size:
-        clamp(38px, 7vw, 70px);
+        clamp(40px, 7vw, 70px);
 
     font-weight: 800;
 
@@ -292,7 +286,6 @@ body {
     color:
         rgba(255,255,255,.55);
 }
-
 
 /* =========================================================
    REPAIR VIEW
@@ -347,7 +340,6 @@ body {
 
     letter-spacing: 2px;
 }
-
 
 /* =========================================================
    DEVICE CARD
@@ -448,6 +440,211 @@ body {
         rgba(255,255,255,.58);
 }
 
+/* =========================================================
+   DEVICE DETAILS
+========================================================= */
+
+.details-card {
+    margin-top: 18px;
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.detail-box {
+    padding: 20px;
+
+    min-height: 90px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.055);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+.detail-label {
+    font-size: 12px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.5px;
+
+    color:
+        rgba(255,255,255,.40);
+
+    margin-bottom: 8px;
+}
+
+.detail-value {
+    font-size:
+        clamp(18px, 3vw, 25px);
+
+    font-weight: 750;
+
+    color: white;
+
+    word-break: break-word;
+}
+
+/* =========================================================
+   PAYMENT CARD
+========================================================= */
+
+.payment-card {
+    margin-top: 18px;
+
+    width: 100%;
+
+    padding:
+        clamp(22px, 4vw, 32px);
+
+    border-radius: 26px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(220,175,80,.14),
+            rgba(220,175,80,.035)
+        );
+
+    border:
+        1px solid
+        rgba(220,175,80,.20);
+
+    box-shadow:
+        0 18px 45px
+        rgba(0,0,0,.20);
+}
+
+.payment-title {
+    text-align: center;
+
+    font-size:
+        clamp(22px, 4vw, 30px);
+
+    font-weight: 800;
+
+    margin-bottom: 20px;
+}
+
+.payment-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 13px 0;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+.payment-row:last-child {
+    border-bottom: none;
+}
+
+.payment-label {
+    color:
+        rgba(255,255,255,.60);
+
+    font-size:
+        clamp(15px, 2.3vw, 19px);
+}
+
+.payment-value {
+    font-size:
+        clamp(17px, 2.8vw, 23px);
+
+    font-weight: 750;
+}
+
+.balance-row {
+    margin-top: 7px;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid
+        rgba(220,175,80,.25);
+
+    border-bottom: none;
+}
+
+.balance-label {
+    color: #f1ce84;
+
+    font-weight: 800;
+}
+
+.balance-value {
+    color: #f1ce84;
+
+    font-size:
+        clamp(23px, 4vw, 34px);
+
+    font-weight: 850;
+}
+
+/* =========================================================
+   PICKUP CARD
+========================================================= */
+
+.pickup-card {
+    margin-top: 18px;
+
+    width: 100%;
+
+    padding: 25px;
+
+    border-radius: 24px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.07),
+            rgba(255,255,255,.025)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+}
+
+.pickup-label {
+    color:
+        rgba(255,255,255,.45);
+
+    font-size: 13px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 2px;
+}
+
+.pickup-date {
+    margin-top: 8px;
+
+    color: #f1ce84;
+
+    font-size:
+        clamp(25px, 5vw, 40px);
+
+    font-weight: 800;
+}
 
 /* =========================================================
    APPROVAL CARD
@@ -507,9 +704,8 @@ body {
     line-height: 1.45;
 }
 
-
 /* =========================================================
-   SIGNATURE BOX
+   SIGNATURE
 ========================================================= */
 
 .signature-wrapper {
@@ -560,7 +756,7 @@ body {
 
     pointer-events: none;
 
-    color: #9b9b9b;
+    color: #999;
 
     font-size:
         clamp(17px, 3vw, 25px);
@@ -601,72 +797,6 @@ body {
     pointer-events: none;
 }
 
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.button-row {
-    display: flex;
-
-    gap: 12px;
-
-    margin-top: 15px;
-}
-
-.clear-button {
-    flex: 1;
-
-    min-height: 52px;
-
-    border-radius: 15px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    background:
-        rgba(255,255,255,.06);
-
-    color: white;
-
-    font-size: 16px;
-
-    font-weight: 700;
-}
-
-.approve-button {
-    flex: 2;
-
-    min-height: 52px;
-
-    border: none;
-
-    border-radius: 15px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #f0c96e,
-            #c99431
-        );
-
-    color: #17120a;
-
-    font-size: 16px;
-
-    font-weight: 800;
-
-    box-shadow:
-        0 8px 25px
-        rgba(210,160,60,.22);
-}
-
-button:active {
-    transform: scale(.98);
-}
-
-
 /* =========================================================
    CHECKBOX
 ========================================================= */
@@ -698,9 +828,72 @@ button:active {
     accent-color: #d7a84f;
 }
 
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.button-row {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 15px;
+}
+
+.clear-button {
+    flex: 1;
+
+    min-height: 55px;
+
+    border-radius: 15px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    background:
+        rgba(255,255,255,.06);
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+.approve-button {
+    flex: 2;
+
+    min-height: 55px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f0c96e,
+            #c99431
+        );
+
+    color: #17120a;
+
+    font-size: 16px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 8px 25px
+        rgba(210,160,60,.22);
+}
+
+button:active {
+    transform: scale(.98);
+}
 
 /* =========================================================
-   APPROVED MESSAGE
+   APPROVED
 ========================================================= */
 
 #approvedView {
@@ -756,7 +949,6 @@ button:active {
     line-height: 1.5;
 }
 
-
 /* =========================================================
    FOOTER
 ========================================================= */
@@ -779,7 +971,6 @@ button:active {
     color:
         rgba(255,255,255,.58);
 }
-
 
 /* =========================================================
    LOADING
@@ -835,9 +1026,8 @@ button:active {
     }
 }
 
-
 /* =========================================================
-   SMALL IPAD
+   IPAD
 ========================================================= */
 
 @media (max-width: 768px) {
@@ -874,6 +1064,10 @@ button:active {
         border-radius: 22px;
     }
 
+    .details-card {
+        grid-template-columns: 1fr 1fr;
+    }
+
     .approval-card {
         padding: 22px;
         border-radius: 22px;
@@ -893,7 +1087,6 @@ button:active {
         flex: none;
     }
 }
-
 
 /* =========================================================
    SHORT SCREEN
@@ -941,14 +1134,12 @@ button:active {
 </style>
 </head>
 
-
 <body>
 
 <div id="app">
 
     <div class="glow-top"></div>
     <div class="glow-bottom"></div>
-
 
     <!-- =====================================================
          LOADING
@@ -977,10 +1168,7 @@ button:active {
         style="display:none;"
     >
 
-
-        <!-- =================================================
-             HEADER
-        ================================================== -->
+        <!-- HEADER -->
 
         <header class="header">
 
@@ -1007,19 +1195,21 @@ button:active {
              WELCOME
         ================================================== -->
 
-        <section
-            id="welcomeView"
-        >
+        <section id="welcomeView">
 
             <div class="welcome-title">
                 Welcome
             </div>
 
             <div class="welcome-text">
+
                 Your repair information will appear here.
+
                 <br><br>
+
                 Thank you for choosing
                 Brother's iRepairs.
+
             </div>
 
             <div class="ready-badge">
@@ -1057,7 +1247,9 @@ button:active {
             </div>
 
 
-            <!-- DEVICE -->
+            <!-- =================================================
+                 DEVICE
+            ================================================= -->
 
             <div class="device-card">
 
@@ -1094,6 +1286,129 @@ button:active {
 
 
             <!-- =================================================
+                 COLOR / STORAGE
+            ================================================= -->
+
+            <div class="details-card">
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Color
+                    </div>
+
+                    <div
+                        id="deviceColor"
+                        class="detail-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Storage
+                    </div>
+
+                    <div
+                        id="deviceStorage"
+                        class="detail-value"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PAYMENT
+            ================================================= -->
+
+            <div class="payment-card">
+
+                <div class="payment-title">
+                    Payment Summary
+                </div>
+
+
+                <div class="payment-row">
+
+                    <div class="payment-label">
+                        Total Repair
+                    </div>
+
+                    <div
+                        id="totalAmount"
+                        class="payment-value"
+                    >
+                        $0.00
+                    </div>
+
+                </div>
+
+
+                <div class="payment-row">
+
+                    <div class="payment-label">
+                        Deposit Paid
+                    </div>
+
+                    <div
+                        id="depositAmount"
+                        class="payment-value"
+                    >
+                        $0.00
+                    </div>
+
+                </div>
+
+
+                <div class="payment-row balance-row">
+
+                    <div
+                        class="payment-label balance-label"
+                    >
+                        Balance Due
+                    </div>
+
+                    <div
+                        id="balanceAmount"
+                        class="balance-value"
+                    >
+                        $0.00
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 EXPECTED PICKUP
+            ================================================== -->
+
+            <div class="pickup-card">
+
+                <div class="pickup-label">
+                    Expected Pickup
+                </div>
+
+                <div
+                    id="pickupDate"
+                    class="pickup-date"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
                  CUSTOMER APPROVAL
             ================================================== -->
 
@@ -1108,8 +1423,9 @@ button:active {
 
                 <div class="approval-description">
 
-                    Please review the repair information
-                    above and sign below to approve.
+                    Please review all the repair
+                    information and payment details
+                    above before signing.
 
                 </div>
 
@@ -1148,10 +1464,13 @@ button:active {
                     >
 
                     <span>
-                        I approve the repair information
-                        shown above and authorize
-                        Brother's iRepairs to proceed
-                        with the repair.
+
+                        I confirm that I have reviewed
+                        the device information, repair
+                        price, deposit, balance due,
+                        and expected pickup date shown
+                        above.
+
                     </span>
 
                 </label>
@@ -1199,7 +1518,9 @@ button:active {
                 <div class="approved-text">
 
                     Thank you.
+
                     <br>
+
                     Your approval has been recorded.
 
                 </div>
@@ -1209,9 +1530,7 @@ button:active {
         </section>
 
 
-        <!-- =================================================
-             FOOTER
-        ================================================== -->
+        <!-- FOOTER -->
 
         <footer class="footer">
 
@@ -1238,9 +1557,8 @@ button:active {
 
 /*
    IMPORTANT:
-
-   Put the SAME Supabase URL and anon/publishable key
-   that your current customer display uses here.
+   Use the SAME Supabase URL and publishable key
+   from your existing customer display.
 */
 
 const SUPABASE_URL =
@@ -1313,6 +1631,36 @@ const deviceIcon =
         "deviceIcon"
     );
 
+const deviceColor =
+    document.getElementById(
+        "deviceColor"
+    );
+
+const deviceStorage =
+    document.getElementById(
+        "deviceStorage"
+    );
+
+const totalAmount =
+    document.getElementById(
+        "totalAmount"
+    );
+
+const depositAmount =
+    document.getElementById(
+        "depositAmount"
+    );
+
+const balanceAmount =
+    document.getElementById(
+        "balanceAmount"
+    );
+
+const pickupDate =
+    document.getElementById(
+        "pickupDate"
+    );
+
 const approvalSection =
     document.getElementById(
         "approvalSection"
@@ -1353,7 +1701,7 @@ const ctx =
 
 
 /* =========================================================
-   SIGNATURE STATE
+   STATE
 ========================================================= */
 
 let isDrawing = false;
@@ -1364,7 +1712,7 @@ let currentTicket = null;
 
 
 /* =========================================================
-   CANVAS SETUP
+   SIGNATURE CANVAS
 ========================================================= */
 
 function resizeCanvas() {
@@ -1372,34 +1720,8 @@ function resizeCanvas() {
     const rect =
         canvas.getBoundingClientRect();
 
-    const oldCanvas =
-        document.createElement("canvas");
-
-    oldCanvas.width =
-        canvas.width;
-
-    oldCanvas.height =
-        canvas.height;
-
-    const oldContext =
-        oldCanvas.getContext("2d");
-
-    if (
-        canvas.width > 0 &&
-        canvas.height > 0
-    ) {
-
-        oldContext.drawImage(
-            canvas,
-            0,
-            0
-        );
-    }
-
-
     const ratio =
         window.devicePixelRatio || 1;
-
 
     canvas.width =
         rect.width * ratio;
@@ -1407,12 +1729,14 @@ function resizeCanvas() {
     canvas.height =
         rect.height * ratio;
 
-
-    ctx.scale(
+    ctx.setTransform(
         ratio,
-        ratio
+        0,
+        0,
+        ratio,
+        0,
+        0
     );
-
 
     ctx.lineWidth = 3;
 
@@ -1422,26 +1746,7 @@ function resizeCanvas() {
 
     ctx.strokeStyle = "#111";
 
-
-    if (
-        oldCanvas.width > 0 &&
-        oldCanvas.height > 0
-    ) {
-
-        ctx.drawImage(
-            oldCanvas,
-            0,
-            0,
-            oldCanvas.width,
-            oldCanvas.height,
-            0,
-            0,
-            rect.width,
-            rect.height
-        );
-    }
 }
-
 
 window.addEventListener(
     "resize",
@@ -1450,14 +1755,13 @@ window.addEventListener(
 
 
 /* =========================================================
-   GET CANVAS POSITION
+   SIGNATURE DRAWING
 ========================================================= */
 
 function getPoint(event) {
 
     const rect =
         canvas.getBoundingClientRect();
-
 
     return {
 
@@ -1472,10 +1776,6 @@ function getPoint(event) {
     };
 }
 
-
-/* =========================================================
-   START SIGNATURE
-========================================================= */
 
 canvas.addEventListener(
     "pointerdown",
@@ -1503,13 +1803,10 @@ canvas.addEventListener(
             point.x,
             point.y
         );
+
     }
 );
 
-
-/* =========================================================
-   DRAW SIGNATURE
-========================================================= */
 
 canvas.addEventListener(
     "pointermove",
@@ -1530,19 +1827,12 @@ canvas.addEventListener(
         );
 
         ctx.stroke();
+
     }
 );
 
 
-/* =========================================================
-   END SIGNATURE
-========================================================= */
-
 function stopDrawing(event) {
-
-    if (!isDrawing) {
-        return;
-    }
 
     isDrawing = false;
 
@@ -1555,7 +1845,9 @@ function stopDrawing(event) {
             );
 
         } catch (_) {}
+
     }
+
 }
 
 
@@ -1569,11 +1861,6 @@ canvas.addEventListener(
     stopDrawing
 );
 
-canvas.addEventListener(
-    "pointerleave",
-    stopDrawing
-);
-
 
 /* =========================================================
    CLEAR SIGNATURE
@@ -1581,11 +1868,7 @@ canvas.addEventListener(
 
 clearButton.addEventListener(
     "click",
-    function() {
-
-        clearSignature();
-
-    }
+    clearSignature
 );
 
 
@@ -1606,152 +1889,120 @@ function clearSignature() {
 
 
 /* =========================================================
-   SAVE SIGNATURE
+   FORMAT MONEY
 ========================================================= */
 
-async function saveApproval() {
+function money(value) {
 
-    if (!currentTicket) {
+    const number =
+        Number(value || 0);
 
-        alert(
-            "No repair ticket is currently displayed."
-        );
-
-        return;
-    }
-
-
-    if (!hasSignature) {
-
-        alert(
-            "Please sign in the signature box."
-        );
-
-        return;
-    }
-
-
-    if (!approvalCheckbox.checked) {
-
-        alert(
-            "Please check the approval box before continuing."
-        );
-
-        return;
-    }
-
-
-    approveButton.disabled = true;
-
-    approveButton.textContent =
-        "SAVING...";
-
-
-    try {
-
-        /*
-           Convert signature to PNG.
-        */
-
-        const signatureData =
-            canvas.toDataURL(
-                "image/png"
-            );
-
-
-        /*
-           Update the repair.
-
-           These columns need to exist in
-           your Supabase repairs table:
-
-           customer_signature
-           customer_approved
-           approval_date
-        */
-
-        const {
-            error
-        } =
-            await supabaseClient
-
-                .from("repairs")
-
-                .update({
-
-                    customer_signature:
-                        signatureData,
-
-                    customer_approved:
-                        true,
-
-                    approval_date:
-                        new Date().toISOString()
-
-                })
-
-                .eq(
-                    "ticket_number",
-                    currentTicket
-                );
-
-
-        if (error) {
-
-            console.error(
-                "Approval save error:",
-                error
-            );
-
-            alert(
-                "Could not save the approval. Please try again."
-            );
-
-            approveButton.disabled =
-                false;
-
-            approveButton.textContent =
-                "APPROVE & SIGN";
-
-            return;
+    return new Intl.NumberFormat(
+        "en-TT",
+        {
+            style: "currency",
+            currency: "TTD",
+            minimumFractionDigits: 2
         }
+    ).format(number);
 
-
-        /*
-           Success
-        */
-
-        approvalSection.style.display =
-            "none";
-
-        approvedView.style.display =
-            "block";
-
-    }
-
-    catch (error) {
-
-        console.error(
-            error
-        );
-
-        alert(
-            "Something went wrong saving the approval."
-        );
-
-        approveButton.disabled =
-            false;
-
-        approveButton.textContent =
-            "APPROVE & SIGN";
-    }
 }
 
 
-approveButton.addEventListener(
-    "click",
-    saveApproval
-);
+/* =========================================================
+   FORMAT DATE
+========================================================= */
+
+function formatDate(value) {
+
+    if (!value) {
+        return "To be confirmed";
+    }
+
+    const date =
+        new Date(
+            value + "T00:00:00"
+        );
+
+    if (Number.isNaN(
+        date.getTime()
+    )) {
+
+        return value;
+
+    }
+
+    return date.toLocaleDateString(
+        "en-TT",
+        {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   DEVICE ICON
+========================================================= */
+
+function setDeviceIcon(device) {
+
+    const value =
+        String(device || "")
+            .toLowerCase();
+
+    if (
+        value.includes("ipad")
+    ) {
+
+        deviceIcon.textContent =
+            "▣";
+
+        return;
+
+    }
+
+    if (
+        value.includes("mac")
+    ) {
+
+        deviceIcon.textContent =
+            "▱";
+
+        return;
+
+    }
+
+    if (
+        value.includes("watch")
+    ) {
+
+        deviceIcon.textContent =
+            "◉";
+
+        return;
+
+    }
+
+    if (
+        value.includes("airpods")
+    ) {
+
+        deviceIcon.textContent =
+            "◌";
+
+        return;
+
+    }
+
+    deviceIcon.textContent =
+        "📱";
+
+}
 
 
 /* =========================================================
@@ -1776,84 +2027,7 @@ function resetApproval() {
         "APPROVE & SIGN";
 
     clearSignature();
-}
 
-
-/* =========================================================
-   DEVICE ICON
-========================================================= */
-
-function setDeviceIcon(
-    device
-) {
-
-    const value =
-        String(device)
-            .toLowerCase();
-
-
-    if (
-        value.includes("ipad")
-    ) {
-
-        deviceIcon.textContent =
-            "▣";
-
-        return;
-    }
-
-
-    if (
-        value.includes("mac")
-    ) {
-
-        deviceIcon.textContent =
-            "▱";
-
-        return;
-    }
-
-
-    if (
-        value.includes("watch")
-    ) {
-
-        deviceIcon.textContent =
-            "◉";
-
-        return;
-    }
-
-
-    if (
-        value.includes("airpods")
-    ) {
-
-        deviceIcon.textContent =
-            "◌";
-
-        return;
-    }
-
-
-    deviceIcon.textContent =
-        "📱";
-}
-
-
-/* =========================================================
-   SHOW WELCOME
-========================================================= */
-
-function showWelcome() {
-
-    welcomeView.style.display =
-        "flex";
-
-    repairView.style.display =
-        "none";
-
-    currentTicket = null;
 }
 
 
@@ -1861,9 +2035,7 @@ function showWelcome() {
    LOAD REPAIR
 ========================================================= */
 
-async function loadRepair(
-    ticket
-) {
+async function loadRepair(ticket) {
 
     try {
 
@@ -1895,6 +2067,7 @@ async function loadRepair(
             showWelcome();
 
             return;
+
         }
 
 
@@ -1902,9 +2075,7 @@ async function loadRepair(
             ticket;
 
 
-        /*
-           CUSTOMER NAME
-        */
+        /* CUSTOMER */
 
         const firstName =
             data.customer_first_name ||
@@ -1918,25 +2089,20 @@ async function loadRepair(
             `${firstName} ${lastName}`
                 .trim();
 
-
         customerName.textContent =
             fullName ||
             data.customer_name ||
             "Customer";
 
 
-        /*
-           TICKET
-        */
+        /* TICKET */
 
         ticketNumber.textContent =
             data.ticket_number ||
             ticket;
 
 
-        /*
-           DEVICE
-        */
+        /* DEVICE */
 
         const device =
             data.device ||
@@ -1947,22 +2113,83 @@ async function loadRepair(
             data.model ||
             "";
 
-
         deviceName.textContent =
             device;
 
         deviceModel.textContent =
             model;
 
+        setDeviceIcon(device);
 
-        setDeviceIcon(
-            device
-        );
+
+        /* COLOR */
+
+        deviceColor.textContent =
+            data.color ||
+            "Not provided";
+
+
+        /* STORAGE */
+
+        deviceStorage.textContent =
+            data.storage ||
+            "Not provided";
+
+
+        /* =================================================
+           PAYMENT
+        ================================================== */
+
+        const total =
+            Number(
+                data.total_amount || 0
+            );
 
 
         /*
-           Show repair
+           Your existing deposit field is
+           supported as "deposit".
+
+           If your actual column is
+           "deposit_amount", this also works.
         */
+
+        const deposit =
+            Number(
+                data.deposit ??
+                data.deposit_amount ??
+                0
+            );
+
+
+        const balance =
+            Math.max(
+                total - deposit,
+                0
+            );
+
+
+        totalAmount.textContent =
+            money(total);
+
+        depositAmount.textContent =
+            money(deposit);
+
+        balanceAmount.textContent =
+            money(balance);
+
+
+        /* =================================================
+           EXPECTED PICKUP
+        ================================================== */
+
+        pickupDate.textContent =
+            formatDate(
+                data.estimated_pickup
+            );
+
+
+        /* SHOW */
 
         welcomeView.style.display =
             "none";
@@ -1971,22 +2198,14 @@ async function loadRepair(
             "block";
 
 
-        /*
-           Start a fresh approval
-           for a different ticket.
-        */
-
         resetApproval();
 
-
-        /*
-           Resize signature canvas.
-        */
 
         setTimeout(
             resizeCanvas,
             100
         );
+
 
     }
 
@@ -1998,7 +2217,162 @@ async function loadRepair(
         );
 
         showWelcome();
+
     }
+
+}
+
+
+/* =========================================================
+   SAVE CUSTOMER APPROVAL
+========================================================= */
+
+async function saveApproval() {
+
+    if (!currentTicket) {
+
+        alert(
+            "No repair ticket is currently displayed."
+        );
+
+        return;
+
+    }
+
+
+    if (!hasSignature) {
+
+        alert(
+            "Please sign in the signature box."
+        );
+
+        return;
+
+    }
+
+
+    if (!approvalCheckbox.checked) {
+
+        alert(
+            "Please check the approval box before continuing."
+        );
+
+        return;
+
+    }
+
+
+    approveButton.disabled =
+        true;
+
+    approveButton.textContent =
+        "SAVING...";
+
+
+    try {
+
+        const signatureData =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+
+                .from("repairs")
+
+                .update({
+
+                    customer_signature:
+                        signatureData,
+
+                    customer_approved:
+                        true,
+
+                    approval_date:
+                        new Date()
+                            .toISOString()
+
+                })
+
+                .eq(
+                    "ticket_number",
+                    currentTicket
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Approval save error:",
+                error
+            );
+
+            alert(
+                "Could not save the approval. Please try again."
+            );
+
+            approveButton.disabled =
+                false;
+
+            approveButton.textContent =
+                "APPROVE & SIGN";
+
+            return;
+
+        }
+
+
+        approvalSection.style.display =
+            "none";
+
+        approvedView.style.display =
+            "block";
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Something went wrong saving the approval."
+        );
+
+        approveButton.disabled =
+            false;
+
+        approveButton.textContent =
+            "APPROVE & SIGN";
+
+    }
+
+}
+
+
+approveButton.addEventListener(
+    "click",
+    saveApproval
+);
+
+
+/* =========================================================
+   SHOW WELCOME
+========================================================= */
+
+function showWelcome() {
+
+    welcomeView.style.display =
+        "flex";
+
+    repairView.style.display =
+        "none";
+
+    currentTicket = null;
+
 }
 
 
@@ -2042,6 +2416,7 @@ async function refreshDisplay() {
             showWelcome();
 
             return;
+
         }
 
 
@@ -2054,13 +2429,13 @@ async function refreshDisplay() {
             showWelcome();
 
             return;
+
         }
 
 
         /*
-           Don't repeatedly reload the
-           same ticket while customer
-           is signing.
+           Don't reload the same ticket while
+           the customer is signing.
         */
 
         if (
@@ -2071,6 +2446,7 @@ async function refreshDisplay() {
             await loadRepair(
                 data.ticket_number
             );
+
         }
 
     }
@@ -2082,7 +2458,9 @@ async function refreshDisplay() {
         );
 
         showWelcome();
+
     }
+
 }
 
 
@@ -2112,14 +2490,11 @@ async function start() {
     );
 
 
-    /*
-       Prepare signature area.
-    */
-
     setTimeout(
         resizeCanvas,
         200
     );
+
 }
 
 
