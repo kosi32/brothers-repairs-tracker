@@ -4,1230 +4,707 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Brother's iRepairs — Customer Display</title>
-
-<!-- Supabase JS. Kept to a version that works well in older Safari/iPad browsers. -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Brother's iRepairs - Customer Display</title>
 
 <style>
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background: #050505;
-        color: #fff;
-        font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-    }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
+body{font-size:16px}
+button{font:inherit}
 
-    body { min-height: 100vh; }
+:root{
+  --gold:#d7a900;
+  --gold2:#f1c43b;
+  --panel:#0d0d0d;
+  --line:#493a08;
+  --muted:#a9a9a9;
+  --green:#28d17c;
+  --orange:#ff9d2e;
+  --blue:#168cff;
+}
 
-    .app {
-        width: 100%;
-        height: 100vh;
-        padding: 8px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        background:
-            radial-gradient(circle at 50% -20%, rgba(205,157,36,.16), transparent 42%),
-            #050505;
-    }
+#app{
+  width:100vw;height:100vh;
+  padding:10px;
+  display:flex;flex-direction:column;
+  gap:10px;
+  overflow:hidden;
+}
 
-    /* ---------------- HEADER ---------------- */
-    .header {
-        height: 78px;
-        min-height: 78px;
-        border: 1px solid #222;
-        border-radius: 18px;
-        background: linear-gradient(180deg, #121212, #090909);
-        display: grid;
-        grid-template-columns: 260px 1fr 260px;
-        align-items: center;
-        padding: 0 20px;
-        box-shadow: 0 8px 25px rgba(0,0,0,.35);
-    }
+.header{
+  height:86px;flex:0 0 86px;
+  display:grid;grid-template-columns:280px 1fr 250px;
+  align-items:center;
+  padding:8px 18px;
+  background:linear-gradient(180deg,#111,#080808);
+  border:1px solid #202020;border-radius:16px;
+}
 
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
+.logo{
+  display:flex;align-items:center;gap:12px;min-width:0;
+}
+.logoMark{
+  width:52px;height:62px;flex:0 0 52px;
+  border:3px solid var(--gold);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;background:#050505;
+  position:relative;
+}
+.logoMark:before{content:"";width:18px;height:29px;border:3px solid #fff;border-radius:3px;display:block}
+.logoMark:after{content:"";position:absolute;width:10px;height:3px;background:#fff;border-radius:2px;top:10px}
+.logoWords{line-height:.9;white-space:nowrap}
+.logoWords strong{display:block;font-size:25px;letter-spacing:-.8px}
+.logoWords span{display:block;margin-top:7px;color:var(--gold);font-weight:800;font-size:14px;letter-spacing:3px}
 
-    .brand-mark {
-        width: 48px;
-        height: 48px;
-        flex: 0 0 48px;
-    }
+.headerTitle{text-align:center;font-weight:900;font-size:30px;letter-spacing:2px}
+.clock{text-align:right}
+.clock .date{font-size:15px;color:#eee}
+.clock .time{font-size:27px;font-weight:900;color:var(--gold2);margin-top:4px}
 
-    .brand-name {
-        font-size: 21px;
-        font-weight: 800;
-        letter-spacing: .5px;
-        line-height: 1;
-    }
+.content{
+  flex:1;min-height:0;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;
+  overflow:hidden;
+}
 
-    .brand-sub {
-        margin-top: 4px;
-        color: #d6a72d;
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 3px;
-    }
+.panel{
+  min-height:0;background:linear-gradient(180deg,#0e0e0e,#090909);
+  border:1px solid #403506;border-radius:15px;
+  padding:14px 16px;overflow:hidden;
+}
+.sectionTitle{
+  color:var(--gold2);font-weight:900;font-size:17px;
+  letter-spacing:.7px;text-transform:uppercase;
+  margin-bottom:9px;
+}
+.goldLine{height:1px;background:#554307;margin:9px 0}
 
-    .header-title {
-        text-align: center;
-        font-size: 29px;
-        font-weight: 900;
-        letter-spacing: 2px;
-    }
+.customerRow{display:flex;align-items:center;gap:15px;min-height:92px}
+.avatar{
+  width:78px;height:78px;border:2px solid var(--gold);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  flex:0 0 78px;color:var(--gold2);
+}
+.avatar svg{width:45px;height:45px}
+.customerName{font-size:27px;font-weight:900;line-height:1.05}
+.contact{font-size:14px;color:#ddd;margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.contact span{margin-right:14px}
 
-    .clock {
-        text-align: right;
-    }
+.deviceTitle{margin-top:10px}
+.deviceArea{
+  height:285px;
+  display:grid;grid-template-columns:190px 1fr;
+  gap:14px;align-items:center;
+}
+.deviceImage{
+  width:180px;height:250px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.deviceImage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:18px}
+.deviceDetails{min-width:0}
+.detail{
+  display:grid;grid-template-columns:78px 1fr;
+  gap:8px;margin:10px 0;align-items:start;
+}
+.detail label{color:#a8a8a8;font-size:13px;text-transform:uppercase}
+.detail strong{font-size:16px;line-height:1.15;word-break:break-word}
+.problem{max-height:38px;overflow:hidden}
+.statusBadge{
+  display:inline-block;padding:7px 13px;border-radius:18px;
+  border:1px solid #765d00;color:var(--gold2);font-weight:900;
+  font-size:13px;text-transform:uppercase;
+}
 
-    .clock-date {
-        font-size: 13px;
-        color: #ddd;
-    }
+.bottomInfo{
+  height:76px;display:grid;grid-template-columns:1fr 1fr;
+  border:1px solid #2f2a18;border-radius:12px;background:#0b0b0b;
+}
+.ticketBox,.pickupBox{display:flex;align-items:center;padding:10px 15px;gap:12px}
+.pickupBox{border-left:1px solid #3b3318}
+.infoIcon{font-size:28px;color:var(--gold2);width:38px;text-align:center}
+.infoLabel{font-size:11px;color:var(--gold2);font-weight:900;text-transform:uppercase}
+.infoValue{font-size:18px;font-weight:900;margin-top:4px;white-space:nowrap}
 
-    .clock-time {
-        margin-top: 3px;
-        color: #d8aa2e;
-        font-size: 25px;
-        font-weight: 900;
-    }
+.rightPanel{display:grid;grid-template-rows:auto 1fr;gap:10px}
+.payment{
+  min-height:0;border:1px solid #5a4600;border-radius:15px;
+  background:linear-gradient(180deg,#17120a,#0d0b07);
+  padding:13px 18px;
+}
+.paymentHeader{display:flex;align-items:center;gap:10px;color:var(--gold2);font-size:18px;font-weight:900;text-transform:uppercase}
+.wallet{font-size:27px}
+.payRow{display:flex;justify-content:space-between;align-items:center;margin-top:13px;font-size:16px}
+.payRow strong{font-size:18px}
+.payRow.balance{margin-top:10px;padding-top:12px;border-top:1px solid #654f00;color:var(--gold2)}
+.payRow.balance strong{font-size:26px}
+.paid{color:var(--green)}
+.additional{color:#fff}
 
-    /* ---------------- MAIN TWO COLUMNS ---------------- */
-    .main {
-        min-height: 0;
-        flex: 1;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-    }
+.signaturePanel{
+  min-height:0;border:1px solid #403506;border-radius:15px;
+  background:#0d0d0d;padding:13px 18px;
+  display:flex;flex-direction:column;
+}
+.sigTitle{color:var(--gold2);font-weight:900;font-size:18px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.sigCanvasWrap{
+  flex:1;min-height:0;margin-top:9px;background:#fff;border-radius:11px;
+  overflow:hidden;position:relative;
+}
+#signatureCanvas{width:100%;height:100%;display:block;touch-action:none}
+.sigHint{
+  position:absolute;left:0;right:0;top:43%;text-align:center;
+  color:#cfcfcf;font-size:18px;pointer-events:none;font-style:italic;
+}
+.sigBottom{
+  display:flex;justify-content:space-between;align-items:center;margin-top:8px;
+  color:#aaa;font-size:12px;
+}
+.sigButtons{display:flex;gap:7px}
+.sigButtons button{
+  border:1px solid #4b3b00;background:#151515;color:#fff;border-radius:8px;
+  padding:6px 10px;font-weight:800;
+}
+.sigButtons .approve{background:#6f5600;border-color:#9a7800;color:#fff}
 
-    .column {
-        min-width: 0;
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
+.footer{
+  height:46px;flex:0 0 46px;
+  border:1px solid #27220f;border-radius:13px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;background:#080808;font-size:13px;
+}
+.footer strong{color:#ddd}
+.updated{color:#aaa}
 
-    .card {
-        min-width: 0;
-        border: 1px solid #282828;
-        border-radius: 18px;
-        background: linear-gradient(180deg, #121212, #0d0d0d);
-        box-shadow: 0 7px 20px rgba(0,0,0,.30);
-        overflow: hidden;
-    }
+.idle{
+  position:fixed;inset:0;background:#050505;display:none;
+  align-items:center;justify-content:center;text-align:center;z-index:50;
+}
+.idle.show{display:flex}
+.idleLogo{font-size:38px;font-weight:900}
+.idleLogo span{color:var(--gold2)}
+.idle p{color:#999;font-size:18px}
 
-    .section-title {
-        color: #d8aa2e;
-        font-size: 15px;
-        font-weight: 900;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
+.toast{
+  position:fixed;left:50%;bottom:65px;transform:translateX(-50%);
+  background:#171717;border:1px solid #5a4600;color:#fff;
+  padding:10px 16px;border-radius:10px;display:none;z-index:100;font-weight:800
+}
+.toast.show{display:block}
 
-    /* LEFT */
-    .customer-card {
-        flex: 1;
-        padding: 16px 18px;
-        min-height: 0;
-    }
+@media (max-width:850px){
+  .header{grid-template-columns:220px 1fr 180px}
+  .headerTitle{font-size:23px}
+  .logoWords strong{font-size:20px}
+  .logoWords span{font-size:11px}
+  .content{grid-template-columns:1fr 1fr}
+  .deviceArea{grid-template-columns:145px 1fr;height:275px}
+  .deviceImage{width:140px;height:225px}
+  .customerName{font-size:23px}
+  .detail strong{font-size:14px}
+}
 
-    .customer-top {
-        display: flex;
-        align-items: center;
-        min-height: 92px;
-    }
+@media (max-height:700px){
+  #app{padding:6px;gap:6px}
+  .header{height:70px;flex-basis:70px}
+  .logoMark{width:43px;height:51px;flex-basis:43px}
+  .logoWords strong{font-size:19px}
+  .logoWords span{font-size:10px}
+  .headerTitle{font-size:22px}
+  .clock .time{font-size:21px}
+  .customerRow{min-height:72px}
+  .avatar{width:62px;height:62px;flex-basis:62px}
+  .customerName{font-size:22px}
+  .deviceArea{height:235px;grid-template-columns:130px 1fr}
+  .deviceImage{width:125px;height:200px}
+  .detail{margin:7px 0}
+  .bottomInfo{height:65px}
+  .footer{height:38px;flex-basis:38px}
+}
 
-    .avatar {
-        width: 78px;
-        height: 78px;
-        border-radius: 50%;
-        border: 2px solid #d8aa2e;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 16px;
-        flex: 0 0 78px;
-        background: #0b0b0b;
-    }
-
-    .avatar svg {
-        width: 45px;
-        height: 45px;
-        fill: #e5bb4e;
-    }
-
-    .customer-label {
-        color: #d8aa2e;
-        font-size: 13px;
-        font-weight: 900;
-        margin-bottom: 3px;
-    }
-
-    .customer-name {
-        font-size: 26px;
-        font-weight: 900;
-        line-height: 1.05;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .customer-contact {
-        color: #ddd;
-        font-size: 14px;
-        margin-top: 6px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .gold-line {
-        height: 1px;
-        background: #d8aa2e;
-        opacity: .65;
-        margin: 10px 0 12px;
-    }
-
-    .device-title-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-
-    .device-grid {
-        display: grid;
-        grid-template-columns: 105px 1fr;
-        gap: 5px 12px;
-        align-items: center;
-    }
-
-    .device-label {
-        color: #999;
-        font-size: 12px;
-        text-transform: uppercase;
-        font-weight: 800;
-    }
-
-    .device-value {
-        min-width: 0;
-        font-size: 16px;
-        font-weight: 800;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .problem {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .status-pill {
-        display: inline-block;
-        padding: 5px 11px;
-        border-radius: 999px;
-        border: 1px solid #d8aa2e;
-        color: #f1c74f;
-        background: rgba(216,170,46,.10);
-        font-size: 11px;
-        font-weight: 900;
-        letter-spacing: .7px;
-    }
-
-    .ticket-pickup {
-        margin-top: 12px;
-        border: 1px solid #292929;
-        border-radius: 14px;
-        padding: 11px 14px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        background: #111;
-    }
-
-    .small-label {
-        color: #d8aa2e;
-        font-size: 10px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: .7px;
-    }
-
-    .ticket-number {
-        font-size: 21px;
-        font-weight: 900;
-        margin-top: 2px;
-    }
-
-    .pickup-date {
-        font-size: 15px;
-        font-weight: 800;
-        margin-top: 2px;
-    }
-
-    /* RIGHT */
-    .payment-card {
-        height: 190px;
-        min-height: 190px;
-        padding: 15px 18px;
-    }
-
-    .payment-title {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
-
-    .payment-icon {
-        width: 28px;
-        height: 28px;
-        fill: #d8aa2e;
-    }
-
-    .money-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        min-height: 31px;
-        font-size: 15px;
-    }
-
-    .money-value {
-        font-size: 18px;
-        font-weight: 900;
-    }
-
-    .payment-divider {
-        height: 1px;
-        background: #d8aa2e;
-        opacity: .65;
-        margin: 4px 0 5px;
-    }
-
-    .balance-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 2px;
-    }
-
-    .balance-label {
-        color: #d8aa2e;
-        font-size: 19px;
-        font-weight: 900;
-    }
-
-    .balance-value {
-        color: #e5bb35;
-        font-size: 26px;
-        font-weight: 900;
-    }
-
-    .signature-card {
-        min-height: 0;
-        flex: 1;
-        padding: 13px 18px 12px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .signature-title {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        min-height: 27px;
-        margin-bottom: 8px;
-    }
-
-    .signature-icon {
-        width: 26px;
-        height: 26px;
-        fill: #d8aa2e;
-    }
-
-    .signature-box {
-        min-height: 0;
-        flex: 1;
-        position: relative;
-        border-radius: 13px;
-        overflow: hidden;
-        background: #fff;
-        border: 2px solid #d8aa2e;
-        touch-action: none;
-    }
-
-    #signatureCanvas {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        touch-action: none;
-    }
-
-    .signature-hint {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 35%;
-        text-align: center;
-        color: #c8c8c8;
-        font-size: 25px;
-        font-family: "Snell Roundhand", "Bradley Hand", cursive;
-        pointer-events: none;
-        opacity: .65;
-    }
-
-    .signature-line {
-        position: absolute;
-        left: 25px;
-        right: 25px;
-        bottom: 38px;
-        height: 1px;
-        background: #222;
-        pointer-events: none;
-    }
-
-    .signature-consent {
-        position: absolute;
-        left: 20px;
-        right: 20px;
-        bottom: 10px;
-        text-align: center;
-        color: #222;
-        font-size: 9px;
-        font-weight: 600;
-        pointer-events: none;
-    }
-
-    .signature-actions {
-        height: 38px;
-        min-height: 38px;
-        display: flex;
-        gap: 8px;
-        margin-top: 8px;
-    }
-
-    button {
-        border: 0;
-        border-radius: 10px;
-        font-family: inherit;
-        font-weight: 900;
-        font-size: 12px;
-    }
-
-    .clear-btn {
-        width: 100px;
-        color: #ddd;
-        background: #222;
-    }
-
-    .approve-btn {
-        flex: 1;
-        color: #090909;
-        background: #d8aa2e;
-    }
-
-    .approve-btn:active,
-    .clear-btn:active {
-        opacity: .7;
-    }
-
-    .approved-message {
-        display: none;
-        flex: 1;
-        align-items: center;
-        justify-content: center;
-        color: #6ee18b;
-        font-size: 16px;
-        font-weight: 900;
-        text-align: center;
-    }
-
-    /* FOOTER */
-    .footer {
-        height: 42px;
-        min-height: 42px;
-        border: 1px solid #252525;
-        border-radius: 14px;
-        background: #0d0d0d;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 16px;
-        color: #ddd;
-        font-size: 12px;
-    }
-
-    .footer strong { color: #fff; }
-    .footer-gold { color: #d8aa2e; }
-
-    /* IDLE SCREEN */
-    .idle {
-        position: absolute;
-        inset: 0;
-        z-index: 20;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        background:
-            radial-gradient(circle at center, rgba(216,170,46,.13), transparent 40%),
-            #050505;
-        text-align: center;
-    }
-
-    .idle-inner { padding: 30px; }
-    .idle-logo {
-        width: 90px;
-        height: 90px;
-        margin: 0 auto 14px;
-    }
-    .idle-title {
-        font-size: 38px;
-        font-weight: 900;
-        letter-spacing: 2px;
-    }
-    .idle-sub {
-        margin-top: 10px;
-        color: #d8aa2e;
-        font-size: 18px;
-        font-weight: 800;
-        letter-spacing: 2px;
-    }
-
-    .loading {
-        position: fixed;
-        right: 12px;
-        bottom: 55px;
-        font-size: 9px;
-        color: #555;
-        z-index: 50;
-    }
-
-    /* 1024 x 768 landscape and similar older iPads */
-    @media (max-width: 900px) {
-        .header { grid-template-columns: 220px 1fr 190px; padding: 0 14px; }
-        .brand-name { font-size: 18px; }
-        .header-title { font-size: 24px; }
-        .clock-time { font-size: 21px; }
-        .customer-name { font-size: 23px; }
-        .device-value { font-size: 14px; }
-        .payment-card { height: 178px; min-height: 178px; }
-    }
-
-    /* Portrait fallback: still no page scrolling; reduce sizes. */
-    @media (orientation: portrait) {
-        .app { padding: 5px; gap: 5px; }
-        .header {
-            height: 58px; min-height: 58px;
-            grid-template-columns: 155px 1fr 115px;
-            padding: 0 8px;
-            border-radius: 12px;
-        }
-        .brand-mark { width: 36px; height: 36px; flex-basis: 36px; }
-        .brand-name { font-size: 13px; }
-        .brand-sub { font-size: 8px; letter-spacing: 1px; }
-        .header-title { font-size: 16px; }
-        .clock-date { font-size: 8px; }
-        .clock-time { font-size: 14px; }
-        .main { gap: 5px; }
-        .card { border-radius: 12px; }
-        .customer-card { padding: 9px; }
-        .avatar { width: 50px; height: 50px; flex-basis: 50px; margin-right: 8px; }
-        .customer-name { font-size: 16px; }
-        .customer-contact { font-size: 9px; }
-        .section-title { font-size: 10px; }
-        .device-grid { grid-template-columns: 65px 1fr; gap: 3px 6px; }
-        .device-label { font-size: 8px; }
-        .device-value { font-size: 10px; }
-        .ticket-pickup { padding: 7px; }
-        .ticket-number { font-size: 14px; }
-        .pickup-date { font-size: 10px; }
-        .payment-card { height: 125px; min-height: 125px; padding: 8px 10px; }
-        .money-row { min-height: 21px; font-size: 10px; }
-        .money-value { font-size: 12px; }
-        .balance-label { font-size: 13px; }
-        .balance-value { font-size: 17px; }
-        .signature-card { padding: 8px 10px; }
-        .signature-hint { font-size: 17px; }
-        .signature-line { left: 12px; right: 12px; bottom: 27px; }
-        .signature-consent { font-size: 6px; bottom: 5px; }
-        .signature-actions { height: 28px; min-height: 28px; }
-        .clear-btn, .approve-btn { font-size: 9px; }
-        .footer { height: 27px; min-height: 27px; font-size: 8px; padding: 0 8px; }
-    }
+@media (orientation:portrait){
+  body:after{
+    content:"Please rotate the iPad to landscape";
+    position:fixed;inset:0;background:#050505;z-index:999;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;color:#fff;font-size:24px;font-weight:900;padding:30px;
+  }
+}
 </style>
 </head>
 
 <body>
-<div class="app">
-
-    <header class="header">
-        <div class="brand">
-            <!-- Built-in Brother's iRepairs mark. Replace this SVG with your exact logo later if desired. -->
-            <svg class="brand-mark" viewBox="0 0 64 64" aria-label="Brother's iRepairs logo">
-                <rect x="9" y="3" width="32" height="56" rx="7" transform="rotate(18 25 31)" fill="none" stroke="#d8aa2e" stroke-width="4"/>
-                <text x="31" y="39" text-anchor="middle" font-size="20" font-weight="900" fill="#d8aa2e">BR</text>
-            </svg>
-            <div>
-                <div class="brand-name">BROTHER'S</div>
-                <div class="brand-sub">iREPAIRS</div>
-            </div>
-        </div>
-
-        <div class="header-title">CUSTOMER DISPLAY</div>
-
-        <div class="clock">
-            <div class="clock-date" id="clockDate">—</div>
-            <div class="clock-time" id="clockTime">—</div>
-        </div>
-    </header>
-
-    <main class="main">
-
-        <!-- LEFT SIDE: CUSTOMER + DEVICE -->
-        <section class="column">
-            <div class="card customer-card">
-
-                <div class="customer-top">
-                    <div class="avatar">
-                        <svg viewBox="0 0 64 64">
-                            <circle cx="32" cy="20" r="12"/>
-                            <path d="M10 57c1-14 9-21 22-21s21 7 22 21z"/>
-                        </svg>
-                    </div>
-                    <div style="min-width:0;">
-                        <div class="customer-label">CUSTOMER</div>
-                        <div class="customer-name" id="customerName">Customer</div>
-                        <div class="customer-contact" id="customerPhone">—</div>
-                        <div class="customer-contact" id="customerEmail">—</div>
-                    </div>
-                </div>
-
-                <div class="gold-line"></div>
-
-                <div class="device-title-row">
-                    <div class="section-title">DEVICE INFORMATION</div>
-                    <div class="status-pill" id="statusPill">RECEIVED</div>
-                </div>
-
-                <div class="device-grid">
-                    <div class="device-label">Device</div>
-                    <div class="device-value" id="deviceName">—</div>
-
-                    <div class="device-label">Color</div>
-                    <div class="device-value" id="deviceColor">—</div>
-
-                    <div class="device-label">Storage</div>
-                    <div class="device-value" id="deviceStorage">—</div>
-
-                    <div class="device-label">IMEI</div>
-                    <div class="device-value" id="deviceIMEI">—</div>
-
-                    <div class="device-label">Problem</div>
-                    <div class="device-value problem" id="deviceProblem">—</div>
-                </div>
-
-                <div class="ticket-pickup">
-                    <div>
-                        <div class="small-label">TICKET NUMBER</div>
-                        <div class="ticket-number" id="ticketNumber">BR-000000</div>
-                    </div>
-                    <div>
-                        <div class="small-label">EXPECTED PICKUP</div>
-                        <div class="pickup-date" id="pickupDate">To be confirmed</div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- RIGHT SIDE: PAYMENT + SIGNATURE -->
-        <section class="column">
-
-            <div class="card payment-card">
-                <div class="payment-title">
-                    <svg class="payment-icon" viewBox="0 0 64 64">
-                        <path d="M7 18h50v34H7zM7 25h50M15 38h17v7H15z"/>
-                        <path d="M45 39h5v6h-5z"/>
-                    </svg>
-                    <div class="section-title">PAYMENT SUMMARY</div>
-                </div>
-
-                <div class="money-row">
-                    <span>Total Repair</span>
-                    <span class="money-value" id="totalRepair">TTD 0.00</span>
-                </div>
-
-                <div class="money-row">
-                    <span>Deposit Paid</span>
-                    <span class="money-value" id="depositPaid">TTD 0.00</span>
-                </div>
-
-                <div class="money-row">
-                    <span>Additional Payments</span>
-                    <span class="money-value" id="additionalPayments">TTD 0.00</span>
-                </div>
-
-                <div class="payment-divider"></div>
-
-                <div class="balance-row">
-                    <div class="balance-label">BALANCE DUE</div>
-                    <div class="balance-value" id="balanceDue">TTD 0.00</div>
-                </div>
-            </div>
-
-            <div class="card signature-card">
-                <div class="signature-title">
-                    <svg class="signature-icon" viewBox="0 0 64 64">
-                        <path d="M9 47l-2 10 10-2 36-36-8-8z"/>
-                        <path d="M42 9l8 8 5-5c2-2 2-5 0-7s-5-2-7 0z"/>
-                        <path d="M20 52h36"/>
-                    </svg>
-                    <div class="section-title">CUSTOMER SIGNATURE</div>
-                </div>
-
-                <div class="signature-box" id="signatureBox">
-                    <canvas id="signatureCanvas"></canvas>
-                    <div class="signature-hint" id="signatureHint">Sign here</div>
-                    <div class="signature-line"></div>
-                    <div class="signature-consent">
-                        By signing, I acknowledge my device information and payment details above are correct.
-                    </div>
-                </div>
-
-                <div class="signature-actions">
-                    <button class="clear-btn" id="clearSignature">CLEAR</button>
-                    <button class="approve-btn" id="approveSignature">APPROVE &amp; SIGN</button>
-                    <div class="approved-message" id="approvedMessage">✓ CUSTOMER APPROVED</div>
-                </div>
-            </div>
-
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div>ⓘ &nbsp;<strong>THANK YOU FOR CHOOSING BROTHER'S iREPAIRS!</strong></div>
-        <div><span class="footer-gold">↻</span> &nbsp;LAST UPDATED: <span id="lastUpdated">—</span></div>
-    </footer>
-</div>
-
-<div class="idle" id="idleScreen">
-    <div class="idle-inner">
-        <svg class="idle-logo" viewBox="0 0 64 64">
-            <rect x="9" y="3" width="32" height="56" rx="7" transform="rotate(18 25 31)" fill="none" stroke="#d8aa2e" stroke-width="4"/>
-            <text x="31" y="39" text-anchor="middle" font-size="20" font-weight="900" fill="#d8aa2e">BR</text>
-        </svg>
-        <div class="idle-title">BROTHER'S iREPAIRS</div>
-        <div class="idle-sub">WE FIX IT RIGHT. THE FIRST TIME.</div>
+<div id="app">
+  <header class="header">
+    <div class="logo">
+      <div class="logoMark" aria-label="Brother's iRepairs logo"></div>
+      <div class="logoWords">
+        <strong>BROTHER'S</strong>
+        <span>iREPAIRS</span>
+      </div>
     </div>
+    <div class="headerTitle">CUSTOMER DISPLAY</div>
+    <div class="clock">
+      <div class="date" id="dateText">—</div>
+      <div class="time" id="timeText">—</div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="panel">
+      <div class="sectionTitle">Customer</div>
+      <div class="customerRow">
+        <div class="avatar">
+          <svg viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="21" r="11" fill="currentColor"/>
+            <path d="M12 53c2-12 10-18 20-18s18 6 20 18" fill="currentColor"/>
+          </svg>
+        </div>
+        <div style="min-width:0">
+          <div class="customerName" id="customerName">Waiting for customer</div>
+          <div class="contact">
+            <span id="customerPhone">—</span>
+            <span id="customerEmail">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="goldLine"></div>
+      <div class="sectionTitle deviceTitle">Device Information</div>
+
+      <div class="deviceArea">
+        <div class="deviceImage" id="deviceImage"></div>
+        <div class="deviceDetails">
+          <div class="detail"><label>Device</label><strong id="device">—</strong></div>
+          <div class="detail"><label>Model</label><strong id="model">—</strong></div>
+          <div class="detail"><label>Color</label><strong id="color">—</strong></div>
+          <div class="detail"><label>Storage</label><strong id="storage">—</strong></div>
+          <div class="detail"><label>IMEI</label><strong id="imei">—</strong></div>
+          <div class="detail"><label>Problem</label><strong class="problem" id="problem">—</strong></div>
+          <div class="detail"><label>Status</label><strong><span class="statusBadge" id="status">—</span></strong></div>
+        </div>
+      </div>
+
+      <div class="bottomInfo">
+        <div class="ticketBox">
+          <div class="infoIcon">▱</div>
+          <div><div class="infoLabel">Ticket Number</div><div class="infoValue" id="ticket">—</div></div>
+        </div>
+        <div class="pickupBox">
+          <div class="infoIcon">▣</div>
+          <div><div class="infoLabel">Expected Pickup</div><div class="infoValue" id="pickup">To be confirmed</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rightPanel">
+      <div class="payment">
+        <div class="paymentHeader"><span class="wallet">▣</span> Payment Summary</div>
+        <div class="payRow"><span>Total Repair</span><strong id="totalRepair">TTD 0.00</strong></div>
+        <div class="payRow"><span>Deposit Paid</span><strong class="paid" id="deposit">TTD 0.00</strong></div>
+        <div class="payRow"><span>Additional Payments</span><strong class="additional" id="additional">TTD 0.00</strong></div>
+        <div class="payRow balance"><span>BALANCE DUE</span><strong id="balance">TTD 0.00</strong></div>
+      </div>
+
+      <div class="signaturePanel">
+        <div class="sigTitle"><span style="font-size:25px">✎</span> Customer Signature</div>
+        <div class="sigCanvasWrap">
+          <canvas id="signatureCanvas"></canvas>
+          <div class="sigHint" id="sigHint">Sign here</div>
+        </div>
+        <div class="sigBottom">
+          <span>By signing, I acknowledge the repair information and payment details above.</span>
+          <div class="sigButtons">
+            <button id="clearSig">Clear</button>
+            <button class="approve" id="approveSig">Approve</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <strong>ⓘ THANK YOU FOR CHOOSING BROTHER'S iREPAIRS!</strong>
+    <span class="updated">↻ LAST UPDATED: <span id="updated">—</span></span>
+  </footer>
 </div>
 
-<div class="loading" id="connectionState">Connecting…</div>
+<div class="idle" id="idle">
+  <div>
+    <div class="idleLogo">BROTHER'S <span>iREPAIRS</span></div>
+    <p>Welcome. Your repair information will appear here.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 /* ============================================================
    BROTHER'S iREPAIRS CUSTOMER DISPLAY
-   Designed for older iPad Safari:
-   - 1024x768 landscape layout
-   - No page scrolling
-   - No frameworks except Supabase JS
-   - Touch signature canvas
-   - Polling + realtime refresh
+   Designed for older iPad Safari / 1024x768 landscape.
    ============================================================ */
 
-(function () {
-    "use strict";
+var SUPABASE_URL = "https://uyladmvbqoeqwtdfiuqr.supabase.co";
+var SUPABASE_KEY = "sb_publishable_9CPop4CNMAzM_DtWyzO4LQ_RURFRMF2";
 
-    /* ---------------------------------------------------------
-       SUPABASE
-       Use the same public/publishable project credentials as
-       the iPad repair app.
-       --------------------------------------------------------- */
-    var SUPABASE_URL = "https://uyladmvbqoeqwtdfiuqr.supabase.co";
-    var SUPABASE_KEY = "sb_publishable_9CPop4CNMAzM_DtWyzO4LQ_RURFRMF2";
+var displayId = "main";
+var currentRepair = null;
+var currentTicket = null;
+var pollTimer = null;
+var canvas = document.getElementById("signatureCanvas");
+var ctx = canvas.getContext("2d");
+var drawing = false;
+var hasSignature = false;
 
-    var sb = null;
+function money(value){
+  var n = Number(value);
+  if (!isFinite(n)) n = 0;
+  return "TTD " + n.toFixed(2);
+}
 
-    try {
-        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    } catch (e) {
-        console.log("Supabase setup error:", e);
+function safe(value, fallback){
+  if (value === null || value === undefined || value === "") return fallback || "—";
+  return String(value);
+}
+
+function supabaseHeaders(){
+  return {
+    "apikey": SUPABASE_KEY,
+    "Authorization": "Bearer " + SUPABASE_KEY,
+    "Content-Type": "application/json"
+  };
+}
+
+function supabaseGet(table, query){
+  var url = SUPABASE_URL + "/rest/v1/" + table + "?" + query;
+  return fetch(url, {headers:supabaseHeaders()}).then(function(r){
+    if (!r.ok) throw new Error("Supabase GET " + r.status);
+    return r.json();
+  });
+}
+
+function supabasePatch(table, query, body){
+  var url = SUPABASE_URL + "/rest/v1/" + table + "?" + query;
+  return fetch(url, {
+    method:"PATCH",
+    headers:Object.assign({},supabaseHeaders(),{"Prefer":"return=minimal"}),
+    body:JSON.stringify(body)
+  }).then(function(r){
+    if (!r.ok) throw new Error("Supabase PATCH " + r.status);
+    return true;
+  });
+}
+
+/* Try to read the current customer-display row first.
+   Then use its ticket_number to read the matching repair. */
+function loadDisplay(){
+  var q = "display_id=eq." + encodeURIComponent(displayId) + "&select=*";
+  supabaseGet("customer_display", q)
+    .then(function(rows){
+      if (!rows || !rows.length) {
+        showIdle();
+        return;
+      }
+      var display = rows[0];
+      var ticket = display.ticket_number;
+
+      if (!ticket || display.mode === "idle") {
+        showIdle();
+        return;
+      }
+
+      if (ticket !== currentTicket) {
+        currentTicket = ticket;
+        clearSignature();
+      }
+
+      return loadRepair(ticket);
+    })
+    .catch(function(err){
+      console.log("Display load error:", err);
+    });
+}
+
+function loadRepair(ticket){
+  var q = "ticket_number=eq." + encodeURIComponent(ticket) + "&select=*";
+  return supabaseGet("repairs", q).then(function(rows){
+    if (!rows || !rows.length) {
+      showIdle();
+      return;
     }
+    currentRepair = rows[0];
+    renderRepair(currentRepair);
+  });
+}
 
-    var currentRepair = null;
-    var currentDisplay = null;
-    var drawing = false;
-    var hasSignature = false;
+function renderRepair(r){
+  hideIdle();
 
-    function el(id) {
-        return document.getElementById(id);
+  var customerName = r.customer_name;
+  if (!customerName) {
+    customerName = safe(r.customer_first_name,"") + " " + safe(r.customer_last_name,"");
+  }
+  customerName = customerName.trim() || "Customer";
+
+  setText("customerName", customerName);
+  setText("customerPhone", safe(r.phone,""));
+  setText("customerEmail", safe(r.email,""));
+
+  setText("device", safe(r.device || r.device_type,"iPhone"));
+  setText("model", safe(r.model,"—"));
+  setText("color", safe(r.color,"—"));
+  setText("storage", safe(r.storage,"—"));
+  setText("imei", safe(r.imei,"—"));
+  setText("problem", safe(r.problem_description,"—"));
+  setText("status", safe(r.status,"Received"));
+  setText("ticket", safe(r.ticket_number,"—"));
+
+  var total = firstNumber(r.final_repair_amount, r.total_amount, r.total_repair, r.repair_total, 0);
+  var deposit = firstNumber(r.deposit, 0);
+
+  /*
+    IMPORTANT:
+    payment_amount is NOT treated as an additional payment.
+    It is only used as a fallback when your database has no
+    separate additional-payment total.
+  */
+  var additional = firstNumber(
+    r.additional_payments_total,
+    r.additional_payment_total,
+    r.additional_payments,
+    0
+  );
+
+  var totalPaid = deposit + additional;
+  var balance = firstNumber(r.balance_due, Math.max(total - totalPaid, 0));
+
+  setText("totalRepair", money(total));
+  setText("deposit", money(deposit));
+  setText("additional", money(additional));
+  setText("balance", money(balance));
+
+  var pickup = r.estimated_pickup_date || r.estimatedPickupDate;
+  setText("pickup", formatPickup(pickup));
+
+  renderDeviceImage(r);
+  setText("updated", new Date().toLocaleTimeString());
+  resizeCanvas();
+}
+
+function firstNumber(){
+  var args = arguments;
+  for(var i=0;i<args.length;i++){
+    if(args[i] !== null && args[i] !== undefined && args[i] !== "" && isFinite(Number(args[i]))) {
+      return Number(args[i]);
     }
-
-    function money(value) {
-        var n = Number(value);
-        if (!isFinite(n)) n = 0;
-        return "TTD " + n.toFixed(2);
-    }
-
-    function numberOrZero(value) {
-        var n = Number(value);
-        return isFinite(n) ? n : 0;
-    }
-
-    function firstValue(obj, keys, fallback) {
-        var i, key, value;
-        for (i = 0; i < keys.length; i++) {
-            key = keys[i];
-            if (obj && obj[key] !== null && obj[key] !== undefined && obj[key] !== "") {
-                value = obj[key];
-                return value;
-            }
-        }
-        return fallback;
-    }
-
-    function formatDate(value) {
-        if (!value) return "To be confirmed";
-        var d = new Date(value);
-        if (isNaN(d.getTime())) return "To be confirmed";
-
-        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-        var hour = d.getHours();
-        var minute = d.getMinutes();
-        var ampm = hour >= 12 ? "PM" : "AM";
-        hour = hour % 12;
-        if (hour === 0) hour = 12;
-        var minText = minute < 10 ? "0" + minute : "" + minute;
-
-        return months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() +
-               " " + hour + ":" + minText + " " + ampm;
-    }
-
-    function formatClock() {
-        var d = new Date();
-        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-        var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-        var hour = d.getHours();
-        var minute = d.getMinutes();
-        var second = d.getSeconds();
-        var ampm = hour >= 12 ? "PM" : "AM";
-        hour = hour % 12;
-        if (hour === 0) hour = 12;
-
-        el("clockDate").textContent =
-            days[d.getDay()] + ", " + months[d.getMonth()] + " " +
-            d.getDate() + ", " + d.getFullYear();
-
-        el("clockTime").textContent =
-            hour + ":" + (minute < 10 ? "0" + minute : minute) +
-            ":" + (second < 10 ? "0" + second : second) + " " + ampm;
-    }
-
-    function showIdle(show) {
-        el("idleScreen").style.display = show ? "flex" : "none";
-    }
-
-    function updateConnection(text) {
-        el("connectionState").textContent = text;
-    }
-
-    function setText(id, value, fallback) {
-        el(id).textContent =
-            value !== null && value !== undefined && value !== ""
-            ? String(value)
-            : (fallback || "—");
-    }
-
-    function updateSignatureState(approved) {
-        if (approved) {
-            el("signatureBox").style.display = "none";
-            el("clearSignature").style.display = "none";
-            el("approveSignature").style.display = "none";
-            el("approvedMessage").style.display = "flex";
-        } else {
-            el("signatureBox").style.display = "block";
-            el("clearSignature").style.display = "block";
-            el("approveSignature").style.display = "block";
-            el("approvedMessage").style.display = "none";
-        }
-    }
-
-    /* ---------------------------------------------------------
-       PAYMENT CALCULATION
-       IMPORTANT:
-       We intentionally DO NOT use payment_amount as the
-       "additional payment" value. Your previous database
-       setup was showing payment_amount equal to the deposit.
-
-       Priority:
-       total = final_repair_amount -> total_amount ->
-              repair_total -> total_repair
-
-       deposit = deposit
-
-       additional payments:
-       1) additional_payments_total if supplied
-       2) total_paid - deposit if total_paid is supplied
-       3) otherwise 0
-
-       balance:
-       1) balance_due if supplied
-       2) total - deposit - additional
-       --------------------------------------------------------- */
-    function getPaymentValues(r) {
-        var total = numberOrZero(firstValue(r, [
-            "final_repair_amount",
-            "total_amount",
-            "repair_total",
-            "total_repair"
-        ], 0));
-
-        var deposit = numberOrZero(firstValue(r, [
-            "deposit"
-        ], 0));
-
-        var additional = null;
-
-        if (r.additional_payments_total !== null &&
-            r.additional_payments_total !== undefined &&
-            r.additional_payments_total !== "") {
-            additional = numberOrZero(r.additional_payments_total);
-        } else if (r.total_paid !== null &&
-                   r.total_paid !== undefined &&
-                   r.total_paid !== "") {
-            additional = Math.max(numberOrZero(r.total_paid) - deposit, 0);
-        } else {
-            additional = 0;
-        }
-
-        var balance;
-        if (r.balance_due !== null &&
-            r.balance_due !== undefined &&
-            r.balance_due !== "") {
-            balance = Math.max(numberOrZero(r.balance_due), 0);
-        } else {
-            balance = Math.max(total - deposit - additional, 0);
-        }
-
-        return {
-            total: total,
-            deposit: deposit,
-            additional: additional,
-            balance: balance
-        };
-    }
-
-    function renderRepair(r, display) {
-        currentRepair = r;
-        currentDisplay = display || {};
-
-        showIdle(false);
-
-        var customerName = firstValue(r, ["customer_name"], "");
-        if (!customerName) {
-            customerName =
-                (firstValue(r, ["customer_first_name"], "") + " " +
-                 firstValue(r, ["customer_last_name"], "")).trim();
-        }
-
-        var device = firstValue(r, ["device"], "");
-        var model = firstValue(r, ["model"], "");
-        var deviceText = device && model ? device + " " + model : (model || device);
-
-        setText("customerName", customerName, "Customer");
-        setText("customerPhone", firstValue(r, ["phone"], ""), "");
-        setText("customerEmail", firstValue(r, ["email"], ""), "");
-
-        setText("deviceName", deviceText, "—");
-        setText("deviceColor", firstValue(r, ["color"], ""), "—");
-        setText("deviceStorage", firstValue(r, ["storage"], ""), "—");
-        setText("deviceIMEI", firstValue(r, ["imei"], ""), "—");
-        setText("deviceProblem", firstValue(r, ["problem_description"], ""), "No problem description");
-
-        setText("ticketNumber",
-            firstValue(r, ["ticket_number"], firstValue(display, ["ticket_number"], "BR-000000")),
-            "BR-000000");
-
-        var status = firstValue(r, ["status"], "Received");
-        el("statusPill").textContent = String(status).toUpperCase();
-
-        var pickup = firstValue(display, ["estimated_pickup_date"], null);
-        if (!pickup) pickup = firstValue(r, ["estimated_pickup_date"], null);
-        el("pickupDate").textContent = formatDate(pickup);
-
-        var p = getPaymentValues(r);
-
-        el("totalRepair").textContent = money(p.total);
-        el("depositPaid").textContent = money(p.deposit);
-        el("additionalPayments").textContent = money(p.additional);
-        el("balanceDue").textContent = money(p.balance);
-
-        var approved = !!firstValue(display, ["approved", "customer_approved"], false);
-        updateSignatureState(approved);
-
-        el("lastUpdated").textContent = new Date().toLocaleTimeString();
-
-        updateConnection("Connected");
-    }
-
-    /* ---------------------------------------------------------
-       GET CURRENT DISPLAY ROW
-       --------------------------------------------------------- */
-    async function loadDisplay() {
-        if (!sb) {
-            updateConnection("Supabase unavailable");
-            return;
-        }
-
-        try {
-            var result = await sb
-                .from("customer_display")
-                .select("*")
-                .eq("display_id", "main")
-                .limit(1);
-
-            if (result.error) throw result.error;
-
-            if (!result.data || result.data.length === 0) {
-                showIdle(true);
-                updateConnection("Waiting for ticket");
-                return;
-            }
-
-            var display = result.data[0];
-            currentDisplay = display;
-
-            var mode = display.mode || "idle";
-            var ticketNumber = display.ticket_number;
-
-            if (mode === "idle" || !ticketNumber) {
-                showIdle(true);
-                updateConnection("Waiting for ticket");
-                return;
-            }
-
-            var repairResult = await sb
-                .from("repairs")
-                .select("*")
-                .eq("ticket_number", ticketNumber)
-                .limit(1);
-
-            if (repairResult.error) throw repairResult.error;
-
-            if (!repairResult.data || repairResult.data.length === 0) {
-                showIdle(false);
-                updateConnection("Waiting for repair data");
-                return;
-            }
-
-            renderRepair(repairResult.data[0], display);
-
-        } catch (error) {
-            console.log("Customer display load error:", error);
-            updateConnection("Connection retrying…");
-        }
-    }
-
-    /* ---------------------------------------------------------
-       REALTIME + POLLING
-       Realtime makes updates fast. Polling keeps it reliable
-       on older iPads / older Safari.
-       --------------------------------------------------------- */
-    function startRealtime() {
-        if (!sb) return;
-
-        try {
-            sb.channel("customer-display-live")
-                .on(
-                    "postgres_changes",
-                    {
-                        event: "*",
-                        schema: "public",
-                        table: "customer_display"
-                    },
-                    function () {
-                        loadDisplay();
-                    }
-                )
-                .on(
-                    "postgres_changes",
-                    {
-                        event: "*",
-                        schema: "public",
-                        table: "repairs"
-                    },
-                    function () {
-                        loadDisplay();
-                    }
-                )
-                .subscribe();
-        } catch (e) {
-            console.log("Realtime unavailable:", e);
-        }
-
-        window.setInterval(loadDisplay, 2500);
-    }
-
-    /* ---------------------------------------------------------
-       SIGNATURE CANVAS
-       --------------------------------------------------------- */
-    function setupCanvas() {
-        var canvas = el("signatureCanvas");
-        var box = el("signatureBox");
-        var ctx = canvas.getContext("2d");
-
-        function resizeCanvas() {
-            var rect = box.getBoundingClientRect();
-            if (rect.width < 1 || rect.height < 1) return;
-
-            var ratio = window.devicePixelRatio || 1;
-            canvas.width = Math.floor(rect.width * ratio);
-            canvas.height = Math.floor(rect.height * ratio);
-            canvas.style.width = rect.width + "px";
-            canvas.style.height = rect.height + "px";
-
-            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-            ctx.lineWidth = 2.2;
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
-            ctx.strokeStyle = "#111";
-        }
-
-        function pointFromEvent(e) {
-            var rect = canvas.getBoundingClientRect();
-            var touch = e.touches ? e.touches[0] : e;
-            return {
-                x: touch.clientX - rect.left,
-                y: touch.clientY - rect.top
-            };
-        }
-
-        function start(e) {
-            e.preventDefault();
-            drawing = true;
-            hasSignature = true;
-            el("signatureHint").style.display = "none";
-
-            var p = pointFromEvent(e);
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-        }
-
-        function move(e) {
-            if (!drawing) return;
-            e.preventDefault();
-
-            var p = pointFromEvent(e);
-            ctx.lineTo(p.x, p.y);
-            ctx.stroke();
-        }
-
-        function end(e) {
-            if (!drawing) return;
-            e.preventDefault();
-            drawing = false;
-            ctx.closePath();
-        }
-
-        canvas.addEventListener("touchstart", start, {passive:false});
-        canvas.addEventListener("touchmove", move, {passive:false});
-        canvas.addEventListener("touchend", end, {passive:false});
-        canvas.addEventListener("touchcancel", end, {passive:false});
-
-        canvas.addEventListener("mousedown", start, false);
-        canvas.addEventListener("mousemove", move, false);
-        canvas.addEventListener("mouseup", end, false);
-        canvas.addEventListener("mouseleave", end, false);
-
-        window.addEventListener("resize", resizeCanvas);
-        window.setTimeout(resizeCanvas, 300);
-
-        el("clearSignature").addEventListener("click", function () {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            hasSignature = false;
-            el("signatureHint").style.display = "block";
-        });
-
-        el("approveSignature").addEventListener("click", async function () {
-            if (!hasSignature) {
-                alert("Please sign in the box before approving.");
-                return;
-            }
-
-            if (!currentRepair || !currentDisplay) {
-                alert("No repair ticket is currently displayed.");
-                return;
-            }
-
-            var ticket = currentRepair.ticket_number ||
-                         currentDisplay.ticket_number;
-
-            var dataURL = canvas.toDataURL("image/png");
-
-            try {
-                el("approveSignature").disabled = true;
-                el("approveSignature").textContent = "SAVING…";
-
-                var update = await sb
-                    .from("customer_display")
-                    .update({
-                        approved: true,
-                        approval_date: new Date().toISOString(),
-                        customer_signature_data: dataURL
-                    })
-                    .eq("display_id", "main");
-
-                if (update.error) throw update.error;
-
-                /* Also attempt to save approval on the repair ticket.
-                   If that column isn't present, the main display update
-                   remains successful. */
-                var repairUpdate = await sb
-                    .from("repairs")
-                    .update({
-                        customer_approved: true,
-                        customer_approval_date: new Date().toISOString(),
-                        customer_signature_data: dataURL
-                    })
-                    .eq("ticket_number", ticket);
-
-                if (repairUpdate.error) {
-                    console.log("Repair approval update skipped:", repairUpdate.error);
-                }
-
-                updateSignatureState(true);
-                el("lastUpdated").textContent = new Date().toLocaleTimeString();
-
-            } catch (error) {
-                console.log("Signature save error:", error);
-                alert("The signature could not be saved. Please try again.");
-                el("approveSignature").disabled = false;
-                el("approveSignature").textContent = "APPROVE & SIGN";
-            }
-        });
-    }
-
-    formatClock();
-    window.setInterval(formatClock, 1000);
-    setupCanvas();
-    loadDisplay();
-    startRealtime();
-
-})();
+  }
+  return 0;
+}
+
+function formatPickup(value){
+  if(!value) return "To be confirmed";
+  var d = new Date(value);
+  if (isNaN(d.getTime())) return safe(value,"To be confirmed");
+  return d.toLocaleDateString([], {weekday:"short",month:"short",day:"numeric"}) +
+    " " + d.toLocaleTimeString([], {hour:"numeric",minute:"2-digit"});
+}
+
+function setText(id,value){
+  var el=document.getElementById(id);
+  if(el) el.textContent=value;
+}
+
+function showIdle(){
+  document.getElementById("idle").className="idle show";
+}
+
+function hideIdle(){
+  document.getElementById("idle").className="idle";
+}
+
+/* Device image:
+   If your repairs table later contains front_photo_url,
+   device_image_url, or photo_url, that image is used.
+   Otherwise an iPhone-style image is generated locally so
+   the page still works without another asset. */
+function renderDeviceImage(r){
+  var box=document.getElementById("deviceImage");
+  var url=r.device_image_url || r.front_photo_url || r.photo_url || "";
+  if(url){
+    box.innerHTML="";
+    var img=document.createElement("img");
+    img.src=url;
+    img.alt=safe(r.model,"Device");
+    img.onerror=function(){box.innerHTML=phoneSVG(r.color)};
+    box.appendChild(img);
+  }else{
+    box.innerHTML=phoneSVG(r.color);
+  }
+}
+
+function phoneSVG(colorName){
+  var color="#7a6ac8";
+  var c=(colorName||"").toLowerCase();
+  if(c.indexOf("gold")>=0) color="#c89a35";
+  else if(c.indexOf("silver")>=0 || c.indexOf("white")>=0) color="#cfcfcf";
+  else if(c.indexOf("black")>=0) color="#202020";
+  else if(c.indexOf("blue")>=0) color="#3e72bd";
+  else if(c.indexOf("red")>=0) color="#a92e35";
+  else if(c.indexOf("green")>=0) color="#4c715b";
+
+  return '<svg viewBox="0 0 190 270" width="170" height="245" xmlns="http://www.w3.org/2000/svg">'+
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'+
+    '<stop offset="0" stop-color="'+color+'"/><stop offset="1" stop-color="#151515"/></linearGradient></defs>'+
+    '<rect x="22" y="3" width="146" height="264" rx="25" fill="#050505" stroke="#777" stroke-width="3"/>'+
+    '<rect x="28" y="10" width="134" height="250" rx="20" fill="url(#g)"/>'+
+    '<rect x="67" y="17" width="56" height="13" rx="7" fill="#050505"/>'+
+    '<circle cx="46" cy="44" r="13" fill="#111" stroke="#aaa" stroke-width="2"/>'+
+    '<circle cx="46" cy="44" r="6" fill="#333"/>'+
+    '<circle cx="75" cy="44" r="13" fill="#111" stroke="#aaa" stroke-width="2"/>'+
+    '<circle cx="75" cy="44" r="6" fill="#333"/>'+
+    '<circle cx="60" cy="69" r="13" fill="#111" stroke="#aaa" stroke-width="2"/>'+
+    '<circle cx="60" cy="69" r="6" fill="#333"/>'+
+    '<circle cx="133" cy="239" r="3" fill="#aaa"/>'+
+    '</svg>';
+}
+
+/* ---------------- Signature pad ---------------- */
+
+function resizeCanvas(){
+  var box=canvas.parentNode.getBoundingClientRect();
+  if(box.width<10 || box.height<10) return;
+
+  var old=hasSignature ? canvas.toDataURL() : null;
+  var ratio=Math.max(1,window.devicePixelRatio || 1);
+  canvas.width=Math.floor(box.width*ratio);
+  canvas.height=Math.floor(box.height*ratio);
+  canvas.style.width=box.width+"px";
+  canvas.style.height=box.height+"px";
+  ctx=canvas.getContext("2d");
+  ctx.scale(ratio,ratio);
+  ctx.lineWidth=2.4;
+  ctx.lineCap="round";
+  ctx.lineJoin="round";
+  ctx.strokeStyle="#111";
+
+  if(old){
+    var img=new Image();
+    img.onload=function(){ctx.drawImage(img,0,0,box.width,box.height)};
+    img.src=old;
+  }
+}
+
+function point(e){
+  var rect=canvas.getBoundingClientRect();
+  var touch=e.touches ? e.touches[0] : e;
+  return {x:touch.clientX-rect.left,y:touch.clientY-rect.top};
+}
+
+function startDraw(e){
+  e.preventDefault();
+  drawing=true;hasSignature=true;
+  document.getElementById("sigHint").style.display="none";
+  var p=point(e);ctx.beginPath();ctx.moveTo(p.x,p.y);
+}
+
+function moveDraw(e){
+  if(!drawing)return;
+  e.preventDefault();
+  var p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke();
+}
+
+function endDraw(e){
+  if(!drawing)return;
+  if(e)e.preventDefault();
+  drawing=false;
+}
+
+canvas.addEventListener("mousedown",startDraw,false);
+canvas.addEventListener("mousemove",moveDraw,false);
+canvas.addEventListener("mouseup",endDraw,false);
+canvas.addEventListener("mouseleave",endDraw,false);
+canvas.addEventListener("touchstart",startDraw,false);
+canvas.addEventListener("touchmove",moveDraw,false);
+canvas.addEventListener("touchend",endDraw,false);
+
+function clearSignature(){
+  hasSignature=false;
+  var box=canvas.parentNode.getBoundingClientRect();
+  if(!box.width)return;
+  ctx.clearRect(0,0,box.width,box.height);
+  document.getElementById("sigHint").style.display="block";
+}
+
+document.getElementById("clearSig").onclick=function(){
+  clearSignature();
+};
+
+document.getElementById("approveSig").onclick=function(){
+  if(!currentRepair || !hasSignature){
+    showToast("Please sign before approving.");
+    return;
+  }
+
+  var data=canvas.toDataURL("image/png");
+  var now=new Date().toISOString();
+
+  /*
+    These fields match the approval fields already used by the
+    Swift RepairTicket model. If your RLS policy permits updates,
+    the approval is saved to the repair row.
+  */
+  var body={
+    customer_approved:true,
+    customer_approval_date:now,
+    customer_signature_data:data
+  };
+
+  supabasePatch(
+    "repairs",
+    "ticket_number=eq."+encodeURIComponent(currentRepair.ticket_number),
+    body
+  ).then(function(){
+    showToast("Customer approval saved.");
+  }).catch(function(err){
+    console.log(err);
+    showToast("Signature captured. Supabase update was not accepted.");
+  });
+};
+
+function showToast(message){
+  var t=document.getElementById("toast");
+  t.textContent=message;
+  t.className="toast show";
+  setTimeout(function(){t.className="toast"},2500);
+}
+
+/* ---------------- Clock ---------------- */
+
+function updateClock(){
+  var now=new Date();
+  setText("dateText",now.toLocaleDateString([],{
+    weekday:"short",month:"short",day:"numeric",year:"numeric"
+  }));
+  setText("timeText",now.toLocaleTimeString([],{
+    hour:"numeric",minute:"2-digit"
+  }));
+}
+updateClock();
+setInterval(updateClock,1000);
+
+/* ---------------- Start / refresh ---------------- */
+
+window.addEventListener("resize",resizeCanvas,false);
+window.addEventListener("orientationchange",function(){setTimeout(resizeCanvas,300)},false);
+
+resizeCanvas();
+loadDisplay();
+
+/* Polling is intentionally used instead of Supabase Realtime.
+   This is lighter and more compatible with older iPad Safari. */
+pollTimer=setInterval(loadDisplay,2500);
 </script>
 </body>
 </html>
