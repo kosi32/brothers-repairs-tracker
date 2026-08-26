@@ -2,709 +2,3441 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
 <title>Brother's iRepairs - Customer Display</title>
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
-body{font-size:16px}
-button{font:inherit}
 
-:root{
-  --gold:#d7a900;
-  --gold2:#f1c43b;
-  --panel:#0d0d0d;
-  --line:#493a08;
-  --muted:#a9a9a9;
-  --green:#28d17c;
-  --orange:#ff9d2e;
-  --blue:#168cff;
+/* ============================================================
+   BROTHER'S iREPAIRS CUSTOMER DISPLAY
+   Automatic iPad Light / Dark Mode
+   Designed for older iPad Safari / 1024x768 landscape
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-#app{
-  width:100vw;height:100vh;
-  padding:10px;
-  display:flex;flex-direction:column;
-  gap:10px;
-  overflow:hidden;
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  background: var(--background);
+  color: var(--text);
+
+  transition:
+    background .25s ease,
+    color .25s ease;
 }
 
-.header{
-  height:86px;flex:0 0 86px;
-  display:grid;grid-template-columns:280px 1fr 250px;
-  align-items:center;
-  padding:8px 18px;
-  background:linear-gradient(180deg,#111,#080808);
-  border:1px solid #202020;border-radius:16px;
+body {
+  font-size: 16px;
 }
 
-.logo{
-  display:flex;align-items:center;gap:12px;min-width:0;
-}
-.logoMark{
-  width:52px;height:62px;flex:0 0 52px;
-  border:3px solid var(--gold);border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  color:#fff;background:#050505;
-  position:relative;
-}
-.logoMark:before{content:"";width:18px;height:29px;border:3px solid #fff;border-radius:3px;display:block}
-.logoMark:after{content:"";position:absolute;width:10px;height:3px;background:#fff;border-radius:2px;top:10px}
-.logoWords{line-height:.9;white-space:nowrap}
-.logoWords strong{display:block;font-size:25px;letter-spacing:-.8px}
-.logoWords span{display:block;margin-top:7px;color:var(--gold);font-weight:800;font-size:14px;letter-spacing:3px}
-
-.headerTitle{text-align:center;font-weight:900;font-size:30px;letter-spacing:2px}
-.clock{text-align:right}
-.clock .date{font-size:15px;color:#eee}
-.clock .time{font-size:27px;font-weight:900;color:var(--gold2);margin-top:4px}
-
-.content{
-  flex:1;min-height:0;
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:10px;
-  overflow:hidden;
+button {
+  font: inherit;
 }
 
-.panel{
-  min-height:0;background:linear-gradient(180deg,#0e0e0e,#090909);
-  border:1px solid #403506;border-radius:15px;
-  padding:14px 16px;overflow:hidden;
-}
-.sectionTitle{
-  color:var(--gold2);font-weight:900;font-size:17px;
-  letter-spacing:.7px;text-transform:uppercase;
-  margin-bottom:9px;
-}
-.goldLine{height:1px;background:#554307;margin:9px 0}
 
-.customerRow{display:flex;align-items:center;gap:15px;min-height:92px}
-.avatar{
-  width:78px;height:78px;border:2px solid var(--gold);
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  flex:0 0 78px;color:var(--gold2);
-}
-.avatar svg{width:45px;height:45px}
-.customerName{font-size:27px;font-weight:900;line-height:1.05}
-.contact{font-size:14px;color:#ddd;margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.contact span{margin-right:14px}
+/* ============================================================
+   LIGHT MODE — DEFAULT
+   ============================================================ */
 
-.deviceTitle{margin-top:10px}
-.deviceArea{
-  height:285px;
-  display:grid;grid-template-columns:190px 1fr;
-  gap:14px;align-items:center;
-}
-.deviceImage{
-  width:180px;height:250px;
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
-.deviceImage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:18px}
-.deviceDetails{min-width:0}
-.detail{
-  display:grid;grid-template-columns:78px 1fr;
-  gap:8px;margin:10px 0;align-items:start;
-}
-.detail label{color:#a8a8a8;font-size:13px;text-transform:uppercase}
-.detail strong{font-size:16px;line-height:1.15;word-break:break-word}
-.problem{max-height:38px;overflow:hidden}
-.statusBadge{
-  display:inline-block;padding:7px 13px;border-radius:18px;
-  border:1px solid #765d00;color:var(--gold2);font-weight:900;
-  font-size:13px;text-transform:uppercase;
+:root {
+
+  color-scheme: light dark;
+
+  --gold: #b58a00;
+  --gold2: #c99d16;
+
+  --background: #f3f4f6;
+  --header: #ffffff;
+
+  --panel: #ffffff;
+  --panel2: #f8f8f8;
+
+  --line: #ddd6b8;
+  --border: #dedede;
+
+  --text: #171717;
+  --text2: #333333;
+  --muted: #707070;
+
+  --green: #169b58;
+  --orange: #d87800;
+  --blue: #0877d9;
+
+  --signatureBackground: #ffffff;
+
+  --shadow:
+    0 4px 16px rgba(0,0,0,.08);
 }
 
-.bottomInfo{
-  height:76px;display:grid;grid-template-columns:1fr 1fr;
-  border:1px solid #2f2a18;border-radius:12px;background:#0b0b0b;
-}
-.ticketBox,.pickupBox{display:flex;align-items:center;padding:10px 15px;gap:12px}
-.pickupBox{border-left:1px solid #3b3318}
-.infoIcon{font-size:28px;color:var(--gold2);width:38px;text-align:center}
-.infoLabel{font-size:11px;color:var(--gold2);font-weight:900;text-transform:uppercase}
-.infoValue{font-size:18px;font-weight:900;margin-top:4px;white-space:nowrap}
 
-.rightPanel{display:grid;grid-template-rows:auto 1fr;gap:10px}
-.payment{
-  min-height:0;border:1px solid #5a4600;border-radius:15px;
-  background:linear-gradient(180deg,#17120a,#0d0b07);
-  padding:13px 18px;
-}
-.paymentHeader{display:flex;align-items:center;gap:10px;color:var(--gold2);font-size:18px;font-weight:900;text-transform:uppercase}
-.wallet{font-size:27px}
-.payRow{display:flex;justify-content:space-between;align-items:center;margin-top:13px;font-size:16px}
-.payRow strong{font-size:18px}
-.payRow.balance{margin-top:10px;padding-top:12px;border-top:1px solid #654f00;color:var(--gold2)}
-.payRow.balance strong{font-size:26px}
-.paid{color:var(--green)}
-.additional{color:#fff}
+/* ============================================================
+   DARK MODE
+   ============================================================ */
 
-.signaturePanel{
-  min-height:0;border:1px solid #403506;border-radius:15px;
-  background:#0d0d0d;padding:13px 18px;
-  display:flex;flex-direction:column;
-}
-.sigTitle{color:var(--gold2);font-weight:900;font-size:18px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
-.sigCanvasWrap{
-  flex:1;min-height:0;margin-top:9px;background:#fff;border-radius:11px;
-  overflow:hidden;position:relative;
-}
-#signatureCanvas{width:100%;height:100%;display:block;touch-action:none}
-.sigHint{
-  position:absolute;left:0;right:0;top:43%;text-align:center;
-  color:#cfcfcf;font-size:18px;pointer-events:none;font-style:italic;
-}
-.sigBottom{
-  display:flex;justify-content:space-between;align-items:center;margin-top:8px;
-  color:#aaa;font-size:12px;
-}
-.sigButtons{display:flex;gap:7px}
-.sigButtons button{
-  border:1px solid #4b3b00;background:#151515;color:#fff;border-radius:8px;
-  padding:6px 10px;font-weight:800;
-}
-.sigButtons .approve{background:#6f5600;border-color:#9a7800;color:#fff}
+@media (prefers-color-scheme: dark) {
 
-.footer{
-  height:46px;flex:0 0 46px;
-  border:1px solid #27220f;border-radius:13px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 18px;background:#080808;font-size:13px;
-}
-.footer strong{color:#ddd}
-.updated{color:#aaa}
+  :root {
 
-.idle{
-  position:fixed;inset:0;background:#050505;display:none;
-  align-items:center;justify-content:center;text-align:center;z-index:50;
-}
-.idle.show{display:flex}
-.idleLogo{font-size:38px;font-weight:900}
-.idleLogo span{color:var(--gold2)}
-.idle p{color:#999;font-size:18px}
+    --gold: #d7a900;
+    --gold2: #f1c43b;
 
-.toast{
-  position:fixed;left:50%;bottom:65px;transform:translateX(-50%);
-  background:#171717;border:1px solid #5a4600;color:#fff;
-  padding:10px 16px;border-radius:10px;display:none;z-index:100;font-weight:800
-}
-.toast.show{display:block}
+    --background: #050505;
+    --header: #090909;
 
-@media (max-width:850px){
-  .header{grid-template-columns:220px 1fr 180px}
-  .headerTitle{font-size:23px}
-  .logoWords strong{font-size:20px}
-  .logoWords span{font-size:11px}
-  .content{grid-template-columns:1fr 1fr}
-  .deviceArea{grid-template-columns:145px 1fr;height:275px}
-  .deviceImage{width:140px;height:225px}
-  .customerName{font-size:23px}
-  .detail strong{font-size:14px}
-}
+    --panel: #0e0e0e;
+    --panel2: #0b0b0b;
 
-@media (max-height:700px){
-  #app{padding:6px;gap:6px}
-  .header{height:70px;flex-basis:70px}
-  .logoMark{width:43px;height:51px;flex-basis:43px}
-  .logoWords strong{font-size:19px}
-  .logoWords span{font-size:10px}
-  .headerTitle{font-size:22px}
-  .clock .time{font-size:21px}
-  .customerRow{min-height:72px}
-  .avatar{width:62px;height:62px;flex-basis:62px}
-  .customerName{font-size:22px}
-  .deviceArea{height:235px;grid-template-columns:130px 1fr}
-  .deviceImage{width:125px;height:200px}
-  .detail{margin:7px 0}
-  .bottomInfo{height:65px}
-  .footer{height:38px;flex-basis:38px}
-}
+    --line: #493a08;
+    --border: #292929;
 
-@media (orientation:portrait){
-  body:after{
-    content:"Please rotate the iPad to landscape";
-    position:fixed;inset:0;background:#050505;z-index:999;
-    display:flex;align-items:center;justify-content:center;
-    text-align:center;color:#fff;font-size:24px;font-weight:900;padding:30px;
+    --text: #ffffff;
+    --text2: #eeeeee;
+    --muted: #a9a9a9;
+
+    --green: #28d17c;
+    --orange: #ff9d2e;
+    --blue: #168cff;
+
+    --signatureBackground: #ffffff;
+
+    --shadow: none;
   }
 }
+
+
+/* ============================================================
+   APP
+   ============================================================ */
+
+#app {
+
+  width: 100vw;
+  height: 100vh;
+
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.header {
+
+  height: 86px;
+  flex: 0 0 86px;
+
+  display: grid;
+
+  grid-template-columns:
+    280px
+    1fr
+    250px;
+
+  align-items: center;
+
+  padding: 8px 18px;
+
+  background: var(--header);
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 16px;
+
+  box-shadow: var(--shadow);
+}
+
+
+/* ============================================================
+   LOGO
+   ============================================================ */
+
+.logo {
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+}
+
+.logoMark {
+
+  width: 52px;
+  height: 62px;
+
+  flex: 0 0 52px;
+
+  border:
+    3px solid var(--gold);
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text);
+
+  background:
+    var(--panel);
+
+  position: relative;
+}
+
+.logoMark:before {
+
+  content: "";
+
+  width: 18px;
+  height: 29px;
+
+  border:
+    3px solid var(--text);
+
+  border-radius: 3px;
+
+  display: block;
+}
+
+.logoMark:after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 10px;
+  height: 3px;
+
+  background: var(--text);
+
+  border-radius: 2px;
+
+  top: 10px;
+}
+
+.logoWords {
+
+  line-height: .9;
+  white-space: nowrap;
+}
+
+.logoWords strong {
+
+  display: block;
+
+  font-size: 25px;
+
+  letter-spacing: -.8px;
+}
+
+.logoWords span {
+
+  display: block;
+
+  margin-top: 7px;
+
+  color: var(--gold2);
+
+  font-weight: 800;
+
+  font-size: 14px;
+
+  letter-spacing: 3px;
+}
+
+
+/* ============================================================
+   HEADER TITLE
+   ============================================================ */
+
+.headerTitle {
+
+  text-align: center;
+
+  font-weight: 900;
+
+  font-size: 30px;
+
+  letter-spacing: 2px;
+}
+
+.clock {
+
+  text-align: right;
+}
+
+.clock .date {
+
+  font-size: 15px;
+
+  color: var(--text2);
+}
+
+.clock .time {
+
+  font-size: 27px;
+
+  font-weight: 900;
+
+  color: var(--gold2);
+
+  margin-top: 4px;
+}
+
+
+/* ============================================================
+   CONTENT
+   ============================================================ */
+
+.content {
+
+  flex: 1;
+
+  min-height: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 10px;
+
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   GENERAL PANEL
+   ============================================================ */
+
+.panel {
+
+  min-height: 0;
+
+  background: var(--panel);
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 15px;
+
+  padding: 14px 16px;
+
+  overflow: hidden;
+
+  box-shadow: var(--shadow);
+}
+
+.sectionTitle {
+
+  color: var(--gold2);
+
+  font-weight: 900;
+
+  font-size: 17px;
+
+  letter-spacing: .7px;
+
+  text-transform: uppercase;
+
+  margin-bottom: 9px;
+}
+
+.goldLine {
+
+  height: 1px;
+
+  background: var(--line);
+
+  margin: 9px 0;
+}
+
+
+/* ============================================================
+   CUSTOMER
+   ============================================================ */
+
+.customerRow {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  min-height: 92px;
+}
+
+.avatar {
+
+  width: 78px;
+  height: 78px;
+
+  border:
+    2px solid var(--gold);
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 78px;
+
+  color: var(--gold2);
+}
+
+.avatar svg {
+
+  width: 45px;
+  height: 45px;
+}
+
+.customerName {
+
+  font-size: 27px;
+
+  font-weight: 900;
+
+  line-height: 1.05;
+}
+
+.contact {
+
+  font-size: 14px;
+
+  color: var(--muted);
+
+  margin-top: 7px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.contact span {
+
+  margin-right: 14px;
+}
+
+
+/* ============================================================
+   DEVICE
+   ============================================================ */
+
+.deviceTitle {
+
+  margin-top: 10px;
+}
+
+.deviceArea {
+
+  height: 285px;
+
+  display: grid;
+
+  grid-template-columns:
+    190px
+    1fr;
+
+  gap: 14px;
+
+  align-items: center;
+}
+
+.deviceImage {
+
+  width: 180px;
+  height: 250px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+.deviceImage img {
+
+  max-width: 100%;
+  max-height: 100%;
+
+  object-fit: contain;
+
+  border-radius: 18px;
+}
+
+.deviceDetails {
+
+  min-width: 0;
+}
+
+.detail {
+
+  display: grid;
+
+  grid-template-columns:
+    78px
+    1fr;
+
+  gap: 8px;
+
+  margin: 10px 0;
+
+  align-items: start;
+}
+
+.detail label {
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+  text-transform: uppercase;
+}
+
+.detail strong {
+
+  color: var(--text);
+
+  font-size: 16px;
+
+  line-height: 1.15;
+
+  word-break: break-word;
+}
+
+.problem {
+
+  max-height: 38px;
+
+  overflow: hidden;
+}
+
+.statusBadge {
+
+  display: inline-block;
+
+  padding: 7px 13px;
+
+  border-radius: 18px;
+
+  border:
+    1px solid var(--gold);
+
+  color: var(--gold2);
+
+  font-weight: 900;
+
+  font-size: 13px;
+
+  text-transform: uppercase;
+}
+
+
+/* ============================================================
+   TICKET / PICKUP
+   ============================================================ */
+
+.bottomInfo {
+
+  height: 76px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 12px;
+
+  background: var(--panel2);
+}
+
+.ticketBox,
+.pickupBox {
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 10px 15px;
+
+  gap: 12px;
+}
+
+.pickupBox {
+
+  border-left:
+    1px solid var(--border);
+}
+
+.infoIcon {
+
+  font-size: 28px;
+
+  color: var(--gold2);
+
+  width: 38px;
+
+  text-align: center;
+}
+
+.infoLabel {
+
+  font-size: 11px;
+
+  color: var(--gold2);
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+}
+
+.infoValue {
+
+  font-size: 18px;
+
+  font-weight: 900;
+
+  margin-top: 4px;
+
+  white-space: nowrap;
+}
+
+
+/* ============================================================
+   RIGHT PANEL
+   ============================================================ */
+
+.rightPanel {
+
+  display: grid;
+
+  grid-template-rows:
+    auto
+    1fr;
+
+  gap: 10px;
+}
+
+
+/* ============================================================
+   PAYMENT
+   ============================================================ */
+
+.payment {
+
+  min-height: 0;
+
+  border:
+    1px solid var(--gold);
+
+  border-radius: 15px;
+
+  background: var(--panel);
+
+  padding: 13px 18px;
+
+  box-shadow: var(--shadow);
+}
+
+.paymentHeader {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color: var(--gold2);
+
+  font-size: 18px;
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+}
+
+.wallet {
+
+  font-size: 27px;
+}
+
+.payRow {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-top: 13px;
+
+  font-size: 16px;
+}
+
+.payRow strong {
+
+  font-size: 18px;
+}
+
+.payRow.balance {
+
+  margin-top: 10px;
+
+  padding-top: 12px;
+
+  border-top:
+    1px solid var(--line);
+
+  color: var(--gold2);
+}
+
+.payRow.balance strong {
+
+  font-size: 26px;
+}
+
+.paid {
+
+  color: var(--green);
+}
+
+.additional {
+
+  color: var(--text);
+}
+
+
+/* ============================================================
+   SIGNATURE
+   ============================================================ */
+
+.signaturePanel {
+
+  min-height: 0;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 15px;
+
+  background: var(--panel);
+
+  padding: 13px 18px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  box-shadow: var(--shadow);
+}
+
+.sigTitle {
+
+  color: var(--gold2);
+
+  font-weight: 900;
+
+  font-size: 18px;
+
+  text-transform: uppercase;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.sigCanvasWrap {
+
+  flex: 1;
+
+  min-height: 0;
+
+  margin-top: 9px;
+
+  background: var(--signatureBackground);
+
+  border-radius: 11px;
+
+  overflow: hidden;
+
+  position: relative;
+}
+
+#signatureCanvas {
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  touch-action: none;
+}
+
+.sigHint {
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  top: 43%;
+
+  text-align: center;
+
+  color: #999;
+
+  font-size: 18px;
+
+  pointer-events: none;
+
+  font-style: italic;
+}
+
+.sigBottom {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-top: 8px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+.sigButtons {
+
+  display: flex;
+
+  gap: 7px;
+}
+
+.sigButtons button {
+
+  border:
+    1px solid var(--border);
+
+  background: var(--panel2);
+
+  color: var(--text);
+
+  border-radius: 8px;
+
+  padding: 6px 10px;
+
+  font-weight: 800;
+}
+
+.sigButtons .approve {
+
+  background: var(--gold);
+
+  border-color: var(--gold);
+
+  color: #fff;
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+
+  height: 46px;
+
+  flex: 0 0 46px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 18px;
+
+  background: var(--header);
+
+  font-size: 13px;
+
+  box-shadow: var(--shadow);
+}
+
+.footer strong {
+
+  color: var(--text);
+}
+
+.updated {
+
+  color: var(--muted);
+}
+
+
+/* ============================================================
+   IDLE SCREEN
+   ============================================================ */
+
+.idle {
+
+  position: fixed;
+
+  inset: 0;
+
+  background: var(--background);
+
+  display: none;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  z-index: 50;
+}
+
+.idle.show {
+
+  display: flex;
+}
+
+.idleLogo {
+
+  font-size: 38px;
+
+  font-weight: 900;
+}
+
+.idleLogo span {
+
+  color: var(--gold2);
+}
+
+.idle p {
+
+  color: var(--muted);
+
+  font-size: 18px;
+}
+
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+
+.toast {
+
+  position: fixed;
+
+  left: 50%;
+
+  bottom: 65px;
+
+  transform: translateX(-50%);
+
+  background: var(--panel);
+
+  border:
+    1px solid var(--gold);
+
+  color: var(--text);
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  display: none;
+
+  z-index: 100;
+
+  font-weight: 800;
+}
+
+.toast.show {
+
+  display: block;
+}
+
+
+/* ============================================================
+   OLDER / SMALLER IPAD
+   ============================================================ */
+
+@media (max-width:850px) {
+
+  .header {
+
+    grid-template-columns:
+      220px
+      1fr
+      180px;
+  }
+
+  .headerTitle {
+
+    font-size: 23px;
+  }
+
+  .logoWords strong {
+
+    font-size: 20px;
+  }
+
+  .logoWords span {
+
+    font-size: 11px;
+  }
+
+  .content {
+
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .deviceArea {
+
+    grid-template-columns:
+      145px
+      1fr;
+
+    height: 275px;
+  }
+
+  .deviceImage {
+
+    width: 140px;
+
+    height: 225px;
+  }
+
+  .customerName {
+
+    font-size: 23px;
+  }
+
+  .detail strong {
+
+    font-size: 14px;
+  }
+}
+
+
+/* ============================================================
+   SHORT SCREEN
+   ============================================================ */
+
+@media (max-height:700px) {
+
+  #app {
+
+    padding: 6px;
+
+    gap: 6px;
+  }
+
+  .header {
+
+    height: 70px;
+
+    flex-basis: 70px;
+  }
+
+  .logoMark {
+
+    width: 43px;
+
+    height: 51px;
+
+    flex-basis: 43px;
+  }
+
+  .logoWords strong {
+
+    font-size: 19px;
+  }
+
+  .logoWords span {
+
+    font-size: 10px;
+  }
+
+  .headerTitle {
+
+    font-size: 22px;
+  }
+
+  .clock .time {
+
+    font-size: 21px;
+  }
+
+  .customerRow {
+
+    min-height: 72px;
+  }
+
+  .avatar {
+
+    width: 62px;
+
+    height: 62px;
+
+    flex-basis: 62px;
+  }
+
+  .customerName {
+
+    font-size: 22px;
+  }
+
+  .deviceArea {
+
+    height: 235px;
+
+    grid-template-columns:
+      130px
+      1fr;
+  }
+
+  .deviceImage {
+
+    width: 125px;
+
+    height: 200px;
+  }
+
+  .detail {
+
+    margin: 7px 0;
+  }
+
+  .bottomInfo {
+
+    height: 65px;
+  }
+
+  .footer {
+
+    height: 38px;
+
+    flex-basis: 38px;
+  }
+}
+
+
+/* ============================================================
+   PORTRAIT
+   ============================================================ */
+
+@media (orientation:portrait) {
+
+  body:after {
+
+    content:
+      "Please rotate the iPad to landscape";
+
+    position: fixed;
+
+    inset: 0;
+
+    background: var(--background);
+
+    z-index: 999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: var(--text);
+
+    font-size: 24px;
+
+    font-weight: 900;
+
+    padding: 30px;
+  }
+}
+
 </style>
 </head>
 
+
 <body>
+
 <div id="app">
+
+  <!-- ========================================================
+       HEADER
+       ======================================================== -->
+
   <header class="header">
+
     <div class="logo">
-      <div class="logoMark" aria-label="Brother's iRepairs logo"></div>
-      <div class="logoWords">
-        <strong>BROTHER'S</strong>
-        <span>iREPAIRS</span>
+
+      <div
+        class="logoMark"
+        aria-label="Brother's iRepairs logo">
       </div>
+
+      <div class="logoWords">
+
+        <strong>BROTHER'S</strong>
+
+        <span>iREPAIRS</span>
+
+      </div>
+
     </div>
-    <div class="headerTitle">CUSTOMER DISPLAY</div>
+
+
+    <div class="headerTitle">
+      CUSTOMER DISPLAY
+    </div>
+
+
     <div class="clock">
-      <div class="date" id="dateText">—</div>
-      <div class="time" id="timeText">—</div>
+
+      <div
+        class="date"
+        id="dateText">
+        —
+      </div>
+
+      <div
+        class="time"
+        id="timeText">
+        —
+      </div>
+
     </div>
+
   </header>
 
+
+  <!-- ========================================================
+       MAIN CONTENT
+       ======================================================== -->
+
   <main class="content">
+
+
+    <!-- ======================================================
+         LEFT SIDE
+         ====================================================== -->
+
     <section class="panel">
-      <div class="sectionTitle">Customer</div>
-      <div class="customerRow">
-        <div class="avatar">
-          <svg viewBox="0 0 64 64" fill="none">
-            <circle cx="32" cy="21" r="11" fill="currentColor"/>
-            <path d="M12 53c2-12 10-18 20-18s18 6 20 18" fill="currentColor"/>
-          </svg>
-        </div>
-        <div style="min-width:0">
-          <div class="customerName" id="customerName">Waiting for customer</div>
-          <div class="contact">
-            <span id="customerPhone">—</span>
-            <span id="customerEmail">—</span>
-          </div>
-        </div>
+
+
+      <!-- CUSTOMER -->
+
+      <div class="sectionTitle">
+        Customer
       </div>
+
+
+      <div class="customerRow">
+
+        <div class="avatar">
+
+          <svg
+            viewBox="0 0 64 64"
+            fill="none">
+
+            <circle
+              cx="32"
+              cy="21"
+              r="11"
+              fill="currentColor"
+            />
+
+            <path
+              d="M12 53c2-12 10-18 20-18s18 6 20 18"
+              fill="currentColor"
+            />
+
+          </svg>
+
+        </div>
+
+
+        <div style="min-width:0">
+
+          <div
+            class="customerName"
+            id="customerName">
+            Waiting for customer
+          </div>
+
+          <div class="contact">
+
+            <span id="customerPhone">
+              —
+            </span>
+
+            <span id="customerEmail">
+              —
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
 
       <div class="goldLine"></div>
-      <div class="sectionTitle deviceTitle">Device Information</div>
+
+
+      <!-- DEVICE -->
+
+      <div class="sectionTitle deviceTitle">
+        Device Information
+      </div>
+
 
       <div class="deviceArea">
-        <div class="deviceImage" id="deviceImage"></div>
-        <div class="deviceDetails">
-          <div class="detail"><label>Device</label><strong id="device">—</strong></div>
-          <div class="detail"><label>Model</label><strong id="model">—</strong></div>
-          <div class="detail"><label>Color</label><strong id="color">—</strong></div>
-          <div class="detail"><label>Storage</label><strong id="storage">—</strong></div>
-          <div class="detail"><label>IMEI</label><strong id="imei">—</strong></div>
-          <div class="detail"><label>Problem</label><strong class="problem" id="problem">—</strong></div>
-          <div class="detail"><label>Status</label><strong><span class="statusBadge" id="status">—</span></strong></div>
+
+        <div
+          class="deviceImage"
+          id="deviceImage">
         </div>
+
+
+        <div class="deviceDetails">
+
+
+          <div class="detail">
+
+            <label>
+              Device
+            </label>
+
+            <strong id="device">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="detail">
+
+            <label>
+              Model
+            </label>
+
+            <strong id="model">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="detail">
+
+            <label>
+              Color
+            </label>
+
+            <strong id="color">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="detail">
+
+            <label>
+              Storage
+            </label>
+
+            <strong id="storage">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="detail">
+
+            <label>
+              IMEI
+            </label>
+
+            <strong id="imei">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="detail">
+
+            <label>
+              Problem
+            </label>
+
+            <strong
+              class="problem"
+              id="problem">
+              —
+            </strong>
+
+          </div>
+
+
+          <div class="detail">
+
+            <label>
+              Status
+            </label>
+
+            <strong>
+
+              <span
+                class="statusBadge"
+                id="status">
+                —
+              </span>
+
+            </strong>
+
+          </div>
+
+
+        </div>
+
       </div>
+
+
+      <!-- TICKET / PICKUP -->
 
       <div class="bottomInfo">
+
+
         <div class="ticketBox">
-          <div class="infoIcon">▱</div>
-          <div><div class="infoLabel">Ticket Number</div><div class="infoValue" id="ticket">—</div></div>
+
+          <div class="infoIcon">
+            ▱
+          </div>
+
+          <div>
+
+            <div class="infoLabel">
+              Ticket Number
+            </div>
+
+            <div
+              class="infoValue"
+              id="ticket">
+              —
+            </div>
+
+          </div>
+
         </div>
+
+
         <div class="pickupBox">
-          <div class="infoIcon">▣</div>
-          <div><div class="infoLabel">Expected Pickup</div><div class="infoValue" id="pickup">To be confirmed</div></div>
+
+          <div class="infoIcon">
+            ▣
+          </div>
+
+          <div>
+
+            <div class="infoLabel">
+              Expected Pickup
+            </div>
+
+            <div
+              class="infoValue"
+              id="pickup">
+              To be confirmed
+            </div>
+
+          </div>
+
         </div>
+
+
       </div>
+
+
     </section>
+
+
+    <!-- ======================================================
+         RIGHT SIDE
+         ====================================================== -->
 
     <section class="rightPanel">
+
+
+      <!-- PAYMENT -->
+
       <div class="payment">
-        <div class="paymentHeader"><span class="wallet">▣</span> Payment Summary</div>
-        <div class="payRow"><span>Total Repair</span><strong id="totalRepair">TTD 0.00</strong></div>
-        <div class="payRow"><span>Deposit Paid</span><strong class="paid" id="deposit">TTD 0.00</strong></div>
-        <div class="payRow"><span>Additional Payments</span><strong class="additional" id="additional">TTD 0.00</strong></div>
-        <div class="payRow balance"><span>BALANCE DUE</span><strong id="balance">TTD 0.00</strong></div>
+
+        <div class="paymentHeader">
+
+          <span class="wallet">
+            ▣
+          </span>
+
+          Payment Summary
+
+        </div>
+
+
+        <div class="payRow">
+
+          <span>
+            Total Repair
+          </span>
+
+          <strong id="totalRepair">
+            TTD 0.00
+          </strong>
+
+        </div>
+
+
+        <div class="payRow">
+
+          <span>
+            Deposit Paid
+          </span>
+
+          <strong
+            class="paid"
+            id="deposit">
+            TTD 0.00
+          </strong>
+
+        </div>
+
+
+        <div class="payRow">
+
+          <span>
+            Additional Payments
+          </span>
+
+          <strong
+            class="additional"
+            id="additional">
+            TTD 0.00
+          </strong>
+
+        </div>
+
+
+        <div class="payRow balance">
+
+          <span>
+            BALANCE DUE
+          </span>
+
+          <strong id="balance">
+            TTD 0.00
+          </strong>
+
+        </div>
+
       </div>
+
+
+      <!-- SIGNATURE -->
 
       <div class="signaturePanel">
-        <div class="sigTitle"><span style="font-size:25px">✎</span> Customer Signature</div>
+
+
+        <div class="sigTitle">
+
+          <span style="font-size:25px">
+            ✎
+          </span>
+
+          Customer Signature
+
+        </div>
+
+
         <div class="sigCanvasWrap">
-          <canvas id="signatureCanvas"></canvas>
-          <div class="sigHint" id="sigHint">Sign here</div>
-        </div>
-        <div class="sigBottom">
-          <span>By signing, I acknowledge the repair information and payment details above.</span>
-          <div class="sigButtons">
-            <button id="clearSig">Clear</button>
-            <button class="approve" id="approveSig">Approve</button>
+
+          <canvas
+            id="signatureCanvas">
+          </canvas>
+
+          <div
+            class="sigHint"
+            id="sigHint">
+            Sign here
           </div>
+
         </div>
+
+
+        <div class="sigBottom">
+
+          <span>
+            By signing, I acknowledge the repair
+            information and payment details above.
+          </span>
+
+
+          <div class="sigButtons">
+
+            <button id="clearSig">
+              Clear
+            </button>
+
+            <button
+              class="approve"
+              id="approveSig">
+              Approve
+            </button>
+
+          </div>
+
+        </div>
+
+
       </div>
+
+
     </section>
+
+
   </main>
 
+
+  <!-- ========================================================
+       FOOTER
+       ======================================================== -->
+
   <footer class="footer">
-    <strong>ⓘ THANK YOU FOR CHOOSING BROTHER'S iREPAIRS!</strong>
-    <span class="updated">↻ LAST UPDATED: <span id="updated">—</span></span>
+
+    <strong>
+      ⓘ THANK YOU FOR CHOOSING BROTHER'S iREPAIRS!
+    </strong>
+
+    <span class="updated">
+
+      ↻ LAST UPDATED:
+
+      <span id="updated">
+        —
+      </span>
+
+    </span>
+
   </footer>
+
 </div>
 
-<div class="idle" id="idle">
+
+<!-- ==========================================================
+     IDLE SCREEN
+     ========================================================== -->
+
+<div
+  class="idle"
+  id="idle">
+
   <div>
-    <div class="idleLogo">BROTHER'S <span>iREPAIRS</span></div>
-    <p>Welcome. Your repair information will appear here.</p>
+
+    <div class="idleLogo">
+
+      BROTHER'S
+
+      <span>
+        iREPAIRS
+      </span>
+
+    </div>
+
+    <p>
+      Welcome. Your repair information will appear here.
+    </p>
+
   </div>
+
 </div>
 
-<div class="toast" id="toast"></div>
+
+<div
+  class="toast"
+  id="toast">
+</div>
+
 
 <script>
+
 /* ============================================================
    BROTHER'S iREPAIRS CUSTOMER DISPLAY
-   Designed for older iPad Safari / 1024x768 landscape.
+
+   Supabase
+   Older iPad Safari compatible
+   Automatic Light / Dark Mode
    ============================================================ */
 
-var SUPABASE_URL = "https://uyladmvbqoeqwtdfiuqr.supabase.co";
-var SUPABASE_KEY = "sb_publishable_9CPop4CNMAzM_DtWyzO4LQ_RURFRMF2";
+
+/* ============================================================
+   SUPABASE
+   ============================================================ */
+
+var SUPABASE_URL =
+  "https://uyladmvbqoeqwtdfiuqr.supabase.co";
+
+var SUPABASE_KEY =
+  "sb_publishable_9CPop4CNMAzM_DtWyzO4LQ_RURFRMF2";
+
+
+/* ============================================================
+   DISPLAY
+   ============================================================ */
 
 var displayId = "main";
+
 var currentRepair = null;
+
 var currentTicket = null;
+
 var pollTimer = null;
-var canvas = document.getElementById("signatureCanvas");
-var ctx = canvas.getContext("2d");
+
+
+/* ============================================================
+   SIGNATURE
+   ============================================================ */
+
+var canvas =
+  document.getElementById(
+    "signatureCanvas"
+  );
+
+var ctx =
+  canvas.getContext("2d");
+
 var drawing = false;
+
 var hasSignature = false;
 
-function money(value){
+
+/* ============================================================
+   MONEY
+   ============================================================ */
+
+function money(value) {
+
   var n = Number(value);
-  if (!isFinite(n)) n = 0;
+
+  if (!isFinite(n)) {
+    n = 0;
+  }
+
   return "TTD " + n.toFixed(2);
 }
 
-function safe(value, fallback){
-  if (value === null || value === undefined || value === "") return fallback || "—";
+
+/* ============================================================
+   SAFE VALUE
+   ============================================================ */
+
+function safe(value, fallback) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+
+    return fallback || "—";
+  }
+
   return String(value);
 }
 
-function supabaseHeaders(){
+
+/* ============================================================
+   SUPABASE HEADERS
+   ============================================================ */
+
+function supabaseHeaders() {
+
   return {
-    "apikey": SUPABASE_KEY,
-    "Authorization": "Bearer " + SUPABASE_KEY,
-    "Content-Type": "application/json"
+
+    "apikey":
+      SUPABASE_KEY,
+
+    "Authorization":
+      "Bearer " + SUPABASE_KEY,
+
+    "Content-Type":
+      "application/json"
+
   };
+
 }
 
-function supabaseGet(table, query){
-  var url = SUPABASE_URL + "/rest/v1/" + table + "?" + query;
-  return fetch(url, {headers:supabaseHeaders()}).then(function(r){
-    if (!r.ok) throw new Error("Supabase GET " + r.status);
+
+/* ============================================================
+   SUPABASE GET
+   ============================================================ */
+
+function supabaseGet(
+  table,
+  query
+) {
+
+  var url =
+    SUPABASE_URL +
+    "/rest/v1/" +
+    table +
+    "?" +
+    query;
+
+  return fetch(
+    url,
+    {
+      headers:
+        supabaseHeaders()
+    }
+  )
+  .then(function(r) {
+
+    if (!r.ok) {
+
+      throw new Error(
+        "Supabase GET " +
+        r.status
+      );
+
+    }
+
     return r.json();
+
   });
+
 }
 
-function supabasePatch(table, query, body){
-  var url = SUPABASE_URL + "/rest/v1/" + table + "?" + query;
-  return fetch(url, {
-    method:"PATCH",
-    headers:Object.assign({},supabaseHeaders(),{"Prefer":"return=minimal"}),
-    body:JSON.stringify(body)
-  }).then(function(r){
-    if (!r.ok) throw new Error("Supabase PATCH " + r.status);
+
+/* ============================================================
+   SUPABASE PATCH
+   ============================================================ */
+
+function supabasePatch(
+  table,
+  query,
+  body
+) {
+
+  var url =
+    SUPABASE_URL +
+    "/rest/v1/" +
+    table +
+    "?" +
+    query;
+
+  return fetch(
+    url,
+    {
+
+      method:
+        "PATCH",
+
+      headers:
+        Object.assign(
+          {},
+          supabaseHeaders(),
+          {
+            "Prefer":
+              "return=minimal"
+          }
+        ),
+
+      body:
+        JSON.stringify(body)
+
+    }
+  )
+  .then(function(r) {
+
+    if (!r.ok) {
+
+      throw new Error(
+        "Supabase PATCH " +
+        r.status
+      );
+
+    }
+
     return true;
+
   });
+
 }
 
-/* Try to read the current customer-display row first.
-   Then use its ticket_number to read the matching repair. */
-function loadDisplay(){
-  var q = "display_id=eq." + encodeURIComponent(displayId) + "&select=*";
-  supabaseGet("customer_display", q)
-    .then(function(rows){
-      if (!rows || !rows.length) {
-        showIdle();
-        return;
-      }
-      var display = rows[0];
-      var ticket = display.ticket_number;
 
-      if (!ticket || display.mode === "idle") {
-        showIdle();
-        return;
-      }
+/* ============================================================
+   LOAD CUSTOMER DISPLAY
+   ============================================================ */
 
-      if (ticket !== currentTicket) {
-        currentTicket = ticket;
-        clearSignature();
-      }
+function loadDisplay() {
 
-      return loadRepair(ticket);
-    })
-    .catch(function(err){
-      console.log("Display load error:", err);
-    });
-}
+  var q =
+    "display_id=eq." +
+    encodeURIComponent(displayId) +
+    "&select=*";
 
-function loadRepair(ticket){
-  var q = "ticket_number=eq." + encodeURIComponent(ticket) + "&select=*";
-  return supabaseGet("repairs", q).then(function(rows){
-    if (!rows || !rows.length) {
+
+  supabaseGet(
+    "customer_display",
+    q
+  )
+
+  .then(function(rows) {
+
+    if (
+      !rows ||
+      !rows.length
+    ) {
+
       showIdle();
+
       return;
     }
-    currentRepair = rows[0];
-    renderRepair(currentRepair);
+
+
+    var display =
+      rows[0];
+
+    var ticket =
+      display.ticket_number;
+
+
+    if (
+      !ticket ||
+      display.mode === "idle"
+    ) {
+
+      showIdle();
+
+      return;
+    }
+
+
+    if (
+      ticket !==
+      currentTicket
+    ) {
+
+      currentTicket =
+        ticket;
+
+      clearSignature();
+
+    }
+
+
+    return loadRepair(
+      ticket
+    );
+
+  })
+
+  .catch(function(err) {
+
+    console.log(
+      "Display load error:",
+      err
+    );
+
   });
+
 }
 
-function renderRepair(r){
+
+/* ============================================================
+   LOAD REPAIR
+   ============================================================ */
+
+function loadRepair(ticket) {
+
+  var q =
+    "ticket_number=eq." +
+    encodeURIComponent(ticket) +
+    "&select=*";
+
+
+  return supabaseGet(
+    "repairs",
+    q
+  )
+
+  .then(function(rows) {
+
+    if (
+      !rows ||
+      !rows.length
+    ) {
+
+      showIdle();
+
+      return;
+    }
+
+
+    currentRepair =
+      rows[0];
+
+
+    renderRepair(
+      currentRepair
+    );
+
+  });
+
+}
+
+
+/* ============================================================
+   RENDER REPAIR
+   ============================================================ */
+
+function renderRepair(r) {
+
   hideIdle();
 
-  var customerName = r.customer_name;
+
+  /* CUSTOMER */
+
+  var customerName =
+    r.customer_name;
+
+
   if (!customerName) {
-    customerName = safe(r.customer_first_name,"") + " " + safe(r.customer_last_name,"");
+
+    customerName =
+      safe(
+        r.customer_first_name,
+        ""
+      ) +
+      " " +
+      safe(
+        r.customer_last_name,
+        ""
+      );
+
   }
-  customerName = customerName.trim() || "Customer";
 
-  setText("customerName", customerName);
-  setText("customerPhone", safe(r.phone,""));
-  setText("customerEmail", safe(r.email,""));
 
-  setText("device", safe(r.device || r.device_type,"iPhone"));
-  setText("model", safe(r.model,"—"));
-  setText("color", safe(r.color,"—"));
-  setText("storage", safe(r.storage,"—"));
-  setText("imei", safe(r.imei,"—"));
-  setText("problem", safe(r.problem_description,"—"));
-  setText("status", safe(r.status,"Received"));
-  setText("ticket", safe(r.ticket_number,"—"));
+  customerName =
+    customerName.trim() ||
+    "Customer";
 
-  var total = firstNumber(r.final_repair_amount, r.total_amount, r.total_repair, r.repair_total, 0);
-  var deposit = firstNumber(r.deposit, 0);
+
+  setText(
+    "customerName",
+    customerName
+  );
+
+  setText(
+    "customerPhone",
+    safe(
+      r.phone,
+      ""
+    )
+  );
+
+  setText(
+    "customerEmail",
+    safe(
+      r.email,
+      ""
+    )
+  );
+
+
+  /* DEVICE */
+
+  setText(
+    "device",
+    safe(
+      r.device ||
+      r.device_type,
+      "iPhone"
+    )
+  );
+
+  setText(
+    "model",
+    safe(
+      r.model,
+      "—"
+    )
+  );
+
+  setText(
+    "color",
+    safe(
+      r.color,
+      "—"
+    )
+  );
+
+  setText(
+    "storage",
+    safe(
+      r.storage,
+      "—"
+    )
+  );
+
+  setText(
+    "imei",
+    safe(
+      r.imei,
+      "—"
+    )
+  );
+
+  setText(
+    "problem",
+    safe(
+      r.problem_description,
+      "—"
+    )
+  );
+
+  setText(
+    "status",
+    safe(
+      r.status,
+      "Received"
+    )
+  );
+
+  setText(
+    "ticket",
+    safe(
+      r.ticket_number,
+      "—"
+    )
+  );
+
+
+  /* ========================================================
+     PAYMENT
+
+     Supports your current Supabase columns:
+
+     total_amount
+     deposit
+     payment_amount
+     balance_due
+
+     Also supports the older names as fallbacks.
+     ======================================================== */
+
+
+  var total =
+    firstNumber(
+      r.total_amount,
+      r.final_repair_amount,
+      r.total_repair,
+      r.repair_total,
+      0
+    );
+
+
+  var deposit =
+    firstNumber(
+      r.deposit,
+      0
+    );
+
+
+  var additional =
+    firstNumber(
+      r.additional_payments_total,
+      r.additional_payment_total,
+      r.additional_payments,
+      0
+    );
+
 
   /*
     IMPORTANT:
-    payment_amount is NOT treated as an additional payment.
-    It is only used as a fallback when your database has no
-    separate additional-payment total.
+
+    payment_amount is NOT automatically treated
+    as an additional payment.
+
+    Your Swift code uses payment_amount for
+    additional payments only.
+
+    We only use it if no dedicated additional
+    payment field exists.
   */
-  var additional = firstNumber(
-    r.additional_payments_total,
-    r.additional_payment_total,
-    r.additional_payments,
-    0
+
+  if (
+    additional === 0 &&
+    r.payment_amount !== null &&
+    r.payment_amount !== undefined &&
+    r.payment_amount !== "" &&
+    Number(r.payment_amount) > 0
+  ) {
+
+    additional =
+      Number(
+        r.payment_amount
+      );
+
+  }
+
+
+  var totalPaid =
+    deposit +
+    additional;
+
+
+  var balance =
+    firstNumber(
+      r.balance_due,
+      Math.max(
+        total -
+        totalPaid,
+        0
+      )
+    );
+
+
+  setText(
+    "totalRepair",
+    money(total)
   );
 
-  var totalPaid = deposit + additional;
-  var balance = firstNumber(r.balance_due, Math.max(total - totalPaid, 0));
+  setText(
+    "deposit",
+    money(deposit)
+  );
 
-  setText("totalRepair", money(total));
-  setText("deposit", money(deposit));
-  setText("additional", money(additional));
-  setText("balance", money(balance));
+  setText(
+    "additional",
+    money(additional)
+  );
 
-  var pickup = r.estimated_pickup_date || r.estimatedPickupDate;
-  setText("pickup", formatPickup(pickup));
+  setText(
+    "balance",
+    money(balance)
+  );
+
+
+  /* PICKUP */
+
+  var pickup =
+    r.estimated_pickup_date ||
+    r.estimatedPickupDate;
+
+
+  setText(
+    "pickup",
+    formatPickup(
+      pickup
+    )
+  );
+
+
+  /* DEVICE IMAGE */
 
   renderDeviceImage(r);
-  setText("updated", new Date().toLocaleTimeString());
+
+
+  /* UPDATED */
+
+  setText(
+    "updated",
+    new Date()
+      .toLocaleTimeString()
+  );
+
+
   resizeCanvas();
+
 }
 
-function firstNumber(){
-  var args = arguments;
-  for(var i=0;i<args.length;i++){
-    if(args[i] !== null && args[i] !== undefined && args[i] !== "" && isFinite(Number(args[i]))) {
-      return Number(args[i]);
+
+/* ============================================================
+   NUMBER HELPER
+   ============================================================ */
+
+function firstNumber() {
+
+  var args =
+    arguments;
+
+
+  for (
+    var i = 0;
+    i < args.length;
+    i++
+  ) {
+
+    if (
+      args[i] !== null &&
+      args[i] !== undefined &&
+      args[i] !== "" &&
+      isFinite(
+        Number(args[i])
+      )
+    ) {
+
+      return Number(
+        args[i]
+      );
+
     }
+
   }
+
+
   return 0;
+
 }
 
-function formatPickup(value){
-  if(!value) return "To be confirmed";
-  var d = new Date(value);
-  if (isNaN(d.getTime())) return safe(value,"To be confirmed");
-  return d.toLocaleDateString([], {weekday:"short",month:"short",day:"numeric"}) +
-    " " + d.toLocaleTimeString([], {hour:"numeric",minute:"2-digit"});
-}
 
-function setText(id,value){
-  var el=document.getElementById(id);
-  if(el) el.textContent=value;
-}
+/* ============================================================
+   PICKUP DATE
+   ============================================================ */
 
-function showIdle(){
-  document.getElementById("idle").className="idle show";
-}
+function formatPickup(value) {
 
-function hideIdle(){
-  document.getElementById("idle").className="idle";
-}
+  if (!value) {
 
-/* Device image:
-   If your repairs table later contains front_photo_url,
-   device_image_url, or photo_url, that image is used.
-   Otherwise an iPhone-style image is generated locally so
-   the page still works without another asset. */
-function renderDeviceImage(r){
-  var box=document.getElementById("deviceImage");
-  var url=r.device_image_url || r.front_photo_url || r.photo_url || "";
-  if(url){
-    box.innerHTML="";
-    var img=document.createElement("img");
-    img.src=url;
-    img.alt=safe(r.model,"Device");
-    img.onerror=function(){box.innerHTML=phoneSVG(r.color)};
-    box.appendChild(img);
-  }else{
-    box.innerHTML=phoneSVG(r.color);
+    return "To be confirmed";
+
   }
-}
 
-function phoneSVG(colorName){
-  var color="#7a6ac8";
-  var c=(colorName||"").toLowerCase();
-  if(c.indexOf("gold")>=0) color="#c89a35";
-  else if(c.indexOf("silver")>=0 || c.indexOf("white")>=0) color="#cfcfcf";
-  else if(c.indexOf("black")>=0) color="#202020";
-  else if(c.indexOf("blue")>=0) color="#3e72bd";
-  else if(c.indexOf("red")>=0) color="#a92e35";
-  else if(c.indexOf("green")>=0) color="#4c715b";
 
-  return '<svg viewBox="0 0 190 270" width="170" height="245" xmlns="http://www.w3.org/2000/svg">'+
-    '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'+
-    '<stop offset="0" stop-color="'+color+'"/><stop offset="1" stop-color="#151515"/></linearGradient></defs>'+
-    '<rect x="22" y="3" width="146" height="264" rx="25" fill="#050505" stroke="#777" stroke-width="3"/>'+
-    '<rect x="28" y="10" width="134" height="250" rx="20" fill="url(#g)"/>'+
-    '<rect x="67" y="17" width="56" height="13" rx="7" fill="#050505"/>'+
-    '<circle cx="46" cy="44" r="13" fill="#111" stroke="#aaa" stroke-width="2"/>'+
-    '<circle cx="46" cy="44" r="6" fill="#333"/>'+
-    '<circle cx="75" cy="44" r="13" fill="#111" stroke="#aaa" stroke-width="2"/>'+
-    '<circle cx="75" cy="44" r="6" fill="#333"/>'+
-    '<circle cx="60" cy="69" r="13" fill="#111" stroke="#aaa" stroke-width="2"/>'+
-    '<circle cx="60" cy="69" r="6" fill="#333"/>'+
-    '<circle cx="133" cy="239" r="3" fill="#aaa"/>'+
-    '</svg>';
-}
+  var d =
+    new Date(value);
 
-/* ---------------- Signature pad ---------------- */
 
-function resizeCanvas(){
-  var box=canvas.parentNode.getBoundingClientRect();
-  if(box.width<10 || box.height<10) return;
+  if (
+    isNaN(
+      d.getTime()
+    )
+  ) {
 
-  var old=hasSignature ? canvas.toDataURL() : null;
-  var ratio=Math.max(1,window.devicePixelRatio || 1);
-  canvas.width=Math.floor(box.width*ratio);
-  canvas.height=Math.floor(box.height*ratio);
-  canvas.style.width=box.width+"px";
-  canvas.style.height=box.height+"px";
-  ctx=canvas.getContext("2d");
-  ctx.scale(ratio,ratio);
-  ctx.lineWidth=2.4;
-  ctx.lineCap="round";
-  ctx.lineJoin="round";
-  ctx.strokeStyle="#111";
+    return safe(
+      value,
+      "To be confirmed"
+    );
 
-  if(old){
-    var img=new Image();
-    img.onload=function(){ctx.drawImage(img,0,0,box.width,box.height)};
-    img.src=old;
   }
+
+
+  return (
+
+    d.toLocaleDateString(
+      [],
+      {
+        weekday:
+          "short",
+
+        month:
+          "short",
+
+        day:
+          "numeric"
+      }
+    )
+
+    +
+
+    " " +
+
+    d.toLocaleTimeString(
+      [],
+      {
+        hour:
+          "numeric",
+
+        minute:
+          "2-digit"
+      }
+    )
+
+  );
+
 }
 
-function point(e){
-  var rect=canvas.getBoundingClientRect();
-  var touch=e.touches ? e.touches[0] : e;
-  return {x:touch.clientX-rect.left,y:touch.clientY-rect.top};
+
+/* ============================================================
+   SET TEXT
+   ============================================================ */
+
+function setText(
+  id,
+  value
+) {
+
+  var el =
+    document.getElementById(
+      id
+    );
+
+
+  if (el) {
+
+    el.textContent =
+      value;
+
+  }
+
 }
 
-function startDraw(e){
-  e.preventDefault();
-  drawing=true;hasSignature=true;
-  document.getElementById("sigHint").style.display="none";
-  var p=point(e);ctx.beginPath();ctx.moveTo(p.x,p.y);
+
+/* ============================================================
+   IDLE
+   ============================================================ */
+
+function showIdle() {
+
+  document.getElementById(
+    "idle"
+  ).className =
+    "idle show";
+
 }
 
-function moveDraw(e){
-  if(!drawing)return;
-  e.preventDefault();
-  var p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke();
+
+function hideIdle() {
+
+  document.getElementById(
+    "idle"
+  ).className =
+    "idle";
+
 }
 
-function endDraw(e){
-  if(!drawing)return;
-  if(e)e.preventDefault();
-  drawing=false;
+
+/* ============================================================
+   DEVICE IMAGE
+   ============================================================ */
+
+function renderDeviceImage(r) {
+
+  var box =
+    document.getElementById(
+      "deviceImage"
+    );
+
+
+  var url =
+    r.device_image_url ||
+    r.front_photo_url ||
+    r.photo_url ||
+    "";
+
+
+  if (url) {
+
+    box.innerHTML =
+      "";
+
+    var img =
+      document.createElement(
+        "img"
+      );
+
+
+    img.src =
+      url;
+
+
+    img.alt =
+      safe(
+        r.model,
+        "Device"
+      );
+
+
+    img.onerror =
+      function() {
+
+        box.innerHTML =
+          phoneSVG(
+            r.color
+          );
+
+      };
+
+
+    box.appendChild(
+      img
+    );
+
+  }
+
+  else {
+
+    box.innerHTML =
+      phoneSVG(
+        r.color
+      );
+
+  }
+
 }
 
-canvas.addEventListener("mousedown",startDraw,false);
-canvas.addEventListener("mousemove",moveDraw,false);
-canvas.addEventListener("mouseup",endDraw,false);
-canvas.addEventListener("mouseleave",endDraw,false);
-canvas.addEventListener("touchstart",startDraw,false);
-canvas.addEventListener("touchmove",moveDraw,false);
-canvas.addEventListener("touchend",endDraw,false);
 
-function clearSignature(){
-  hasSignature=false;
-  var box=canvas.parentNode.getBoundingClientRect();
-  if(!box.width)return;
-  ctx.clearRect(0,0,box.width,box.height);
-  document.getElementById("sigHint").style.display="block";
+/* ============================================================
+   FALLBACK PHONE
+   ============================================================ */
+
+function phoneSVG(
+  colorName
+) {
+
+  var color =
+    "#7a6ac8";
+
+
+  var c =
+    (
+      colorName ||
+      ""
+    ).toLowerCase();
+
+
+  if (
+    c.indexOf(
+      "gold"
+    ) >= 0
+  ) {
+
+    color =
+      "#c89a35";
+
+  }
+
+  else if (
+    c.indexOf(
+      "silver"
+    ) >= 0 ||
+    c.indexOf(
+      "white"
+    ) >= 0
+  ) {
+
+    color =
+      "#cfcfcf";
+
+  }
+
+  else if (
+    c.indexOf(
+      "black"
+    ) >= 0
+  ) {
+
+    color =
+      "#202020";
+
+  }
+
+  else if (
+    c.indexOf(
+      "blue"
+    ) >= 0
+  ) {
+
+    color =
+      "#3e72bd";
+
+  }
+
+  else if (
+    c.indexOf(
+      "red"
+    ) >= 0
+  ) {
+
+    color =
+      "#a92e35";
+
+  }
+
+  else if (
+    c.indexOf(
+      "green"
+    ) >= 0
+  ) {
+
+    color =
+      "#4c715b";
+
+  }
+
+
+  return (
+
+    '<svg ' +
+
+    'viewBox="0 0 190 270" ' +
+
+    'width="170" ' +
+
+    'height="245" ' +
+
+    'xmlns="http://www.w3.org/2000/svg">' +
+
+    '<defs>' +
+
+    '<linearGradient ' +
+
+    'id="g" ' +
+
+    'x1="0" ' +
+
+    'y1="0" ' +
+
+    'x2="1" ' +
+
+    'y2="1">' +
+
+    '<stop ' +
+
+    'offset="0" ' +
+
+    'stop-color="' +
+    color +
+    '"/>' +
+
+    '<stop ' +
+
+    'offset="1" ' +
+
+    'stop-color="#151515"/>' +
+
+    '</linearGradient>' +
+
+    '</defs>' +
+
+    '<rect ' +
+
+    'x="22" ' +
+
+    'y="3" ' +
+
+    'width="146" ' +
+
+    'height="264" ' +
+
+    'rx="25" ' +
+
+    'fill="#050505" ' +
+
+    'stroke="#777" ' +
+
+    'stroke-width="3"/>' +
+
+    '<rect ' +
+
+    'x="28" ' +
+
+    'y="10" ' +
+
+    'width="134" ' +
+
+    'height="250" ' +
+
+    'rx="20" ' +
+
+    'fill="url(#g)"/>' +
+
+    '<rect ' +
+
+    'x="67" ' +
+
+    'y="17" ' +
+
+    'width="56" ' +
+
+    'height="13" ' +
+
+    'rx="7" ' +
+
+    'fill="#050505"/>' +
+
+    '<circle ' +
+
+    'cx="46" ' +
+
+    'cy="44" ' +
+
+    'r="13" ' +
+
+    'fill="#111" ' +
+
+    'stroke="#aaa" ' +
+
+    'stroke-width="2"/>' +
+
+    '<circle ' +
+
+    'cx="46" ' +
+
+    'cy="44" ' +
+
+    'r="6" ' +
+
+    'fill="#333"/>' +
+
+    '<circle ' +
+
+    'cx="75" ' +
+
+    'cy="44" ' +
+
+    'r="13" ' +
+
+    'fill="#111" ' +
+
+    'stroke="#aaa" ' +
+
+    'stroke-width="2"/>' +
+
+    '<circle ' +
+
+    'cx="75" ' +
+
+    'cy="44" ' +
+
+    'r="6" ' +
+
+    'fill="#333"/>' +
+
+    '<circle ' +
+
+    'cx="60" ' +
+
+    'cy="69" ' +
+
+    'r="13" ' +
+
+    'fill="#111" ' +
+
+    'stroke="#aaa" ' +
+
+    'stroke-width="2"/>' +
+
+    '<circle ' +
+
+    'cx="60" ' +
+
+    'cy="69" ' +
+
+    'r="6" ' +
+
+    'fill="#333"/>' +
+
+    '<circle ' +
+
+    'cx="133" ' +
+
+    'cy="239" ' +
+
+    'r="3" ' +
+
+    'fill="#aaa"/>' +
+
+    '</svg>'
+
+  );
+
 }
 
-document.getElementById("clearSig").onclick=function(){
-  clearSignature();
-};
 
-document.getElementById("approveSig").onclick=function(){
-  if(!currentRepair || !hasSignature){
-    showToast("Please sign before approving.");
+/* ============================================================
+   SIGNATURE PAD
+   ============================================================ */
+
+function resizeCanvas() {
+
+  var box =
+    canvas.parentNode
+      .getBoundingClientRect();
+
+
+  if (
+    box.width < 10 ||
+    box.height < 10
+  ) {
+
     return;
+
   }
 
-  var data=canvas.toDataURL("image/png");
-  var now=new Date().toISOString();
 
-  /*
-    These fields match the approval fields already used by the
-    Swift RepairTicket model. If your RLS policy permits updates,
-    the approval is saved to the repair row.
-  */
-  var body={
-    customer_approved:true,
-    customer_approval_date:now,
-    customer_signature_data:data
+  var old =
+    hasSignature
+      ? canvas.toDataURL()
+      : null;
+
+
+  var ratio =
+    Math.max(
+      1,
+      window.devicePixelRatio ||
+      1
+    );
+
+
+  canvas.width =
+    Math.floor(
+      box.width *
+      ratio
+    );
+
+
+  canvas.height =
+    Math.floor(
+      box.height *
+      ratio
+    );
+
+
+  canvas.style.width =
+    box.width +
+    "px";
+
+
+  canvas.style.height =
+    box.height +
+    "px";
+
+
+  ctx =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  ctx.scale(
+    ratio,
+    ratio
+  );
+
+
+  ctx.lineWidth =
+    2.4;
+
+  ctx.lineCap =
+    "round";
+
+  ctx.lineJoin =
+    "round";
+
+  ctx.strokeStyle =
+    "#111";
+
+
+  if (old) {
+
+    var img =
+      new Image();
+
+
+    img.onload =
+      function() {
+
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          box.width,
+          box.height
+        );
+
+      };
+
+
+    img.src =
+      old;
+
+  }
+
+}
+
+
+/* ============================================================
+   POINTER POSITION
+   ============================================================ */
+
+function point(e) {
+
+  var rect =
+    canvas.getBoundingClientRect();
+
+
+  var touch =
+    e.touches
+      ? e.touches[0]
+      : e;
+
+
+  return {
+
+    x:
+      touch.clientX -
+      rect.left,
+
+    y:
+      touch.clientY -
+      rect.top
+
   };
 
-  supabasePatch(
-    "repairs",
-    "ticket_number=eq."+encodeURIComponent(currentRepair.ticket_number),
-    body
-  ).then(function(){
-    showToast("Customer approval saved.");
-  }).catch(function(err){
-    console.log(err);
-    showToast("Signature captured. Supabase update was not accepted.");
-  });
-};
-
-function showToast(message){
-  var t=document.getElementById("toast");
-  t.textContent=message;
-  t.className="toast show";
-  setTimeout(function(){t.className="toast"},2500);
 }
 
-/* ---------------- Clock ---------------- */
 
-function updateClock(){
-  var now=new Date();
-  setText("dateText",now.toLocaleDateString([],{
-    weekday:"short",month:"short",day:"numeric",year:"numeric"
-  }));
-  setText("timeText",now.toLocaleTimeString([],{
-    hour:"numeric",minute:"2-digit"
-  }));
+/* ============================================================
+   DRAW SIGNATURE
+   ============================================================ */
+
+function startDraw(e) {
+
+  e.preventDefault();
+
+  drawing =
+    true;
+
+  hasSignature =
+    true;
+
+
+  document.getElementById(
+    "sigHint"
+  ).style.display =
+    "none";
+
+
+  var p =
+    point(e);
+
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    p.x,
+    p.y
+  );
+
 }
+
+
+function moveDraw(e) {
+
+  if (!drawing) {
+
+    return;
+
+  }
+
+
+  e.preventDefault();
+
+
+  var p =
+    point(e);
+
+
+  ctx.lineTo(
+    p.x,
+    p.y
+  );
+
+
+  ctx.stroke();
+
+}
+
+
+function endDraw(e) {
+
+  if (!drawing) {
+
+    return;
+
+  }
+
+
+  if (e) {
+
+    e.preventDefault();
+
+  }
+
+
+  drawing =
+    false;
+
+}
+
+
+/* ============================================================
+   EVENTS
+   ============================================================ */
+
+canvas.addEventListener(
+  "mousedown",
+  startDraw,
+  false
+);
+
+canvas.addEventListener(
+  "mousemove",
+  moveDraw,
+  false
+);
+
+canvas.addEventListener(
+  "mouseup",
+  endDraw,
+  false
+);
+
+canvas.addEventListener(
+  "mouseleave",
+  endDraw,
+  false
+);
+
+canvas.addEventListener(
+  "touchstart",
+  startDraw,
+  false
+);
+
+canvas.addEventListener(
+  "touchmove",
+  moveDraw,
+  false
+);
+
+canvas.addEventListener(
+  "touchend",
+  endDraw,
+  false
+);
+
+
+/* ============================================================
+   CLEAR SIGNATURE
+   ============================================================ */
+
+function clearSignature() {
+
+  hasSignature =
+    false;
+
+
+  var box =
+    canvas.parentNode
+      .getBoundingClientRect();
+
+
+  if (!box.width) {
+
+    return;
+
+  }
+
+
+  ctx.clearRect(
+    0,
+    0,
+    box.width,
+    box.height
+  );
+
+
+  document.getElementById(
+    "sigHint"
+  ).style.display =
+    "block";
+
+}
+
+
+document.getElementById(
+  "clearSig"
+).onclick =
+  function() {
+
+    clearSignature();
+
+  };
+
+
+/* ============================================================
+   APPROVE SIGNATURE
+   ============================================================ */
+
+document.getElementById(
+  "approveSig"
+).onclick =
+  function() {
+
+
+    if (
+      !currentRepair ||
+      !hasSignature
+    ) {
+
+      showToast(
+        "Please sign before approving."
+      );
+
+      return;
+
+    }
+
+
+    var data =
+      canvas.toDataURL(
+        "image/png"
+      );
+
+
+    var now =
+      new Date()
+        .toISOString();
+
+
+    var body = {
+
+      customer_approved:
+        true,
+
+      customer_approval_date:
+        now,
+
+      customer_signature_data:
+        data
+
+    };
+
+
+    supabasePatch(
+
+      "repairs",
+
+      "ticket_number=eq." +
+      encodeURIComponent(
+        currentRepair.ticket_number
+      ),
+
+      body
+
+    )
+
+    .then(
+      function() {
+
+        showToast(
+          "Customer approval saved."
+        );
+
+      }
+    )
+
+    .catch(
+      function(err) {
+
+        console.log(err);
+
+        showToast(
+          "Signature captured. Supabase update was not accepted."
+        );
+
+      }
+    );
+
+  };
+
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+
+function showToast(
+  message
+) {
+
+  var t =
+    document.getElementById(
+      "toast"
+    );
+
+
+  t.textContent =
+    message;
+
+
+  t.className =
+    "toast show";
+
+
+  setTimeout(
+    function() {
+
+      t.className =
+        "toast";
+
+    },
+    2500
+  );
+
+}
+
+
+/* ============================================================
+   CLOCK
+   ============================================================ */
+
+function updateClock() {
+
+  var now =
+    new Date();
+
+
+  setText(
+
+    "dateText",
+
+    now.toLocaleDateString(
+      [],
+      {
+        weekday:
+          "short",
+
+        month:
+          "short",
+
+        day:
+          "numeric",
+
+        year:
+          "numeric"
+      }
+    )
+
+  );
+
+
+  setText(
+
+    "timeText",
+
+    now.toLocaleTimeString(
+      [],
+      {
+        hour:
+          "numeric",
+
+        minute:
+          "2-digit"
+      }
+    )
+
+  );
+
+}
+
+
 updateClock();
-setInterval(updateClock,1000);
 
-/* ---------------- Start / refresh ---------------- */
 
-window.addEventListener("resize",resizeCanvas,false);
-window.addEventListener("orientationchange",function(){setTimeout(resizeCanvas,300)},false);
+setInterval(
+  updateClock,
+  1000
+);
+
+
+/* ============================================================
+   SYSTEM LIGHT/DARK MODE
+   ============================================================ */
+
+var appearanceQuery =
+  window.matchMedia
+    ? window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      )
+    : null;
+
+
+function systemAppearanceChanged() {
+
+  /*
+    CSS automatically handles the colors.
+    We refresh the page styling by forcing
+    a repaint without reloading Supabase data.
+  */
+
+  document.documentElement
+    .style.display =
+      "none";
+
+  document.documentElement
+    .offsetHeight;
+
+  document.documentElement
+    .style.display =
+      "";
+
+}
+
+
+if (appearanceQuery) {
+
+  if (
+    appearanceQuery.addEventListener
+  ) {
+
+    appearanceQuery.addEventListener(
+      "change",
+      systemAppearanceChanged
+    );
+
+  }
+
+  else if (
+    appearanceQuery.addListener
+  ) {
+
+    /* Older Safari */
+
+    appearanceQuery.addListener(
+      systemAppearanceChanged
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   RESIZE / ORIENTATION
+   ============================================================ */
+
+window.addEventListener(
+  "resize",
+  resizeCanvas,
+  false
+);
+
+
+window.addEventListener(
+  "orientationchange",
+  function() {
+
+    setTimeout(
+      resizeCanvas,
+      300
+    );
+
+  },
+  false
+);
+
+
+/* ============================================================
+   START
+   ============================================================ */
 
 resizeCanvas();
+
 loadDisplay();
 
-/* Polling is intentionally used instead of Supabase Realtime.
-   This is lighter and more compatible with older iPad Safari. */
-pollTimer=setInterval(loadDisplay,2500);
+
+/* ============================================================
+   REFRESH EVERY 2.5 SECONDS
+
+   Kept because this is more compatible with
+   the older iPad Safari setup than requiring
+   Supabase Realtime.
+   ============================================================ */
+
+pollTimer =
+  setInterval(
+    loadDisplay,
+    2500
+  );
+
 </script>
+
 </body>
 </html>
