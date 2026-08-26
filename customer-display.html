@@ -2,2505 +2,1232 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width,
-    initial-scale=1.0,
-    maximum-scale=1.0,
-    user-scalable=no"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#050505">
+<title>Brother's iRepairs — Customer Display</title>
 
-<title>Brother's iRepairs</title>
-
+<!-- Supabase JS. Kept to a version that works well in older Safari/iPad browsers. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
-/* =========================================================
-   RESET
-========================================================= */
-
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-
-    background:
-        radial-gradient(
-            circle at 50% 0%,
-            #292219 0%,
-            #0d0c0a 35%,
-            #050505 75%
-        );
-
-    color: white;
-
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Display",
-        "SF Pro Text",
-        Helvetica,
-        Arial,
-        sans-serif;
-
-    overflow: hidden;
-
-    -webkit-user-select: none;
-    user-select: none;
-}
-
-/* =========================================================
-   APP
-========================================================= */
-
-#app {
-    width: 100%;
-    height: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
-
-    position: relative;
-    overflow: hidden;
-}
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-.glow-top {
-    position: absolute;
-
-    width: 600px;
-    height: 600px;
-
-    top: -350px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(220,170,70,.18),
-            rgba(220,170,70,.05) 45%,
-            transparent 70%
-        );
-
-    pointer-events: none;
-}
-
-.glow-bottom {
-    position: absolute;
-
-    width: 650px;
-    height: 350px;
-
-    bottom: -280px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,255,255,.04),
-            transparent 70%
-        );
-
-    pointer-events: none;
-}
-
-/* =========================================================
-   MAIN SCREEN
-========================================================= */
-
-.screen {
-    width: 100%;
-    height: 100%;
-
-    position: relative;
-    z-index: 2;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    padding:
-        25px
-        clamp(18px, 5vw, 60px)
-        40px;
-
-    scrollbar-width: none;
-}
-
-.screen::-webkit-scrollbar {
-    display: none;
-}
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header {
-    width: 100%;
-    text-align: center;
-    flex-shrink: 0;
-}
-
-.logo {
-    width: min(210px, 55vw);
-    max-height: 125px;
-
-    object-fit: contain;
-
-    filter:
-        drop-shadow(
-            0 10px 25px
-            rgba(0,0,0,.45)
-        );
-}
-
-.brand {
-    margin-top: 4px;
-
-    font-size:
-        clamp(24px, 4vw, 38px);
-
-    font-weight: 800;
-
-    letter-spacing: 2px;
-
-    color: #f1ce84;
-
-    text-transform: uppercase;
-}
-
-.tagline {
-    margin-top: 7px;
-
-    font-size:
-        clamp(10px, 1.8vw, 16px);
-
-    letter-spacing: 2px;
-
-    color:
-        rgba(255,255,255,.55);
-
-    text-transform: uppercase;
-}
-
-.gold-line {
-    width:
-        min(260px, 55vw);
-
-    height: 2px;
-
-    margin:
-        18px auto 25px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #d6a74e,
-            #f3d58e,
-            #d6a74e,
-            transparent
-        );
-}
-
-/* =========================================================
-   WELCOME
-========================================================= */
-
-#welcomeView {
-    width: min(850px, 100%);
-
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-}
-
-.welcome-title {
-    font-size:
-        clamp(40px, 7vw, 70px);
-
-    font-weight: 800;
-
-    margin-bottom: 15px;
-}
-
-.welcome-text {
-    max-width: 650px;
-
-    font-size:
-        clamp(17px, 3vw, 26px);
-
-    line-height: 1.5;
-
-    color:
-        rgba(255,255,255,.62);
-}
-
-.ready-badge {
-    margin-top: 30px;
-
-    padding:
-        12px 22px;
-
-    border-radius: 100px;
-
-    background:
-        rgba(255,255,255,.05);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    color:
-        rgba(255,255,255,.55);
-}
-
-/* =========================================================
-   REPAIR VIEW
-========================================================= */
-
-#repairView {
-    width: min(850px, 100%);
-
-    margin: 0 auto;
-
-    padding-bottom: 35px;
-}
-
-.welcome-label {
-    text-align: center;
-
-    color:
-        rgba(255,255,255,.45);
-
-    font-size:
-        clamp(13px, 2vw, 18px);
-
-    text-transform: uppercase;
-
-    letter-spacing: 2px;
-}
-
-.customer-name {
-    text-align: center;
-
-    margin-top: 6px;
-
-    font-size:
-        clamp(35px, 7vw, 65px);
-
-    font-weight: 800;
-
-    line-height: 1.05;
-}
-
-.ticket {
-    text-align: center;
-
-    margin-top: 12px;
-
-    color: #dfb85e;
-
-    font-size:
-        clamp(14px, 2vw, 19px);
-
-    font-weight: 700;
-
-    letter-spacing: 2px;
-}
-
-/* =========================================================
-   DEVICE CARD
-========================================================= */
-
-.device-card {
-    margin-top: 25px;
-
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    gap: 20px;
-
-    padding:
-        clamp(22px, 4vw, 35px);
-
-    border-radius: 28px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.085),
-            rgba(255,255,255,.03)
-        );
-
-    border:
-        1px solid
-        rgba(255,255,255,.09);
-
-    box-shadow:
-        0 20px 55px
-        rgba(0,0,0,.30);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-}
-
-.device-icon {
-    width:
-        clamp(70px, 12vw, 105px);
-
-    height:
-        clamp(70px, 12vw, 105px);
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 25px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(220,175,80,.22),
-            rgba(220,175,80,.05)
-        );
-
-    border:
-        1px solid
-        rgba(220,175,80,.22);
-
-    font-size:
-        clamp(35px, 7vw, 55px);
-}
-
-.device-label {
-    color:
-        rgba(255,255,255,.40);
-
-    font-size:
-        clamp(11px, 1.7vw, 15px);
-
-    text-transform: uppercase;
-
-    letter-spacing: 1.5px;
-
-    margin-bottom: 5px;
-}
-
-.device-name {
-    font-size:
-        clamp(23px, 4.5vw, 38px);
-
-    font-weight: 750;
-}
-
-.device-model {
-    margin-top: 5px;
-
-    font-size:
-        clamp(15px, 2.5vw, 21px);
-
-    color:
-        rgba(255,255,255,.58);
-}
-
-/* =========================================================
-   DEVICE DETAILS
-========================================================= */
-
-.details-card {
-    margin-top: 18px;
-
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 12px;
-}
-
-.detail-box {
-    padding: 20px;
-
-    min-height: 90px;
-
-    border-radius: 20px;
-
-    background:
-        rgba(255,255,255,.055);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-}
-
-.detail-label {
-    font-size: 12px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1.5px;
-
-    color:
-        rgba(255,255,255,.40);
-
-    margin-bottom: 8px;
-}
-
-.detail-value {
-    font-size:
-        clamp(18px, 3vw, 25px);
-
-    font-weight: 750;
-
-    color: white;
-
-    word-break: break-word;
-}
-
-/* =========================================================
-   PAYMENT CARD
-========================================================= */
-
-.payment-card {
-    margin-top: 18px;
-
-    width: 100%;
-
-    padding:
-        clamp(22px, 4vw, 32px);
-
-    border-radius: 26px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(220,175,80,.14),
-            rgba(220,175,80,.035)
-        );
-
-    border:
-        1px solid
-        rgba(220,175,80,.20);
-
-    box-shadow:
-        0 18px 45px
-        rgba(0,0,0,.20);
-}
-
-.payment-title {
-    text-align: center;
-
-    font-size:
-        clamp(22px, 4vw, 30px);
-
-    font-weight: 800;
-
-    margin-bottom: 20px;
-}
-
-.payment-row {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    padding: 13px 0;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.08);
-}
-
-.payment-row:last-child {
-    border-bottom: none;
-}
-
-.payment-label {
-    color:
-        rgba(255,255,255,.60);
-
-    font-size:
-        clamp(15px, 2.3vw, 19px);
-}
-
-.payment-value {
-    font-size:
-        clamp(17px, 2.8vw, 23px);
-
-    font-weight: 750;
-}
-
-.balance-row {
-    margin-top: 7px;
-
-    padding-top: 18px;
-
-    border-top:
-        1px solid
-        rgba(220,175,80,.25);
-
-    border-bottom: none;
-}
-
-.balance-label {
-    color: #f1ce84;
-
-    font-weight: 800;
-}
-
-.balance-value {
-    color: #f1ce84;
-
-    font-size:
-        clamp(23px, 4vw, 34px);
-
-    font-weight: 850;
-}
-
-/* =========================================================
-   PICKUP CARD
-========================================================= */
-
-.pickup-card {
-    margin-top: 18px;
-
-    width: 100%;
-
-    padding: 25px;
-
-    border-radius: 24px;
-
-    text-align: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.07),
-            rgba(255,255,255,.025)
-        );
-
-    border:
-        1px solid
-        rgba(255,255,255,.09);
-}
-
-.pickup-label {
-    color:
-        rgba(255,255,255,.45);
-
-    font-size: 13px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 2px;
-}
-
-.pickup-date {
-    margin-top: 8px;
-
-    color: #f1ce84;
-
-    font-size:
-        clamp(25px, 5vw, 40px);
-
-    font-weight: 800;
-}
-
-/* =========================================================
-   APPROVAL CARD
-========================================================= */
-
-.approval-card {
-    width: 100%;
-
-    margin-top: 20px;
-
-    padding:
-        clamp(24px, 5vw, 38px);
-
-    border-radius: 28px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(220,175,80,.13),
-            rgba(220,175,80,.035)
-        );
-
-    border:
-        1px solid
-        rgba(220,175,80,.20);
-
-    box-shadow:
-        0 20px 55px
-        rgba(0,0,0,.25);
-}
-
-.approval-heading {
-    text-align: center;
-
-    font-size:
-        clamp(24px, 4vw, 36px);
-
-    font-weight: 800;
-
-    margin-bottom: 8px;
-}
-
-.approval-description {
-    text-align: center;
-
-    max-width: 650px;
-
-    margin:
-        0 auto 22px;
-
-    color:
-        rgba(255,255,255,.58);
-
-    font-size:
-        clamp(14px, 2.2vw, 19px);
-
-    line-height: 1.45;
-}
-
-/* =========================================================
-   SIGNATURE
-========================================================= */
-
-.signature-wrapper {
-    position: relative;
-
-    width: 100%;
-
-    height:
-        clamp(170px, 28vw, 240px);
-
-    background: #fafafa;
-
-    border-radius: 20px;
-
-    overflow: hidden;
-
-    border:
-        3px solid
-        rgba(255,255,255,.15);
-
-    box-shadow:
-        inset 0 0 20px
-        rgba(0,0,0,.08);
-}
-
-#signatureCanvas {
-    width: 100%;
-    height: 100%;
-
-    display: block;
-
-    touch-action: none;
-
-    cursor: crosshair;
-}
-
-.signature-placeholder {
-    position: absolute;
-
-    left: 0;
-    right: 0;
-
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    text-align: center;
-
-    pointer-events: none;
-
-    color: #999;
-
-    font-size:
-        clamp(17px, 3vw, 25px);
-
-    font-weight: 600;
-}
-
-.signature-line {
-    position: absolute;
-
-    left: 10%;
-    right: 10%;
-
-    bottom: 32px;
-
-    border-bottom:
-        2px dashed
-        #b5b5b5;
-
-    pointer-events: none;
-}
-
-.signature-label {
-    position: absolute;
-
-    left: 11%;
-
-    bottom: 9px;
-
-    color: #888;
-
-    font-size: 11px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
-
-    pointer-events: none;
-}
-
-/* =========================================================
-   CHECKBOX
-========================================================= */
-
-.approval-check {
-    display: flex;
-
-    align-items: flex-start;
-
-    gap: 12px;
-
-    margin-top: 18px;
-
-    color:
-        rgba(255,255,255,.70);
-
-    font-size:
-        clamp(13px, 2vw, 16px);
-
-    line-height: 1.4;
-}
-
-.approval-check input {
-    width: 22px;
-    height: 22px;
-
-    flex-shrink: 0;
-
-    accent-color: #d7a84f;
-}
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.button-row {
-    display: flex;
-
-    gap: 12px;
-
-    margin-top: 15px;
-}
-
-.clear-button {
-    flex: 1;
-
-    min-height: 55px;
-
-    border-radius: 15px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    background:
-        rgba(255,255,255,.06);
-
-    color: white;
-
-    font-size: 16px;
-
-    font-weight: 700;
-}
-
-.approve-button {
-    flex: 2;
-
-    min-height: 55px;
-
-    border: none;
-
-    border-radius: 15px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #f0c96e,
-            #c99431
-        );
-
-    color: #17120a;
-
-    font-size: 16px;
-
-    font-weight: 800;
-
-    box-shadow:
-        0 8px 25px
-        rgba(210,160,60,.22);
-}
-
-button:active {
-    transform: scale(.98);
-}
-
-/* =========================================================
-   APPROVED
-========================================================= */
-
-#approvedView {
-    display: none;
-
-    text-align: center;
-
-    padding:
-        25px 10px;
-}
-
-.approved-icon {
-    width: 78px;
-    height: 78px;
-
-    margin: 0 auto 18px;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background:
-        rgba(71,190,117,.14);
-
-    border:
-        1px solid
-        rgba(71,190,117,.30);
-
-    color: #72d994;
-
-    font-size: 38px;
-}
-
-.approved-title {
-    font-size:
-        clamp(27px, 5vw, 42px);
-
-    font-weight: 800;
-
-    margin-bottom: 10px;
-}
-
-.approved-text {
-    color:
-        rgba(255,255,255,.60);
-
-    font-size:
-        clamp(15px, 2.5vw, 21px);
-
-    line-height: 1.5;
-}
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.footer {
-    text-align: center;
-
-    flex-shrink: 0;
-
-    padding-top: 25px;
-
-    color:
-        rgba(255,255,255,.35);
-
-    font-size:
-        clamp(11px, 1.7vw, 15px);
-}
-
-.footer strong {
-    color:
-        rgba(255,255,255,.58);
-}
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-#loadingScreen {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 100;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    flex-direction: column;
-
-    background: #050505;
-}
-
-.loading-logo {
-    width: 180px;
-
-    max-height: 120px;
-
-    object-fit: contain;
-
-    margin-bottom: 25px;
-}
-
-.spinner {
-    width: 30px;
-    height: 30px;
-
-    border-radius: 50%;
-
-    border:
-        3px solid
-        rgba(255,255,255,.12);
-
-    border-top-color:
-        #d7a84f;
-
-    animation:
-        spin .8s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* =========================================================
-   IPAD
-========================================================= */
-
-@media (max-width: 768px) {
-
-    .screen {
-        padding:
-            18px
-            18px
-            25px;
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #050505;
+        color: #fff;
+        font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
     }
 
-    .logo {
-        width: 175px;
-        max-height: 105px;
+    body { min-height: 100vh; }
+
+    .app {
+        width: 100%;
+        height: 100vh;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background:
+            radial-gradient(circle at 50% -20%, rgba(205,157,36,.16), transparent 42%),
+            #050505;
+    }
+
+    /* ---------------- HEADER ---------------- */
+    .header {
+        height: 78px;
+        min-height: 78px;
+        border: 1px solid #222;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #121212, #090909);
+        display: grid;
+        grid-template-columns: 260px 1fr 260px;
+        align-items: center;
+        padding: 0 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,.35);
     }
 
     .brand {
-        font-size: 25px;
-        letter-spacing: 1.5px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
-    .tagline {
-        font-size: 10px;
-        letter-spacing: 1.4px;
+    .brand-mark {
+        width: 48px;
+        height: 48px;
+        flex: 0 0 48px;
+    }
+
+    .brand-name {
+        font-size: 21px;
+        font-weight: 800;
+        letter-spacing: .5px;
+        line-height: 1;
+    }
+
+    .brand-sub {
+        margin-top: 4px;
+        color: #d6a72d;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 3px;
+    }
+
+    .header-title {
+        text-align: center;
+        font-size: 29px;
+        font-weight: 900;
+        letter-spacing: 2px;
+    }
+
+    .clock {
+        text-align: right;
+    }
+
+    .clock-date {
+        font-size: 13px;
+        color: #ddd;
+    }
+
+    .clock-time {
+        margin-top: 3px;
+        color: #d8aa2e;
+        font-size: 25px;
+        font-weight: 900;
+    }
+
+    /* ---------------- MAIN TWO COLUMNS ---------------- */
+    .main {
+        min-height: 0;
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .column {
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .card {
+        min-width: 0;
+        border: 1px solid #282828;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #121212, #0d0d0d);
+        box-shadow: 0 7px 20px rgba(0,0,0,.30);
+        overflow: hidden;
+    }
+
+    .section-title {
+        color: #d8aa2e;
+        font-size: 15px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    /* LEFT */
+    .customer-card {
+        flex: 1;
+        padding: 16px 18px;
+        min-height: 0;
+    }
+
+    .customer-top {
+        display: flex;
+        align-items: center;
+        min-height: 92px;
+    }
+
+    .avatar {
+        width: 78px;
+        height: 78px;
+        border-radius: 50%;
+        border: 2px solid #d8aa2e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+        flex: 0 0 78px;
+        background: #0b0b0b;
+    }
+
+    .avatar svg {
+        width: 45px;
+        height: 45px;
+        fill: #e5bb4e;
+    }
+
+    .customer-label {
+        color: #d8aa2e;
+        font-size: 13px;
+        font-weight: 900;
+        margin-bottom: 3px;
+    }
+
+    .customer-name {
+        font-size: 26px;
+        font-weight: 900;
+        line-height: 1.05;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .customer-contact {
+        color: #ddd;
+        font-size: 14px;
+        margin-top: 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .gold-line {
-        margin:
-            14px auto 18px;
+        height: 1px;
+        background: #d8aa2e;
+        opacity: .65;
+        margin: 10px 0 12px;
     }
 
-    .device-card {
-        padding: 20px;
-        border-radius: 22px;
+    .device-title-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
     }
 
-    .details-card {
+    .device-grid {
+        display: grid;
+        grid-template-columns: 105px 1fr;
+        gap: 5px 12px;
+        align-items: center;
+    }
+
+    .device-label {
+        color: #999;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 800;
+    }
+
+    .device-value {
+        min-width: 0;
+        font-size: 16px;
+        font-weight: 800;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .problem {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .status-pill {
+        display: inline-block;
+        padding: 5px 11px;
+        border-radius: 999px;
+        border: 1px solid #d8aa2e;
+        color: #f1c74f;
+        background: rgba(216,170,46,.10);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: .7px;
+    }
+
+    .ticket-pickup {
+        margin-top: 12px;
+        border: 1px solid #292929;
+        border-radius: 14px;
+        padding: 11px 14px;
+        display: grid;
         grid-template-columns: 1fr 1fr;
+        background: #111;
     }
 
-    .approval-card {
-        padding: 22px;
-        border-radius: 22px;
+    .small-label {
+        color: #d8aa2e;
+        font-size: 10px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .7px;
     }
 
-    .signature-wrapper {
+    .ticket-number {
+        font-size: 21px;
+        font-weight: 900;
+        margin-top: 2px;
+    }
+
+    .pickup-date {
+        font-size: 15px;
+        font-weight: 800;
+        margin-top: 2px;
+    }
+
+    /* RIGHT */
+    .payment-card {
         height: 190px;
+        min-height: 190px;
+        padding: 15px 18px;
     }
 
-    .button-row {
+    .payment-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .payment-icon {
+        width: 28px;
+        height: 28px;
+        fill: #d8aa2e;
+    }
+
+    .money-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 31px;
+        font-size: 15px;
+    }
+
+    .money-value {
+        font-size: 18px;
+        font-weight: 900;
+    }
+
+    .payment-divider {
+        height: 1px;
+        background: #d8aa2e;
+        opacity: .65;
+        margin: 4px 0 5px;
+    }
+
+    .balance-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2px;
+    }
+
+    .balance-label {
+        color: #d8aa2e;
+        font-size: 19px;
+        font-weight: 900;
+    }
+
+    .balance-value {
+        color: #e5bb35;
+        font-size: 26px;
+        font-weight: 900;
+    }
+
+    .signature-card {
+        min-height: 0;
+        flex: 1;
+        padding: 13px 18px 12px;
+        display: flex;
         flex-direction: column;
     }
 
-    .clear-button,
-    .approve-button {
+    .signature-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 27px;
+        margin-bottom: 8px;
+    }
+
+    .signature-icon {
+        width: 26px;
+        height: 26px;
+        fill: #d8aa2e;
+    }
+
+    .signature-box {
+        min-height: 0;
+        flex: 1;
+        position: relative;
+        border-radius: 13px;
+        overflow: hidden;
+        background: #fff;
+        border: 2px solid #d8aa2e;
+        touch-action: none;
+    }
+
+    #signatureCanvas {
+        position: absolute;
+        left: 0;
+        top: 0;
         width: 100%;
-        flex: none;
-    }
-}
-
-/* =========================================================
-   SHORT SCREEN
-========================================================= */
-
-@media (max-height: 650px) {
-
-    .screen {
-        padding-top: 10px;
+        height: 100%;
+        touch-action: none;
     }
 
-    .logo {
-        width: 135px;
-        max-height: 75px;
+    .signature-hint {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 35%;
+        text-align: center;
+        color: #c8c8c8;
+        font-size: 25px;
+        font-family: "Snell Roundhand", "Bradley Hand", cursive;
+        pointer-events: none;
+        opacity: .65;
     }
 
-    .brand {
-        font-size: 22px;
+    .signature-line {
+        position: absolute;
+        left: 25px;
+        right: 25px;
+        bottom: 38px;
+        height: 1px;
+        background: #222;
+        pointer-events: none;
     }
 
-    .gold-line {
-        margin:
-            8px auto 12px;
+    .signature-consent {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: 10px;
+        text-align: center;
+        color: #222;
+        font-size: 9px;
+        font-weight: 600;
+        pointer-events: none;
     }
 
-    .device-card {
-        margin-top: 15px;
-        padding: 15px;
+    .signature-actions {
+        height: 38px;
+        min-height: 38px;
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
     }
 
-    .approval-card {
-        margin-top: 15px;
-        padding: 18px;
+    button {
+        border: 0;
+        border-radius: 10px;
+        font-family: inherit;
+        font-weight: 900;
+        font-size: 12px;
     }
 
-    .signature-wrapper {
-        height: 150px;
+    .clear-btn {
+        width: 100px;
+        color: #ddd;
+        background: #222;
     }
 
+    .approve-btn {
+        flex: 1;
+        color: #090909;
+        background: #d8aa2e;
+    }
+
+    .approve-btn:active,
+    .clear-btn:active {
+        opacity: .7;
+    }
+
+    .approved-message {
+        display: none;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        color: #6ee18b;
+        font-size: 16px;
+        font-weight: 900;
+        text-align: center;
+    }
+
+    /* FOOTER */
     .footer {
-        padding-top: 12px;
+        height: 42px;
+        min-height: 42px;
+        border: 1px solid #252525;
+        border-radius: 14px;
+        background: #0d0d0d;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        color: #ddd;
+        font-size: 12px;
     }
-}
 
+    .footer strong { color: #fff; }
+    .footer-gold { color: #d8aa2e; }
+
+    /* IDLE SCREEN */
+    .idle {
+        position: absolute;
+        inset: 0;
+        z-index: 20;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background:
+            radial-gradient(circle at center, rgba(216,170,46,.13), transparent 40%),
+            #050505;
+        text-align: center;
+    }
+
+    .idle-inner { padding: 30px; }
+    .idle-logo {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto 14px;
+    }
+    .idle-title {
+        font-size: 38px;
+        font-weight: 900;
+        letter-spacing: 2px;
+    }
+    .idle-sub {
+        margin-top: 10px;
+        color: #d8aa2e;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .loading {
+        position: fixed;
+        right: 12px;
+        bottom: 55px;
+        font-size: 9px;
+        color: #555;
+        z-index: 50;
+    }
+
+    /* 1024 x 768 landscape and similar older iPads */
+    @media (max-width: 900px) {
+        .header { grid-template-columns: 220px 1fr 190px; padding: 0 14px; }
+        .brand-name { font-size: 18px; }
+        .header-title { font-size: 24px; }
+        .clock-time { font-size: 21px; }
+        .customer-name { font-size: 23px; }
+        .device-value { font-size: 14px; }
+        .payment-card { height: 178px; min-height: 178px; }
+    }
+
+    /* Portrait fallback: still no page scrolling; reduce sizes. */
+    @media (orientation: portrait) {
+        .app { padding: 5px; gap: 5px; }
+        .header {
+            height: 58px; min-height: 58px;
+            grid-template-columns: 155px 1fr 115px;
+            padding: 0 8px;
+            border-radius: 12px;
+        }
+        .brand-mark { width: 36px; height: 36px; flex-basis: 36px; }
+        .brand-name { font-size: 13px; }
+        .brand-sub { font-size: 8px; letter-spacing: 1px; }
+        .header-title { font-size: 16px; }
+        .clock-date { font-size: 8px; }
+        .clock-time { font-size: 14px; }
+        .main { gap: 5px; }
+        .card { border-radius: 12px; }
+        .customer-card { padding: 9px; }
+        .avatar { width: 50px; height: 50px; flex-basis: 50px; margin-right: 8px; }
+        .customer-name { font-size: 16px; }
+        .customer-contact { font-size: 9px; }
+        .section-title { font-size: 10px; }
+        .device-grid { grid-template-columns: 65px 1fr; gap: 3px 6px; }
+        .device-label { font-size: 8px; }
+        .device-value { font-size: 10px; }
+        .ticket-pickup { padding: 7px; }
+        .ticket-number { font-size: 14px; }
+        .pickup-date { font-size: 10px; }
+        .payment-card { height: 125px; min-height: 125px; padding: 8px 10px; }
+        .money-row { min-height: 21px; font-size: 10px; }
+        .money-value { font-size: 12px; }
+        .balance-label { font-size: 13px; }
+        .balance-value { font-size: 17px; }
+        .signature-card { padding: 8px 10px; }
+        .signature-hint { font-size: 17px; }
+        .signature-line { left: 12px; right: 12px; bottom: 27px; }
+        .signature-consent { font-size: 6px; bottom: 5px; }
+        .signature-actions { height: 28px; min-height: 28px; }
+        .clear-btn, .approve-btn { font-size: 9px; }
+        .footer { height: 27px; min-height: 27px; font-size: 8px; padding: 0 8px; }
+    }
 </style>
 </head>
 
 <body>
+<div class="app">
 
-<div id="app">
-
-    <div class="glow-top"></div>
-    <div class="glow-bottom"></div>
-
-    <!-- =====================================================
-         LOADING
-    ====================================================== -->
-
-    <div id="loadingScreen">
-
-        <img
-            src="logo.png"
-            class="loading-logo"
-            alt="Brother's iRepairs"
-        >
-
-        <div class="spinner"></div>
-
-    </div>
-
-
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
-
-    <main
-        id="mainScreen"
-        class="screen"
-        style="display:none;"
-    >
-
-        <!-- HEADER -->
-
-        <header class="header">
-
-            <img
-                src="logo.png"
-                class="logo"
-                alt="Brother's iRepairs"
-            >
-
-            <div class="brand">
-                BROTHER'S iREPAIRS
+    <header class="header">
+        <div class="brand">
+            <!-- Built-in Brother's iRepairs mark. Replace this SVG with your exact logo later if desired. -->
+            <svg class="brand-mark" viewBox="0 0 64 64" aria-label="Brother's iRepairs logo">
+                <rect x="9" y="3" width="32" height="56" rx="7" transform="rotate(18 25 31)" fill="none" stroke="#d8aa2e" stroke-width="4"/>
+                <text x="31" y="39" text-anchor="middle" font-size="20" font-weight="900" fill="#d8aa2e">BR</text>
+            </svg>
+            <div>
+                <div class="brand-name">BROTHER'S</div>
+                <div class="brand-sub">iREPAIRS</div>
             </div>
+        </div>
 
-            <div class="tagline">
-                WE FIX IT RIGHT. THE FIRST TIME.
+        <div class="header-title">CUSTOMER DISPLAY</div>
+
+        <div class="clock">
+            <div class="clock-date" id="clockDate">—</div>
+            <div class="clock-time" id="clockTime">—</div>
+        </div>
+    </header>
+
+    <main class="main">
+
+        <!-- LEFT SIDE: CUSTOMER + DEVICE -->
+        <section class="column">
+            <div class="card customer-card">
+
+                <div class="customer-top">
+                    <div class="avatar">
+                        <svg viewBox="0 0 64 64">
+                            <circle cx="32" cy="20" r="12"/>
+                            <path d="M10 57c1-14 9-21 22-21s21 7 22 21z"/>
+                        </svg>
+                    </div>
+                    <div style="min-width:0;">
+                        <div class="customer-label">CUSTOMER</div>
+                        <div class="customer-name" id="customerName">Customer</div>
+                        <div class="customer-contact" id="customerPhone">—</div>
+                        <div class="customer-contact" id="customerEmail">—</div>
+                    </div>
+                </div>
+
+                <div class="gold-line"></div>
+
+                <div class="device-title-row">
+                    <div class="section-title">DEVICE INFORMATION</div>
+                    <div class="status-pill" id="statusPill">RECEIVED</div>
+                </div>
+
+                <div class="device-grid">
+                    <div class="device-label">Device</div>
+                    <div class="device-value" id="deviceName">—</div>
+
+                    <div class="device-label">Color</div>
+                    <div class="device-value" id="deviceColor">—</div>
+
+                    <div class="device-label">Storage</div>
+                    <div class="device-value" id="deviceStorage">—</div>
+
+                    <div class="device-label">IMEI</div>
+                    <div class="device-value" id="deviceIMEI">—</div>
+
+                    <div class="device-label">Problem</div>
+                    <div class="device-value problem" id="deviceProblem">—</div>
+                </div>
+
+                <div class="ticket-pickup">
+                    <div>
+                        <div class="small-label">TICKET NUMBER</div>
+                        <div class="ticket-number" id="ticketNumber">BR-000000</div>
+                    </div>
+                    <div>
+                        <div class="small-label">EXPECTED PICKUP</div>
+                        <div class="pickup-date" id="pickupDate">To be confirmed</div>
+                    </div>
+                </div>
+
             </div>
-
-            <div class="gold-line"></div>
-
-        </header>
-
-
-        <!-- =================================================
-             WELCOME
-        ================================================== -->
-
-        <section id="welcomeView">
-
-            <div class="welcome-title">
-                Welcome
-            </div>
-
-            <div class="welcome-text">
-
-                Your repair information will appear here.
-
-                <br><br>
-
-                Thank you for choosing
-                Brother's iRepairs.
-
-            </div>
-
-            <div class="ready-badge">
-                We're ready to help
-            </div>
-
         </section>
 
+        <!-- RIGHT SIDE: PAYMENT + SIGNATURE -->
+        <section class="column">
 
-        <!-- =================================================
-             REPAIR
-        ================================================== -->
-
-        <section
-            id="repairView"
-            style="display:none;"
-        >
-
-            <div class="welcome-label">
-                Welcome
-            </div>
-
-            <div
-                id="customerName"
-                class="customer-name"
-            >
-                Customer
-            </div>
-
-            <div
-                id="ticketNumber"
-                class="ticket"
-            >
-                BR-000000
-            </div>
-
-
-            <!-- =================================================
-                 DEVICE
-            ================================================= -->
-
-            <div class="device-card">
-
-                <div
-                    id="deviceIcon"
-                    class="device-icon"
-                >
-                    📱
-                </div>
-
-                <div>
-
-                    <div class="device-label">
-                        Your Device
-                    </div>
-
-                    <div
-                        id="deviceName"
-                        class="device-name"
-                    >
-                        iPhone
-                    </div>
-
-                    <div
-                        id="deviceModel"
-                        class="device-model"
-                    >
-                        Device Model
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 COLOR / STORAGE
-            ================================================= -->
-
-            <div class="details-card">
-
-                <div class="detail-box">
-
-                    <div class="detail-label">
-                        Color
-                    </div>
-
-                    <div
-                        id="deviceColor"
-                        class="detail-value"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                    <div class="detail-label">
-                        Storage
-                    </div>
-
-                    <div
-                        id="deviceStorage"
-                        class="detail-value"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 PAYMENT
-            ================================================= -->
-
-            <div class="payment-card">
-
+            <div class="card payment-card">
                 <div class="payment-title">
-                    Payment Summary
+                    <svg class="payment-icon" viewBox="0 0 64 64">
+                        <path d="M7 18h50v34H7zM7 25h50M15 38h17v7H15z"/>
+                        <path d="M45 39h5v6h-5z"/>
+                    </svg>
+                    <div class="section-title">PAYMENT SUMMARY</div>
                 </div>
 
-
-                <div class="payment-row">
-
-                    <div class="payment-label">
-                        Total Repair
-                    </div>
-
-                    <div
-                        id="totalAmount"
-                        class="payment-value"
-                    >
-                        $0.00
-                    </div>
-
+                <div class="money-row">
+                    <span>Total Repair</span>
+                    <span class="money-value" id="totalRepair">TTD 0.00</span>
                 </div>
 
-
-                <div class="payment-row">
-
-                    <div class="payment-label">
-                        Deposit Paid
-                    </div>
-
-                    <div
-                        id="depositAmount"
-                        class="payment-value"
-                    >
-                        $0.00
-                    </div>
-
+                <div class="money-row">
+                    <span>Deposit Paid</span>
+                    <span class="money-value" id="depositPaid">TTD 0.00</span>
                 </div>
 
-
-                <div class="payment-row balance-row">
-
-                    <div
-                        class="payment-label balance-label"
-                    >
-                        Balance Due
-                    </div>
-
-                    <div
-                        id="balanceAmount"
-                        class="balance-value"
-                    >
-                        $0.00
-                    </div>
-
+                <div class="money-row">
+                    <span>Additional Payments</span>
+                    <span class="money-value" id="additionalPayments">TTD 0.00</span>
                 </div>
 
+                <div class="payment-divider"></div>
+
+                <div class="balance-row">
+                    <div class="balance-label">BALANCE DUE</div>
+                    <div class="balance-value" id="balanceDue">TTD 0.00</div>
+                </div>
             </div>
 
-
-            <!-- =================================================
-                 EXPECTED PICKUP
-            ================================================== -->
-
-            <div class="pickup-card">
-
-                <div class="pickup-label">
-                    Expected Pickup
+            <div class="card signature-card">
+                <div class="signature-title">
+                    <svg class="signature-icon" viewBox="0 0 64 64">
+                        <path d="M9 47l-2 10 10-2 36-36-8-8z"/>
+                        <path d="M42 9l8 8 5-5c2-2 2-5 0-7s-5-2-7 0z"/>
+                        <path d="M20 52h36"/>
+                    </svg>
+                    <div class="section-title">CUSTOMER SIGNATURE</div>
                 </div>
 
-                <div
-                    id="pickupDate"
-                    class="pickup-date"
-                >
-                    —
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 CUSTOMER APPROVAL
-            ================================================== -->
-
-            <div
-                id="approvalSection"
-                class="approval-card"
-            >
-
-                <div class="approval-heading">
-                    Customer Approval
-                </div>
-
-                <div class="approval-description">
-
-                    Please review all the repair
-                    information and payment details
-                    above before signing.
-
-                </div>
-
-
-                <!-- SIGNATURE -->
-
-                <div class="signature-wrapper">
-
-                    <canvas
-                        id="signatureCanvas"
-                    ></canvas>
-
-                    <div
-                        id="signaturePlaceholder"
-                        class="signature-placeholder"
-                    >
-                        ✍ Sign Here
-                    </div>
-
+                <div class="signature-box" id="signatureBox">
+                    <canvas id="signatureCanvas"></canvas>
+                    <div class="signature-hint" id="signatureHint">Sign here</div>
                     <div class="signature-line"></div>
-
-                    <div class="signature-label">
-                        Customer Signature
+                    <div class="signature-consent">
+                        By signing, I acknowledge my device information and payment details above are correct.
                     </div>
-
                 </div>
 
-
-                <!-- CHECKBOX -->
-
-                <label class="approval-check">
-
-                    <input
-                        type="checkbox"
-                        id="approvalCheckbox"
-                    >
-
-                    <span>
-
-                        I confirm that I have reviewed
-                        the device information, repair
-                        price, deposit, balance due,
-                        and expected pickup date shown
-                        above.
-
-                    </span>
-
-                </label>
-
-
-                <!-- BUTTONS -->
-
-                <div class="button-row">
-
-                    <button
-                        id="clearButton"
-                        class="clear-button"
-                    >
-                        Clear Signature
-                    </button>
-
-                    <button
-                        id="approveButton"
-                        class="approve-button"
-                    >
-                        APPROVE & SIGN
-                    </button>
-
+                <div class="signature-actions">
+                    <button class="clear-btn" id="clearSignature">CLEAR</button>
+                    <button class="approve-btn" id="approveSignature">APPROVE &amp; SIGN</button>
+                    <div class="approved-message" id="approvedMessage">✓ CUSTOMER APPROVED</div>
                 </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 APPROVED
-            ================================================== -->
-
-            <div
-                id="approvedView"
-            >
-
-                <div class="approved-icon">
-                    ✓
-                </div>
-
-                <div class="approved-title">
-                    Approval Received
-                </div>
-
-                <div class="approved-text">
-
-                    Thank you.
-
-                    <br>
-
-                    Your approval has been recorded.
-
-                </div>
-
             </div>
 
         </section>
-
-
-        <!-- FOOTER -->
-
-        <footer class="footer">
-
-            <strong>
-                Brother's iRepairs
-            </strong>
-
-            <br>
-
-            Professional Apple Device Repair
-
-        </footer>
-
     </main>
 
+    <footer class="footer">
+        <div>ⓘ &nbsp;<strong>THANK YOU FOR CHOOSING BROTHER'S iREPAIRS!</strong></div>
+        <div><span class="footer-gold">↻</span> &nbsp;LAST UPDATED: <span id="lastUpdated">—</span></div>
+    </footer>
 </div>
 
+<div class="idle" id="idleScreen">
+    <div class="idle-inner">
+        <svg class="idle-logo" viewBox="0 0 64 64">
+            <rect x="9" y="3" width="32" height="56" rx="7" transform="rotate(18 25 31)" fill="none" stroke="#d8aa2e" stroke-width="4"/>
+            <text x="31" y="39" text-anchor="middle" font-size="20" font-weight="900" fill="#d8aa2e">BR</text>
+        </svg>
+        <div class="idle-title">BROTHER'S iREPAIRS</div>
+        <div class="idle-sub">WE FIX IT RIGHT. THE FIRST TIME.</div>
+    </div>
+</div>
+
+<div class="loading" id="connectionState">Connecting…</div>
 
 <script>
-
-/* =========================================================
-   SUPABASE
-========================================================= */
-
-/*
-   IMPORTANT:
-   Use the SAME Supabase URL and publishable key
-   from your existing customer display.
-*/
-
-const SUPABASE_URL =
-    "https://uyladmvbqoeqwtdfiuqr.supabase.co";
-
-const SUPABASE_ANON_KEY =
-    "sb_publishable_9CPop4CNMAzM_DtWyzO4LQ_RURFRMF2";
-
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-    );
-
-
-/* =========================================================
-   DISPLAY
-========================================================= */
-
-const DISPLAY_ID = "main";
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const loadingScreen =
-    document.getElementById(
-        "loadingScreen"
-    );
-
-const mainScreen =
-    document.getElementById(
-        "mainScreen"
-    );
-
-const welcomeView =
-    document.getElementById(
-        "welcomeView"
-    );
-
-const repairView =
-    document.getElementById(
-        "repairView"
-    );
-
-const customerName =
-    document.getElementById(
-        "customerName"
-    );
-
-const ticketNumber =
-    document.getElementById(
-        "ticketNumber"
-    );
-
-const deviceName =
-    document.getElementById(
-        "deviceName"
-    );
-
-const deviceModel =
-    document.getElementById(
-        "deviceModel"
-    );
-
-const deviceIcon =
-    document.getElementById(
-        "deviceIcon"
-    );
-
-const deviceColor =
-    document.getElementById(
-        "deviceColor"
-    );
-
-const deviceStorage =
-    document.getElementById(
-        "deviceStorage"
-    );
-
-const totalAmount =
-    document.getElementById(
-        "totalAmount"
-    );
-
-const depositAmount =
-    document.getElementById(
-        "depositAmount"
-    );
-
-const balanceAmount =
-    document.getElementById(
-        "balanceAmount"
-    );
-
-const pickupDate =
-    document.getElementById(
-        "pickupDate"
-    );
-
-const approvalSection =
-    document.getElementById(
-        "approvalSection"
-    );
-
-const approvedView =
-    document.getElementById(
-        "approvedView"
-    );
-
-const approvalCheckbox =
-    document.getElementById(
-        "approvalCheckbox"
-    );
-
-const approveButton =
-    document.getElementById(
-        "approveButton"
-    );
-
-const clearButton =
-    document.getElementById(
-        "clearButton"
-    );
-
-const signaturePlaceholder =
-    document.getElementById(
-        "signaturePlaceholder"
-    );
-
-const canvas =
-    document.getElementById(
-        "signatureCanvas"
-    );
-
-const ctx =
-    canvas.getContext("2d");
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let isDrawing = false;
-
-let hasSignature = false;
-
-let currentTicket = null;
-
-
-/* =========================================================
-   SIGNATURE CANVAS
-========================================================= */
-
-function resizeCanvas() {
-
-    const rect =
-        canvas.getBoundingClientRect();
-
-    const ratio =
-        window.devicePixelRatio || 1;
-
-    canvas.width =
-        rect.width * ratio;
-
-    canvas.height =
-        rect.height * ratio;
-
-    ctx.setTransform(
-        ratio,
-        0,
-        0,
-        ratio,
-        0,
-        0
-    );
-
-    ctx.lineWidth = 3;
-
-    ctx.lineCap = "round";
-
-    ctx.lineJoin = "round";
-
-    ctx.strokeStyle = "#111";
-
-}
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
-
-
-/* =========================================================
-   SIGNATURE DRAWING
-========================================================= */
-
-function getPoint(event) {
-
-    const rect =
-        canvas.getBoundingClientRect();
-
-    return {
-
-        x:
-            event.clientX -
-            rect.left,
-
-        y:
-            event.clientY -
-            rect.top
-
-    };
-}
-
-
-canvas.addEventListener(
-    "pointerdown",
-    function(event) {
-
-        event.preventDefault();
-
-        isDrawing = true;
-
-        hasSignature = true;
-
-        signaturePlaceholder.style.display =
-            "none";
-
-        canvas.setPointerCapture(
-            event.pointerId
-        );
-
-        const point =
-            getPoint(event);
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            point.x,
-            point.y
-        );
-
+/* ============================================================
+   BROTHER'S iREPAIRS CUSTOMER DISPLAY
+   Designed for older iPad Safari:
+   - 1024x768 landscape layout
+   - No page scrolling
+   - No frameworks except Supabase JS
+   - Touch signature canvas
+   - Polling + realtime refresh
+   ============================================================ */
+
+(function () {
+    "use strict";
+
+    /* ---------------------------------------------------------
+       SUPABASE
+       Use the same public/publishable project credentials as
+       the iPad repair app.
+       --------------------------------------------------------- */
+    var SUPABASE_URL = "https://uyladmvbqoeqwtdfiuqr.supabase.co";
+    var SUPABASE_KEY = "sb_publishable_9CPop4CNMAzM_DtWyzO4LQ_RURFRMF2";
+
+    var sb = null;
+
+    try {
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    } catch (e) {
+        console.log("Supabase setup error:", e);
     }
-);
 
+    var currentRepair = null;
+    var currentDisplay = null;
+    var drawing = false;
+    var hasSignature = false;
 
-canvas.addEventListener(
-    "pointermove",
-    function(event) {
+    function el(id) {
+        return document.getElementById(id);
+    }
 
-        if (!isDrawing) {
-            return;
+    function money(value) {
+        var n = Number(value);
+        if (!isFinite(n)) n = 0;
+        return "TTD " + n.toFixed(2);
+    }
+
+    function numberOrZero(value) {
+        var n = Number(value);
+        return isFinite(n) ? n : 0;
+    }
+
+    function firstValue(obj, keys, fallback) {
+        var i, key, value;
+        for (i = 0; i < keys.length; i++) {
+            key = keys[i];
+            if (obj && obj[key] !== null && obj[key] !== undefined && obj[key] !== "") {
+                value = obj[key];
+                return value;
+            }
+        }
+        return fallback;
+    }
+
+    function formatDate(value) {
+        if (!value) return "To be confirmed";
+        var d = new Date(value);
+        if (isNaN(d.getTime())) return "To be confirmed";
+
+        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var hour = d.getHours();
+        var minute = d.getMinutes();
+        var ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12;
+        if (hour === 0) hour = 12;
+        var minText = minute < 10 ? "0" + minute : "" + minute;
+
+        return months[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear() +
+               " " + hour + ":" + minText + " " + ampm;
+    }
+
+    function formatClock() {
+        var d = new Date();
+        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+        var hour = d.getHours();
+        var minute = d.getMinutes();
+        var second = d.getSeconds();
+        var ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12;
+        if (hour === 0) hour = 12;
+
+        el("clockDate").textContent =
+            days[d.getDay()] + ", " + months[d.getMonth()] + " " +
+            d.getDate() + ", " + d.getFullYear();
+
+        el("clockTime").textContent =
+            hour + ":" + (minute < 10 ? "0" + minute : minute) +
+            ":" + (second < 10 ? "0" + second : second) + " " + ampm;
+    }
+
+    function showIdle(show) {
+        el("idleScreen").style.display = show ? "flex" : "none";
+    }
+
+    function updateConnection(text) {
+        el("connectionState").textContent = text;
+    }
+
+    function setText(id, value, fallback) {
+        el(id).textContent =
+            value !== null && value !== undefined && value !== ""
+            ? String(value)
+            : (fallback || "—");
+    }
+
+    function updateSignatureState(approved) {
+        if (approved) {
+            el("signatureBox").style.display = "none";
+            el("clearSignature").style.display = "none";
+            el("approveSignature").style.display = "none";
+            el("approvedMessage").style.display = "flex";
+        } else {
+            el("signatureBox").style.display = "block";
+            el("clearSignature").style.display = "block";
+            el("approveSignature").style.display = "block";
+            el("approvedMessage").style.display = "none";
+        }
+    }
+
+    /* ---------------------------------------------------------
+       PAYMENT CALCULATION
+       IMPORTANT:
+       We intentionally DO NOT use payment_amount as the
+       "additional payment" value. Your previous database
+       setup was showing payment_amount equal to the deposit.
+
+       Priority:
+       total = final_repair_amount -> total_amount ->
+              repair_total -> total_repair
+
+       deposit = deposit
+
+       additional payments:
+       1) additional_payments_total if supplied
+       2) total_paid - deposit if total_paid is supplied
+       3) otherwise 0
+
+       balance:
+       1) balance_due if supplied
+       2) total - deposit - additional
+       --------------------------------------------------------- */
+    function getPaymentValues(r) {
+        var total = numberOrZero(firstValue(r, [
+            "final_repair_amount",
+            "total_amount",
+            "repair_total",
+            "total_repair"
+        ], 0));
+
+        var deposit = numberOrZero(firstValue(r, [
+            "deposit"
+        ], 0));
+
+        var additional = null;
+
+        if (r.additional_payments_total !== null &&
+            r.additional_payments_total !== undefined &&
+            r.additional_payments_total !== "") {
+            additional = numberOrZero(r.additional_payments_total);
+        } else if (r.total_paid !== null &&
+                   r.total_paid !== undefined &&
+                   r.total_paid !== "") {
+            additional = Math.max(numberOrZero(r.total_paid) - deposit, 0);
+        } else {
+            additional = 0;
         }
 
-        event.preventDefault();
+        var balance;
+        if (r.balance_due !== null &&
+            r.balance_due !== undefined &&
+            r.balance_due !== "") {
+            balance = Math.max(numberOrZero(r.balance_due), 0);
+        } else {
+            balance = Math.max(total - deposit - additional, 0);
+        }
 
-        const point =
-            getPoint(event);
-
-        ctx.lineTo(
-            point.x,
-            point.y
-        );
-
-        ctx.stroke();
-
+        return {
+            total: total,
+            deposit: deposit,
+            additional: additional,
+            balance: balance
+        };
     }
-);
 
+    function renderRepair(r, display) {
+        currentRepair = r;
+        currentDisplay = display || {};
 
-function stopDrawing(event) {
+        showIdle(false);
 
-    isDrawing = false;
+        var customerName = firstValue(r, ["customer_name"], "");
+        if (!customerName) {
+            customerName =
+                (firstValue(r, ["customer_first_name"], "") + " " +
+                 firstValue(r, ["customer_last_name"], "")).trim();
+        }
 
-    if (event) {
+        var device = firstValue(r, ["device"], "");
+        var model = firstValue(r, ["model"], "");
+        var deviceText = device && model ? device + " " + model : (model || device);
+
+        setText("customerName", customerName, "Customer");
+        setText("customerPhone", firstValue(r, ["phone"], ""), "");
+        setText("customerEmail", firstValue(r, ["email"], ""), "");
+
+        setText("deviceName", deviceText, "—");
+        setText("deviceColor", firstValue(r, ["color"], ""), "—");
+        setText("deviceStorage", firstValue(r, ["storage"], ""), "—");
+        setText("deviceIMEI", firstValue(r, ["imei"], ""), "—");
+        setText("deviceProblem", firstValue(r, ["problem_description"], ""), "No problem description");
+
+        setText("ticketNumber",
+            firstValue(r, ["ticket_number"], firstValue(display, ["ticket_number"], "BR-000000")),
+            "BR-000000");
+
+        var status = firstValue(r, ["status"], "Received");
+        el("statusPill").textContent = String(status).toUpperCase();
+
+        var pickup = firstValue(display, ["estimated_pickup_date"], null);
+        if (!pickup) pickup = firstValue(r, ["estimated_pickup_date"], null);
+        el("pickupDate").textContent = formatDate(pickup);
+
+        var p = getPaymentValues(r);
+
+        el("totalRepair").textContent = money(p.total);
+        el("depositPaid").textContent = money(p.deposit);
+        el("additionalPayments").textContent = money(p.additional);
+        el("balanceDue").textContent = money(p.balance);
+
+        var approved = !!firstValue(display, ["approved", "customer_approved"], false);
+        updateSignatureState(approved);
+
+        el("lastUpdated").textContent = new Date().toLocaleTimeString();
+
+        updateConnection("Connected");
+    }
+
+    /* ---------------------------------------------------------
+       GET CURRENT DISPLAY ROW
+       --------------------------------------------------------- */
+    async function loadDisplay() {
+        if (!sb) {
+            updateConnection("Supabase unavailable");
+            return;
+        }
 
         try {
-
-            canvas.releasePointerCapture(
-                event.pointerId
-            );
-
-        } catch (_) {}
-
-    }
-
-}
-
-
-canvas.addEventListener(
-    "pointerup",
-    stopDrawing
-);
-
-canvas.addEventListener(
-    "pointercancel",
-    stopDrawing
-);
-
-
-/* =========================================================
-   CLEAR SIGNATURE
-========================================================= */
-
-clearButton.addEventListener(
-    "click",
-    clearSignature
-);
-
-
-function clearSignature() {
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-    hasSignature = false;
-
-    signaturePlaceholder.style.display =
-        "block";
-}
-
-
-/* =========================================================
-   FORMAT MONEY
-========================================================= */
-
-function money(value) {
-
-    const number =
-        Number(value || 0);
-
-    return new Intl.NumberFormat(
-        "en-TT",
-        {
-            style: "currency",
-            currency: "TTD",
-            minimumFractionDigits: 2
-        }
-    ).format(number);
-
-}
-
-
-/* =========================================================
-   FORMAT DATE
-========================================================= */
-
-function formatDate(value) {
-
-    if (!value) {
-        return "To be confirmed";
-    }
-
-    const date =
-        new Date(
-            value + "T00:00:00"
-        );
-
-    if (Number.isNaN(
-        date.getTime()
-    )) {
-
-        return value;
-
-    }
-
-    return date.toLocaleDateString(
-        "en-TT",
-        {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        }
-    );
-
-}
-
-
-/* =========================================================
-   DEVICE ICON
-========================================================= */
-
-function setDeviceIcon(device) {
-
-    const value =
-        String(device || "")
-            .toLowerCase();
-
-    if (
-        value.includes("ipad")
-    ) {
-
-        deviceIcon.textContent =
-            "▣";
-
-        return;
-
-    }
-
-    if (
-        value.includes("mac")
-    ) {
-
-        deviceIcon.textContent =
-            "▱";
-
-        return;
-
-    }
-
-    if (
-        value.includes("watch")
-    ) {
-
-        deviceIcon.textContent =
-            "◉";
-
-        return;
-
-    }
-
-    if (
-        value.includes("airpods")
-    ) {
-
-        deviceIcon.textContent =
-            "◌";
-
-        return;
-
-    }
-
-    deviceIcon.textContent =
-        "📱";
-
-}
-
-
-/* =========================================================
-   RESET APPROVAL
-========================================================= */
-
-function resetApproval() {
-
-    approvalSection.style.display =
-        "block";
-
-    approvedView.style.display =
-        "none";
-
-    approvalCheckbox.checked =
-        false;
-
-    approveButton.disabled =
-        false;
-
-    approveButton.textContent =
-        "APPROVE & SIGN";
-
-    clearSignature();
-
-}
-
-
-/* =========================================================
-   LOAD REPAIR
-========================================================= */
-
-async function loadRepair(ticket) {
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-
-                .from("repairs")
-
+            var result = await sb
+                .from("customer_display")
                 .select("*")
+                .eq("display_id", "main")
+                .limit(1);
 
-                .eq(
-                    "ticket_number",
-                    ticket
-                )
+            if (result.error) throw result.error;
 
-                .single();
+            if (!result.data || result.data.length === 0) {
+                showIdle(true);
+                updateConnection("Waiting for ticket");
+                return;
+            }
 
+            var display = result.data[0];
+            currentDisplay = display;
 
-        if (error || !data) {
+            var mode = display.mode || "idle";
+            var ticketNumber = display.ticket_number;
 
-            console.error(
-                "Repair load error:",
-                error
-            );
+            if (mode === "idle" || !ticketNumber) {
+                showIdle(true);
+                updateConnection("Waiting for ticket");
+                return;
+            }
 
-            showWelcome();
-
-            return;
-
-        }
-
-
-        currentTicket =
-            ticket;
-
-
-        /* CUSTOMER */
-
-        const firstName =
-            data.customer_first_name ||
-            "";
-
-        const lastName =
-            data.customer_last_name ||
-            "";
-
-        const fullName =
-            `${firstName} ${lastName}`
-                .trim();
-
-        customerName.textContent =
-            fullName ||
-            data.customer_name ||
-            "Customer";
-
-
-        /* TICKET */
-
-        ticketNumber.textContent =
-            data.ticket_number ||
-            ticket;
-
-
-        /* DEVICE */
-
-        const device =
-            data.device ||
-            data.device_type ||
-            "Apple Device";
-
-        const model =
-            data.model ||
-            "";
-
-        deviceName.textContent =
-            device;
-
-        deviceModel.textContent =
-            model;
-
-        setDeviceIcon(device);
-
-
-        /* COLOR */
-
-        deviceColor.textContent =
-            data.color ||
-            "Not provided";
-
-
-        /* STORAGE */
-
-        deviceStorage.textContent =
-            data.storage ||
-            "Not provided";
-
-
-        /* =================================================
-           PAYMENT
-        ================================================== */
-
-        const total =
-            Number(
-                data.total_amount || 0
-            );
-
-
-        /*
-           Your existing deposit field is
-           supported as "deposit".
-
-           If your actual column is
-           "deposit_amount", this also works.
-        */
-
-        const deposit =
-            Number(
-                data.deposit ??
-                data.deposit_amount ??
-                0
-            );
-
-
-        const balance =
-            Math.max(
-                total - deposit,
-                0
-            );
-
-
-        totalAmount.textContent =
-            money(total);
-
-        depositAmount.textContent =
-            money(deposit);
-
-        balanceAmount.textContent =
-            money(balance);
-
-
-        /* =================================================
-           EXPECTED PICKUP
-        ================================================== */
-
-        pickupDate.textContent =
-            formatDate(
-                data.estimated_pickup
-            );
-
-
-        /* SHOW */
-
-        welcomeView.style.display =
-            "none";
-
-        repairView.style.display =
-            "block";
-
-
-        resetApproval();
-
-
-        setTimeout(
-            resizeCanvas,
-            100
-        );
-
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Repair error:",
-            error
-        );
-
-        showWelcome();
-
-    }
-
-}
-
-
-/* =========================================================
-   SAVE CUSTOMER APPROVAL
-========================================================= */
-
-async function saveApproval() {
-
-    if (!currentTicket) {
-
-        alert(
-            "No repair ticket is currently displayed."
-        );
-
-        return;
-
-    }
-
-
-    if (!hasSignature) {
-
-        alert(
-            "Please sign in the signature box."
-        );
-
-        return;
-
-    }
-
-
-    if (!approvalCheckbox.checked) {
-
-        alert(
-            "Please check the approval box before continuing."
-        );
-
-        return;
-
-    }
-
-
-    approveButton.disabled =
-        true;
-
-    approveButton.textContent =
-        "SAVING...";
-
-
-    try {
-
-        const signatureData =
-            canvas.toDataURL(
-                "image/png"
-            );
-
-
-        const {
-            error
-        } =
-            await supabaseClient
-
+            var repairResult = await sb
                 .from("repairs")
+                .select("*")
+                .eq("ticket_number", ticketNumber)
+                .limit(1);
 
-                .update({
+            if (repairResult.error) throw repairResult.error;
 
-                    customer_signature:
-                        signatureData,
+            if (!repairResult.data || repairResult.data.length === 0) {
+                showIdle(false);
+                updateConnection("Waiting for repair data");
+                return;
+            }
 
-                    customer_approved:
-                        true,
+            renderRepair(repairResult.data[0], display);
 
-                    approval_date:
-                        new Date()
-                            .toISOString()
-
-                })
-
-                .eq(
-                    "ticket_number",
-                    currentTicket
-                );
-
-
-        if (error) {
-
-            console.error(
-                "Approval save error:",
-                error
-            );
-
-            alert(
-                "Could not save the approval. Please try again."
-            );
-
-            approveButton.disabled =
-                false;
-
-            approveButton.textContent =
-                "APPROVE & SIGN";
-
-            return;
-
+        } catch (error) {
+            console.log("Customer display load error:", error);
+            updateConnection("Connection retrying…");
         }
-
-
-        approvalSection.style.display =
-            "none";
-
-        approvedView.style.display =
-            "block";
-
     }
 
-    catch (error) {
+    /* ---------------------------------------------------------
+       REALTIME + POLLING
+       Realtime makes updates fast. Polling keeps it reliable
+       on older iPads / older Safari.
+       --------------------------------------------------------- */
+    function startRealtime() {
+        if (!sb) return;
 
-        console.error(error);
-
-        alert(
-            "Something went wrong saving the approval."
-        );
-
-        approveButton.disabled =
-            false;
-
-        approveButton.textContent =
-            "APPROVE & SIGN";
-
-    }
-
-}
-
-
-approveButton.addEventListener(
-    "click",
-    saveApproval
-);
-
-
-/* =========================================================
-   SHOW WELCOME
-========================================================= */
-
-function showWelcome() {
-
-    welcomeView.style.display =
-        "flex";
-
-    repairView.style.display =
-        "none";
-
-    currentTicket = null;
-
-}
-
-
-/* =========================================================
-   REFRESH DISPLAY
-========================================================= */
-
-async function refreshDisplay() {
-
-    try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-
-                .from(
-                    "customer_display"
+        try {
+            sb.channel("customer-display-live")
+                .on(
+                    "postgres_changes",
+                    {
+                        event: "*",
+                        schema: "public",
+                        table: "customer_display"
+                    },
+                    function () {
+                        loadDisplay();
+                    }
                 )
-
-                .select(
-                    "display_id, mode, ticket_number"
+                .on(
+                    "postgres_changes",
+                    {
+                        event: "*",
+                        schema: "public",
+                        table: "repairs"
+                    },
+                    function () {
+                        loadDisplay();
+                    }
                 )
-
-                .eq(
-                    "display_id",
-                    DISPLAY_ID
-                )
-
-                .single();
-
-
-        if (error) {
-
-            console.error(
-                "Display error:",
-                error
-            );
-
-            showWelcome();
-
-            return;
-
+                .subscribe();
+        } catch (e) {
+            console.log("Realtime unavailable:", e);
         }
 
-
-        if (
-            !data ||
-            data.mode === "idle" ||
-            !data.ticket_number
-        ) {
-
-            showWelcome();
-
-            return;
-
-        }
-
-
-        /*
-           Don't reload the same ticket while
-           the customer is signing.
-        */
-
-        if (
-            currentTicket !==
-            data.ticket_number
-        ) {
-
-            await loadRepair(
-                data.ticket_number
-            );
-
-        }
-
+        window.setInterval(loadDisplay, 2500);
     }
 
-    catch (error) {
+    /* ---------------------------------------------------------
+       SIGNATURE CANVAS
+       --------------------------------------------------------- */
+    function setupCanvas() {
+        var canvas = el("signatureCanvas");
+        var box = el("signatureBox");
+        var ctx = canvas.getContext("2d");
 
-        console.error(
-            error
-        );
+        function resizeCanvas() {
+            var rect = box.getBoundingClientRect();
+            if (rect.width < 1 || rect.height < 1) return;
 
-        showWelcome();
+            var ratio = window.devicePixelRatio || 1;
+            canvas.width = Math.floor(rect.width * ratio);
+            canvas.height = Math.floor(rect.height * ratio);
+            canvas.style.width = rect.width + "px";
+            canvas.style.height = rect.height + "px";
 
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+            ctx.lineWidth = 2.2;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.strokeStyle = "#111";
+        }
+
+        function pointFromEvent(e) {
+            var rect = canvas.getBoundingClientRect();
+            var touch = e.touches ? e.touches[0] : e;
+            return {
+                x: touch.clientX - rect.left,
+                y: touch.clientY - rect.top
+            };
+        }
+
+        function start(e) {
+            e.preventDefault();
+            drawing = true;
+            hasSignature = true;
+            el("signatureHint").style.display = "none";
+
+            var p = pointFromEvent(e);
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+        }
+
+        function move(e) {
+            if (!drawing) return;
+            e.preventDefault();
+
+            var p = pointFromEvent(e);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+        }
+
+        function end(e) {
+            if (!drawing) return;
+            e.preventDefault();
+            drawing = false;
+            ctx.closePath();
+        }
+
+        canvas.addEventListener("touchstart", start, {passive:false});
+        canvas.addEventListener("touchmove", move, {passive:false});
+        canvas.addEventListener("touchend", end, {passive:false});
+        canvas.addEventListener("touchcancel", end, {passive:false});
+
+        canvas.addEventListener("mousedown", start, false);
+        canvas.addEventListener("mousemove", move, false);
+        canvas.addEventListener("mouseup", end, false);
+        canvas.addEventListener("mouseleave", end, false);
+
+        window.addEventListener("resize", resizeCanvas);
+        window.setTimeout(resizeCanvas, 300);
+
+        el("clearSignature").addEventListener("click", function () {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hasSignature = false;
+            el("signatureHint").style.display = "block";
+        });
+
+        el("approveSignature").addEventListener("click", async function () {
+            if (!hasSignature) {
+                alert("Please sign in the box before approving.");
+                return;
+            }
+
+            if (!currentRepair || !currentDisplay) {
+                alert("No repair ticket is currently displayed.");
+                return;
+            }
+
+            var ticket = currentRepair.ticket_number ||
+                         currentDisplay.ticket_number;
+
+            var dataURL = canvas.toDataURL("image/png");
+
+            try {
+                el("approveSignature").disabled = true;
+                el("approveSignature").textContent = "SAVING…";
+
+                var update = await sb
+                    .from("customer_display")
+                    .update({
+                        approved: true,
+                        approval_date: new Date().toISOString(),
+                        customer_signature_data: dataURL
+                    })
+                    .eq("display_id", "main");
+
+                if (update.error) throw update.error;
+
+                /* Also attempt to save approval on the repair ticket.
+                   If that column isn't present, the main display update
+                   remains successful. */
+                var repairUpdate = await sb
+                    .from("repairs")
+                    .update({
+                        customer_approved: true,
+                        customer_approval_date: new Date().toISOString(),
+                        customer_signature_data: dataURL
+                    })
+                    .eq("ticket_number", ticket);
+
+                if (repairUpdate.error) {
+                    console.log("Repair approval update skipped:", repairUpdate.error);
+                }
+
+                updateSignatureState(true);
+                el("lastUpdated").textContent = new Date().toLocaleTimeString();
+
+            } catch (error) {
+                console.log("Signature save error:", error);
+                alert("The signature could not be saved. Please try again.");
+                el("approveSignature").disabled = false;
+                el("approveSignature").textContent = "APPROVE & SIGN";
+            }
+        });
     }
 
-}
+    formatClock();
+    window.setInterval(formatClock, 1000);
+    setupCanvas();
+    loadDisplay();
+    startRealtime();
 
-
-/* =========================================================
-   START
-========================================================= */
-
-async function start() {
-
-    loadingScreen.style.display =
-        "none";
-
-    mainScreen.style.display =
-        "flex";
-
-
-    await refreshDisplay();
-
-
-    /*
-       Check Supabase every 2 seconds.
-    */
-
-    setInterval(
-        refreshDisplay,
-        2000
-    );
-
-
-    setTimeout(
-        resizeCanvas,
-        200
-    );
-
-}
-
-
-start();
-
+})();
 </script>
-
 </body>
 </html>
