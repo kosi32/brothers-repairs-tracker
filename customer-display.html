@@ -1910,10 +1910,7 @@ function supabasePatch(
           {},
           supabaseHeaders(),
           {
-            /*
-              Return the updated row so the approval
-              code can verify that a row was changed.
-            */
+            // Return the updated row so we can verify it.
             "Prefer":
               "return=representation"
           }
@@ -1924,64 +1921,66 @@ function supabasePatch(
 
     }
   )
-  .then(function(response) {
+  .then(function(r) {
 
-    return response.text()
+    return r.text()
       .then(function(text) {
 
-        var data = null;
+        var parsed = null;
 
         if (text) {
 
           try {
-            data = JSON.parse(text);
+            parsed =
+              JSON.parse(text);
           } catch (_) {
-            data = text;
+            parsed = text;
           }
+
         }
 
-        if (!response.ok) {
+        if (!r.ok) {
 
           var message =
             "Supabase PATCH " +
-            response.status;
+            r.status;
 
           if (
-            data &&
-            data.message
+            parsed &&
+            parsed.message
           ) {
             message =
-              data.message;
+              parsed.message;
           }
 
           else if (
-            data &&
-            data.error
+            parsed &&
+            parsed.error
           ) {
             message =
-              data.error;
+              parsed.error;
           }
 
           else if (text) {
-            message =
-              text;
+            message = text;
           }
 
           var error =
             new Error(message);
 
           error.status =
-            response.status;
+            r.status;
 
-          error.data =
-            data;
+          error.details =
+            parsed;
 
           throw error;
         }
 
-        return data;
+        return parsed;
       });
   });
+
 }
 
 
@@ -3226,22 +3225,22 @@ document.getElementById(
       new Date()
         .toISOString();
 
+    /*
+      IMPORTANT:
+      Your Supabase table uses approval_date,
+      not customer_approval_date.
+    */
     var body = {
 
       customer_approved:
         true,
 
-      customer_approval_date:
+      approval_date:
         now,
 
-      customer_signature_data:
+      customer_signature:
         data
     };
-
-    console.log(
-      "Saving customer approval for ticket:",
-      currentRepair.ticket_number
-    );
 
     supabasePatch(
       "repairs",
@@ -3252,16 +3251,15 @@ document.getElementById(
       ),
 
       body
+
     )
     .then(
       function(result) {
 
         /*
-          We use Prefer: return=representation in the
-          PATCH helper. Supabase should therefore return
-          the updated repair row.
-
-          An empty array means the update affected zero rows.
+          Supabase should return the updated row
+          because the PATCH helper requests
+          return=representation.
         */
 
         if (
@@ -3271,9 +3269,13 @@ document.getElementById(
         ) {
 
           throw new Error(
-            "Supabase updated 0 rows. Check the ticket number and UPDATE policy."
+            "Supabase updated 0 rows. Check the ticket number and UPDATE RLS policy."
           );
         }
+
+        /*
+          Keep the local repair in sync.
+        */
 
         currentRepair =
           result[0];
@@ -3288,8 +3290,7 @@ document.getElementById(
         );
 
         /*
-          Reload the repair from Supabase so the display
-          immediately uses the saved values.
+          Reload the repair from Supabase.
         */
 
         return loadRepair(
@@ -3306,12 +3307,13 @@ document.getElementById(
         );
 
         var message =
-          "Supabase rejected approval.";
+          "Supabase rejected the approval.";
 
         if (
           err &&
           err.message
         ) {
+
           message =
             err.message;
         }
