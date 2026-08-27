@@ -654,11 +654,24 @@ button {
 
   display: grid;
 
+  /*
+    Keep the payment card compact and give the
+    signature area all remaining space.
+    min-height: 0 is important for older iPad Safari
+    so the signature controls are not pushed below
+    the visible viewport.
+  */
   grid-template-rows:
-    auto
-    1fr;
+    minmax(180px, auto)
+    minmax(0, 1fr);
 
   gap: 10px;
+
+  min-height: 0;
+
+  height: 100%;
+
+  overflow: hidden;
 }
 
 
@@ -669,6 +682,8 @@ button {
 .payment {
 
   min-height: 0;
+
+  overflow: hidden;
 
   border:
     1px solid var(--gold);
@@ -758,6 +773,10 @@ button {
 
   min-height: 0;
 
+  height: 100%;
+
+  overflow: hidden;
+
   border:
     1px solid var(--border);
 
@@ -793,10 +812,15 @@ button {
 
 .sigCanvasWrap {
 
-  flex: 1;
+  flex: 1 1 auto;
 
   min-height: 0;
 
+  /*
+    Reserve space for Clear / Approve below.
+    This keeps both buttons visible even on
+    short 768px-high iPad screens.
+  */
   margin-top: 9px;
 
   background: var(--signatureBackground);
@@ -840,11 +864,17 @@ button {
 
 .sigBottom {
 
+  flex: 0 0 46px;
+
+  min-height: 46px;
+
   display: flex;
 
   justify-content: space-between;
 
   align-items: center;
+
+  gap: 10px;
 
   margin-top: 8px;
 
@@ -853,11 +883,32 @@ button {
   font-size: 12px;
 }
 
+.sigBottom > span {
+
+  flex: 1 1 auto;
+
+  min-width: 0;
+
+  line-height: 1.2;
+}
+
 .sigButtons {
+
+  flex: 0 0 auto;
 
   display: flex;
 
   gap: 7px;
+
+  align-items: center;
+
+  visibility: visible;
+
+  opacity: 1;
+
+  position: relative;
+
+  z-index: 5;
 }
 
 .sigButtons button {
@@ -2040,8 +2091,35 @@ function loadDisplay() {
       currentTicket =
         ticket;
 
+      /*
+        New customer = completely fresh approval area.
+        Reset the signature state and make the buttons
+        available again.
+      */
+      hasSignature = false;
+
       clearSignature();
 
+      var clearButton =
+        document.getElementById(
+          "clearSig"
+        );
+
+      var approveButton =
+        document.getElementById(
+          "approveSig"
+        );
+
+      if (clearButton) {
+        clearButton.disabled = false;
+        clearButton.style.display = "";
+      }
+
+      if (approveButton) {
+        approveButton.disabled = false;
+        approveButton.style.display = "";
+        approveButton.textContent = "Approve";
+      }
     }
 
 
