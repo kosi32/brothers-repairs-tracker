@@ -1910,8 +1910,12 @@ function supabasePatch(
           {},
           supabaseHeaders(),
           {
+            /*
+              Return the updated row so the approval
+              code can verify that a row was changed.
+            */
             "Prefer":
-              "return=minimal"
+              "return=representation"
           }
         ),
 
@@ -1920,21 +1924,64 @@ function supabasePatch(
 
     }
   )
-  .then(function(r) {
+  .then(function(response) {
 
-    if (!r.ok) {
+    return response.text()
+      .then(function(text) {
 
-      throw new Error(
-        "Supabase PATCH " +
-        r.status
-      );
+        var data = null;
 
-    }
+        if (text) {
 
-    return true;
+          try {
+            data = JSON.parse(text);
+          } catch (_) {
+            data = text;
+          }
+        }
 
+        if (!response.ok) {
+
+          var message =
+            "Supabase PATCH " +
+            response.status;
+
+          if (
+            data &&
+            data.message
+          ) {
+            message =
+              data.message;
+          }
+
+          else if (
+            data &&
+            data.error
+          ) {
+            message =
+              data.error;
+          }
+
+          else if (text) {
+            message =
+              text;
+          }
+
+          var error =
+            new Error(message);
+
+          error.status =
+            response.status;
+
+          error.data =
+            data;
+
+          throw error;
+        }
+
+        return data;
+      });
   });
-
 }
 
 
@@ -3150,7 +3197,6 @@ document.getElementById(
 ).onclick =
   function() {
 
-
     if (
       !currentRepair ||
       !hasSignature
@@ -3161,20 +3207,24 @@ document.getElementById(
       );
 
       return;
-
     }
 
+    var button =
+      document.getElementById(
+        "approveSig"
+      );
+
+    button.disabled = true;
+    button.textContent = "Saving...";
 
     var data =
       canvas.toDataURL(
         "image/png"
       );
 
-
     var now =
       new Date()
         .toISOString();
-
 
     var body = {
 
@@ -3186,12 +3236,14 @@ document.getElementById(
 
       customer_signature_data:
         data
-
     };
 
+    console.log(
+      "Saving customer approval for ticket:",
+      currentRepair.ticket_number
+    );
 
     supabasePatch(
-
       "repairs",
 
       "ticket_number=eq." +
@@ -3200,31 +3252,81 @@ document.getElementById(
       ),
 
       body
-
     )
-
     .then(
-      function() {
+      function(result) {
+
+        /*
+          We use Prefer: return=representation in the
+          PATCH helper. Supabase should therefore return
+          the updated repair row.
+
+          An empty array means the update affected zero rows.
+        */
+
+        if (
+          !result ||
+          !Array.isArray(result) ||
+          result.length === 0
+        ) {
+
+          throw new Error(
+            "Supabase updated 0 rows. Check the ticket number and UPDATE policy."
+          );
+        }
+
+        currentRepair =
+          result[0];
 
         showToast(
           "Customer approval saved."
         );
 
+        console.log(
+          "✅ CUSTOMER APPROVAL SAVED",
+          currentRepair
+        );
+
+        /*
+          Reload the repair from Supabase so the display
+          immediately uses the saved values.
+        */
+
+        return loadRepair(
+          currentRepair.ticket_number
+        );
       }
     )
-
     .catch(
       function(err) {
 
-        console.log(err);
-
-        showToast(
-          "Signature captured. Supabase update was not accepted."
+        console.error(
+          "❌ CUSTOMER APPROVAL FAILED",
+          err
         );
 
+        var message =
+          "Supabase rejected approval.";
+
+        if (
+          err &&
+          err.message
+        ) {
+          message =
+            err.message;
+        }
+
+        showToast(
+          message
+        );
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Approve";
       }
     );
-
   };
 
 
