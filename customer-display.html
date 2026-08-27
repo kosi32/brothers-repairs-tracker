@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-<title>Brother's iRepairs - Customer Display</title>
+<title>Brother's iRepairs - Customer Display iOS12 FIXED</title>
 
 <style>
 
@@ -986,11 +986,14 @@ button {
 
   position: fixed;
 
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 
   background: var(--background);
 
-  display: none;
+  display: flex;
 
   align-items: center;
 
@@ -2675,20 +2678,24 @@ function setText(
 
 function showIdle() {
 
-  document.getElementById(
-    "idle"
-  ).className =
-    "idle show";
+  var idle =
+    document.getElementById("idle");
+
+  if (idle) {
+    idle.style.display = "flex";
+  }
 
 }
 
 
 function hideIdle() {
 
-  document.getElementById(
-    "idle"
-  ).className =
-    "idle";
+  var idle =
+    document.getElementById("idle");
+
+  if (idle) {
+    idle.style.display = "none";
+  }
 
 }
 
