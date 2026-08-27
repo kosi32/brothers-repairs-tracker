@@ -999,32 +999,114 @@ button {
   text-align: center;
 
   z-index: 50;
+
+  padding: 30px;
 }
 
 .idle.show {
 
   display: flex;
+
+  animation: idleFadeIn .35s ease;
 }
 
-.idleLogo {
+.idleContent {
 
-  font-size: 38px;
+  width: min(720px, 90vw);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.idleLogoImage {
+
+  width: min(260px, 42vw);
+
+  max-height: 220px;
+
+  object-fit: contain;
+
+  display: block;
+
+  margin: 0 auto 24px;
+
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,.12));
+}
+
+.idleTitle {
+
+  margin: 0;
+
+  color: var(--text);
+
+  font-size: clamp(30px, 5vw, 52px);
+
+  line-height: 1.05;
 
   font-weight: 900;
+
+  letter-spacing: -1px;
 }
 
-.idleLogo span {
+.idleTitle span {
 
   color: var(--gold2);
 }
 
-.idle p {
+.idleSlogan {
+
+  margin: 16px 0 0;
+
+  color: var(--gold2);
+
+  font-size: clamp(16px, 2.4vw, 23px);
+
+  font-weight: 900;
+
+  letter-spacing: 2.5px;
+}
+
+.idleWelcome {
+
+  margin: 18px 0 0;
 
   color: var(--muted);
 
-  font-size: 18px;
+  font-size: clamp(16px, 2.2vw, 21px);
+
+  line-height: 1.4;
 }
 
+.idleLine {
+
+  width: 150px;
+
+  height: 3px;
+
+  margin-top: 25px;
+
+  border-radius: 999px;
+
+  background: var(--gold2);
+
+  opacity: .9;
+}
+
+@keyframes idleFadeIn {
+  from { opacity: 0; transform: scale(.985); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-color-scheme: dark) {
+  .idleLogoImage {
+    filter: drop-shadow(0 8px 28px rgba(0,0,0,.55));
+  }
+}
 
 /* ============================================================
    TOAST
@@ -1755,21 +1837,27 @@ button {
   class="idle"
   id="idle">
 
-  <div>
+  <div class="idleContent">
 
-    <div class="idleLogo">
+    <img
+      class="idleLogoImage"
+      src="https://raw.githubusercontent.com/kosi32/brothers-repairs-tracker/main/logo.png"
+      alt="Brother's iRepairs logo"
+    >
 
-      BROTHER'S
+    <h1 class="idleTitle">
+      Welcome to Brother's <span>iRepairs</span>
+    </h1>
 
-      <span>
-        iREPAIRS
-      </span>
-
+    <div class="idleSlogan">
+      WE FIX IT RIGHT. THE FIRST TIME.
     </div>
 
-    <p>
-      Welcome. Your repair information will appear here.
+    <p class="idleWelcome">
+      Your repair information will appear here.
     </p>
+
+    <div class="idleLine"></div>
 
   </div>
 
