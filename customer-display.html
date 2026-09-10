@@ -977,158 +977,6 @@ button {
   color: var(--muted);
 }
 
-<!-- ==========================================================
-     SALES DISPLAY
-     ========================================================== -->
-
-<div
-  id="salesDisplay"
-  style="display:none;">
-
-  <div style="
-    width:100%;
-    height:100%;
-    box-sizing:border-box;
-    padding:30px;
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-  ">
-
-    <div style="
-      text-align:center;
-      font-size:34px;
-      font-weight:900;
-    ">
-      YOUR PURCHASE
-    </div>
-
-    <div style="
-      text-align:center;
-      font-size:22px;
-      font-weight:700;
-    " id="salesSaleNumber">
-      —
-    </div>
-
-    <div style="
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    " id="salesItems">
-    </div>
-
-    <div style="
-      margin-top:auto;
-      padding:20px;
-      border-radius:18px;
-      text-align:center;
-    ">
-
-      <div style="
-        font-size:20px;
-        font-weight:700;
-      ">
-        TOTAL
-      </div>
-
-      <div
-        id="salesTotal"
-        style="
-          font-size:38px;
-          font-weight:900;
-          margin-top:5px;
-        ">
-        TTD 0.00
-      </div>
-
-    </div>
-
-    <div style="
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:15px;
-    ">
-
-      <div style="
-        padding:16px;
-        border-radius:15px;
-      ">
-        <div style="font-size:18px;">
-          Previous Paid
-        </div>
-
-        <strong
-          id="salesPreviousPaid"
-          style="font-size:24px;">
-          TTD 0.00
-        </strong>
-      </div>
-
-      <div style="
-        padding:16px;
-        border-radius:15px;
-      ">
-        <div style="font-size:18px;">
-          Payment Received
-        </div>
-
-        <strong
-          id="salesPaymentReceived"
-          style="font-size:24px;">
-          TTD 0.00
-        </strong>
-      </div>
-
-    </div>
-
-    <div style="
-      padding:20px;
-      border-radius:18px;
-      text-align:center;
-    ">
-
-      <div style="
-        font-size:20px;
-        font-weight:700;
-      ">
-        BALANCE DUE
-      </div>
-
-      <div
-        id="salesBalance"
-        style="
-          font-size:34px;
-          font-weight:900;
-          margin-top:5px;
-        ">
-        TTD 0.00
-      </div>
-
-      <div
-        id="salesPaymentMethod"
-        style="
-          font-size:20px;
-          margin-top:10px;
-        ">
-        —
-      </div>
-
-    </div>
-
-    <div style="
-      text-align:center;
-      font-size:22px;
-      font-weight:700;
-      margin-top:10px;
-    ">
-      Thank you for shopping with<br>
-      BROTHER'S iREPAIRS
-    </div>
-
-  </div>
-
-</div>
 /* ============================================================
    IDLE SCREEN
    ============================================================ */
@@ -1479,8 +1327,10 @@ button {
       "Please rotate the iPad to landscape";
 
     position: fixed;
-
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 
     background: var(--background);
 
@@ -1504,6 +1354,671 @@ button {
   }
 }
 
+
+
+/* ============================================================
+   SALES DISPLAY — BRANDED POS LAYOUT
+   iOS 12.5.8 SAFE VERSION
+   ============================================================ */
+
+.salesDisplay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--background);
+  color: var(--text);
+  z-index: 80;
+  overflow: hidden;
+}
+
+.salesShell {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.salesTop {
+  flex: 0 0 104px;
+  min-height: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 16px;
+  background: linear-gradient(110deg, #080808 0%, #111111 58%, var(--header) 58%, var(--header) 100%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+.salesTop:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: var(--gold2);
+}
+
+.salesBrand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.salesLogo {
+  width: 70px;
+  height: 78px;
+  object-fit: contain;
+  flex: 0 0 70px;
+  margin-right: 12px;
+}
+
+.salesBrandText {
+  min-width: 0;
+}
+
+.salesBusiness {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  white-space: nowrap;
+}
+
+.salesBusiness span {
+  color: var(--gold2);
+}
+
+.salesSlogan {
+  margin-top: 5px;
+  color: var(--gold2);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2.1px;
+  white-space: nowrap;
+}
+
+.salesThankYou {
+  width: 360px;
+  text-align: center;
+  padding: 2px 10px;
+}
+
+.salesThankScript {
+  color: var(--gold2);
+  font-family: "Brush Script MT", "Segoe Script", cursive;
+  font-size: 38px;
+  line-height: .9;
+}
+
+.salesThankSub {
+  margin-top: 7px;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 4px;
+}
+
+.salesThankLine,
+.salesFollowLine,
+.salesCompleteLine {
+  height: 2px;
+  background: var(--gold2);
+  border-radius: 999px;
+}
+
+.salesThankLine {
+  width: 180px;
+  margin: 7px auto 5px;
+}
+
+.salesSupport {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+
+.salesBody {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.8fr .92fr;
+  gap: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.salesPurchaseCard {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.salesPurchaseHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.salesCartIcon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gold2);
+  color: #ffffff;
+  font-size: 26px;
+  margin-right: 12px;
+}
+
+.salesPurchaseHeader > div:last-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.salesPurchaseTitle {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.salesSaleMeta {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.salesSaleMeta strong {
+  color: var(--text);
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+.salesCustomerRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 9px;
+  padding: 8px 10px;
+  border-radius: 9px;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+}
+
+.salesCustomerRow div {
+  min-width: 0;
+}
+
+.salesCustomerRow span {
+  display: block;
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.salesCustomerRow strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.salesTableHead {
+  display: grid;
+  grid-template-columns: 48px 1fr 82px 92px;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  background: var(--panel2);
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .7px;
+}
+
+.salesTableHead .price,
+.salesTableHead .total {
+  text-align: right;
+}
+
+.salesItems {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.salesItemRow {
+  display: grid;
+  grid-template-columns: 48px 1fr 82px 92px;
+  gap: 6px;
+  align-items: center;
+  padding: 9px 8px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.salesItemRow .qty {
+  text-align: center;
+  font-weight: 900;
+}
+
+.salesItemRow .item {
+  min-width: 0;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.salesItemRow .price,
+.salesItemRow .total {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.salesItemRow .total {
+  font-weight: 900;
+}
+
+.salesPurchaseFooter {
+  flex: 0 0 70px;
+  margin-top: 7px;
+  padding: 8px 12px;
+  border-radius: 13px;
+  background: var(--panel2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.salesFeature {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.salesFeatureIcon {
+  color: var(--gold2);
+  font-size: 38px;
+  line-height: 1;
+  margin-right: 10px;
+}
+
+.salesFeature strong,
+.salesFeature span {
+  display: block;
+}
+
+.salesFeature strong {
+  font-size: 11px;
+  letter-spacing: 1.3px;
+}
+
+.salesFeature span {
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 1.1px;
+  margin-top: 2px;
+}
+
+.salesFollow {
+  text-align: right;
+}
+
+.salesFollowScript {
+  color: var(--gold2);
+  font-family: "Brush Script MT", "Segoe Script", cursive;
+  font-size: 23px;
+  line-height: .9;
+}
+
+.salesFollowLine {
+  width: 75px;
+  margin: 5px 0 4px auto;
+}
+
+.salesFollowLabel {
+  display: inline-block;
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.3px;
+  margin-right: 6px;
+}
+
+.salesSocials {
+  display: inline-block;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.salesSocials span {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--text);
+  color: var(--panel);
+  font-size: 12px;
+  font-weight: 900;
+  margin-left: 4px;
+}
+
+.salesSummaryColumn {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  gap: 10px;
+}
+
+.salesSummaryCard {
+  min-height: 0;
+  padding: 18px;
+  border-radius: 16px;
+  background: #0a0a0a;
+  color: #ffffff;
+  border: 1px solid #242424;
+  overflow: hidden;
+}
+
+.salesReceiptIcon {
+  font-size: 29px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.salesSummaryLabel {
+  font-size: 14px;
+  font-weight: 800;
+  color: #dddddd;
+  margin-top: 4px;
+}
+
+.salesTotalValue {
+  margin-top: 2px;
+  color: #ffffff;
+  font-size: 35px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -1px;
+  white-space: nowrap;
+}
+
+.salesSummaryLine {
+  height: 1px;
+  background: #454545;
+  margin: 13px 0 9px;
+}
+
+.salesMoneyRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+.salesMoneyRow span {
+  color: #dddddd;
+}
+
+.salesMoneyRow strong {
+  color: #ffffff;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.salesBalanceValue {
+  color: var(--green) !important;
+}
+
+.paymentMethodRow {
+  margin-bottom: 0;
+}
+
+.salesCompleteCard {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #eef9f1;
+  border: 1px solid #c9e9d2;
+  text-align: center;
+}
+
+.salesCheck {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background: var(--green);
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 900;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.salesCompleteTitle {
+  display: inline-block;
+  color: #16854b;
+  font-size: 20px;
+  font-weight: 900;
+  vertical-align: middle;
+}
+
+.salesCompleteSub {
+  margin-top: 5px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+}
+
+.salesCompleteLine {
+  width: 125px;
+  margin: 6px auto;
+}
+
+.salesCompleteSeeYou {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+}
+
+.salesCompleteBusiness {
+  margin-top: 3px;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+/* Older iPad mini / iOS 12 sizing */
+@media (max-width:850px) {
+
+  .salesShell {
+    padding: 7px;
+  }
+
+  .salesTop {
+    flex-basis: 88px;
+    padding: 8px 14px;
+  }
+
+  .salesLogo {
+    width: 56px;
+    height: 64px;
+    flex-basis: 56px;
+    margin-right: 9px;
+  }
+
+  .salesBusiness {
+    font-size: 21px;
+  }
+
+  .salesSlogan {
+    font-size: 8px;
+    letter-spacing: 1.4px;
+  }
+
+  .salesThankYou {
+    width: 280px;
+  }
+
+  .salesThankScript {
+    font-size: 31px;
+  }
+
+  .salesThankSub {
+    font-size: 11px;
+    letter-spacing: 2.8px;
+  }
+
+  .salesSupport {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+  }
+
+  .salesPurchaseCard {
+    padding: 12px;
+  }
+
+  .salesPurchaseTitle {
+    font-size: 21px;
+  }
+
+  .salesCartIcon {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+    font-size: 21px;
+    margin-right: 9px;
+  }
+
+  .salesCustomerRow {
+    padding: 6px 8px;
+  }
+
+  .salesCustomerRow strong {
+    font-size: 12px;
+  }
+
+  .salesTableHead,
+  .salesItemRow {
+    grid-template-columns: 38px 1fr 68px 78px;
+  }
+
+  .salesTableHead {
+    font-size: 8px;
+  }
+
+  .salesItemRow {
+    font-size: 12px;
+    padding: 7px 6px;
+  }
+
+  .salesPurchaseFooter {
+    flex-basis: 58px;
+    padding: 6px 9px;
+  }
+
+  .salesFeatureIcon {
+    font-size: 29px;
+    margin-right: 7px;
+  }
+
+  .salesFeature strong {
+    font-size: 8px;
+  }
+
+  .salesFeature span {
+    font-size: 7px;
+  }
+
+  .salesFollowScript {
+    font-size: 18px;
+  }
+
+  .salesFollowLabel {
+    font-size: 7px;
+  }
+
+  .salesSocials span {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+
+  .salesSummaryCard {
+    padding: 13px;
+  }
+
+  .salesTotalValue {
+    font-size: 29px;
+  }
+
+  .salesMoneyRow {
+    font-size: 11px;
+    margin: 8px 0;
+  }
+
+  .salesMoneyRow strong {
+    font-size: 13px;
+  }
+
+  .salesCompleteCard {
+    padding: 8px 10px;
+  }
+
+  .salesCheck {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+
+  .salesCompleteTitle {
+    font-size: 16px;
+  }
+
+  .salesCompleteSub {
+    font-size: 7px;
+  }
+
+  .salesCompleteBusiness {
+    font-size: 12px;
+  }
+}
+
+/* ============================================================
+   END SALES DISPLAY
+   ============================================================ */
 </style>
 </head>
 
@@ -1979,6 +2494,139 @@ button {
     </span>
 
   </footer>
+
+</div>
+
+
+<!-- ==========================================================
+     SALES DISPLAY
+     ========================================================== -->
+
+<div id="salesDisplay" class="salesDisplay" style="display:none;">
+
+  <div class="salesShell">
+
+    <div class="salesTop">
+      <div class="salesBrand">
+        <img
+          src="https://raw.githubusercontent.com/kosi32/brothers-repairs-tracker/main/logo.png"
+          alt="Brother's iRepairs logo"
+          class="salesLogo">
+        <div class="salesBrandText">
+          <div class="salesBusiness">BROTHER'S <span>iREPAIRS</span></div>
+          <div class="salesSlogan">WE FIX IT RIGHT. THE FIRST TIME.</div>
+        </div>
+      </div>
+
+      <div class="salesThankYou">
+        <div class="salesThankScript">Thank You</div>
+        <div class="salesThankSub">FOR YOUR PURCHASE!</div>
+        <div class="salesThankLine"></div>
+        <div class="salesSupport">WE APPRECIATE YOUR SUPPORT</div>
+      </div>
+    </div>
+
+    <div class="salesBody">
+
+      <section class="salesPurchaseCard">
+        <div class="salesPurchaseHeader">
+          <div class="salesCartIcon">🛒</div>
+          <div>
+            <div class="salesPurchaseTitle">YOUR PURCHASE</div>
+            <div class="salesSaleMeta">Sale # <strong id="salesSaleNumber">—</strong></div>
+          </div>
+        </div>
+
+        <div class="salesCustomerRow">
+          <div>
+            <span>CUSTOMER</span>
+            <strong id="salesCustomer">—</strong>
+          </div>
+          <div>
+            <span>DEVICE</span>
+            <strong id="salesDevice">—</strong>
+          </div>
+        </div>
+
+        <div class="salesTableHead">
+          <span class="qty">QTY</span>
+          <span class="item">ITEM</span>
+          <span class="price">PRICE</span>
+          <span class="total">TOTAL</span>
+        </div>
+
+        <div id="salesItems" class="salesItems"></div>
+
+        <div class="salesPurchaseFooter">
+          <div class="salesFeature">
+            <div class="salesFeatureIcon">♢</div>
+            <div>
+              <strong>GENUINE ACCESSORIES</strong>
+              <span>RELIABLE QUALITY</span>
+              <span>EVERYDAY VALUE</span>
+            </div>
+          </div>
+
+          <div class="salesFollow">
+            <div class="salesFollowScript">Stay Connected</div>
+            <div class="salesFollowLine"></div>
+            <div class="salesFollowLabel">FOLLOW US</div>
+            <div class="salesSocials">
+              <span>◎</span>
+              <span>f</span>
+              <span>◉</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="salesSummaryColumn">
+
+        <section class="salesSummaryCard">
+          <div class="salesReceiptIcon">▤</div>
+          <div class="salesSummaryLabel">TOTAL</div>
+          <div id="salesTotal" class="salesTotalValue">TTD 0.00</div>
+          <div class="salesSummaryLine"></div>
+
+          <div class="salesMoneyRow">
+            <span>▣ &nbsp; Previous Paid</span>
+            <strong id="salesPreviousPaid">TTD 0.00</strong>
+          </div>
+
+          <div class="salesMoneyRow">
+            <span>▣ &nbsp; Payment Received</span>
+            <strong id="salesPaymentReceived">TTD 0.00</strong>
+          </div>
+
+          <div class="salesMoneyRow">
+            <span>▤ &nbsp; Balance Due</span>
+            <strong id="salesBalance" class="salesBalanceValue">TTD 0.00</strong>
+          </div>
+
+          <div class="salesSummaryLine"></div>
+
+          <div class="salesMoneyRow paymentMethodRow">
+            <span>▭ &nbsp; Payment Method</span>
+            <strong id="salesPaymentMethod">—</strong>
+          </div>
+        </section>
+
+        <section class="salesCompleteCard">
+          <div class="salesCheck">✓</div>
+          <div class="salesCompleteTitle">Payment Complete!</div>
+          <div class="salesCompleteSub">THANK YOU AGAIN</div>
+          <div class="salesCompleteLine"></div>
+          <div class="salesSeeYou">SEE YOU SOON</div>
+          <strong>Brother's iRepairs</strong>
+        </section>
+
+        <div class="salesDate" id="salesDate">—</div>
+
+      </aside>
+
+    </div>
+
+  </div>
 
 </div>
 
@@ -2476,7 +3124,7 @@ function loadSale(saleNumber) {
 
   });
 }
-  /* ============================================================
+/* ============================================================
    RENDER SALE
    ============================================================ */
 
@@ -2498,6 +3146,24 @@ function renderSale(sale, items) {
     "salesSaleNumber",
     safe(
       sale.sale_number,
+      "—"
+    )
+  );
+
+  /* CUSTOMER / DEVICE */
+
+  setText(
+    "salesCustomer",
+    safe(
+      sale.customer_name,
+      "Customer"
+    )
+  );
+
+  setText(
+    "salesDevice",
+    safe(
+      sale.device,
       "—"
     )
   );
@@ -2535,23 +3201,7 @@ function renderSale(sale, items) {
         var row =
           document.createElement("div");
 
-        row.style.display = "flex";
-        row.style.justifyContent =
-          "space-between";
-        row.style.alignItems = "center";
-        row.style.padding = "12px 15px";
-        row.style.borderRadius = "12px";
-        row.style.background =
-          "var(--panel)";
-        row.style.border =
-          "1px solid var(--border)";
-
-        var left =
-          document.createElement("div");
-
-        left.style.minWidth = "0";
-        left.style.fontSize = "20px";
-        left.style.fontWeight = "700";
+        row.className = "salesItemRow";
 
         var quantity =
           Number(item.quantity);
@@ -2561,28 +3211,28 @@ function renderSale(sale, items) {
         }
 
         var itemName =
-          safe(
-            item.item_name,
-            "Item"
-          );
+          safe(item.item_name, "Item");
 
-        left.textContent =
-          quantity + " × " + itemName;
+        var qty = document.createElement("span");
+        qty.className = "qty";
+        qty.textContent = quantity;
 
+        var name = document.createElement("span");
+        name.className = "item";
+        name.textContent = itemName;
 
-        var right =
-          document.createElement("strong");
+        var price = document.createElement("span");
+        price.className = "price";
+        price.textContent = money(item.unit_price);
 
-        right.style.fontSize = "20px";
-        right.style.marginLeft = "15px";
-        right.style.whiteSpace =
-          "nowrap";
+        var total = document.createElement("strong");
+        total.className = "total";
+        total.textContent = money(item.total);
 
-        right.textContent =
-          money(item.total);
-
-        row.appendChild(left);
-        row.appendChild(right);
+        row.appendChild(qty);
+        row.appendChild(name);
+        row.appendChild(price);
+        row.appendChild(total);
 
         itemsBox.appendChild(row);
 
@@ -2638,13 +3288,30 @@ function renderSale(sale, items) {
 
   /* UPDATED */
 
+  var now = new Date();
+
   setText(
     "updated",
-    new Date()
-      .toLocaleTimeString()
+    now.toLocaleTimeString()
+  );
+
+  setText(
+    "salesDate",
+    now.toLocaleDateString([], {
+      weekday: "short",
+      month: "short",
+      day: "numeric"
+    }) +
+    "  " +
+    now.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit"
+    })
   );
 
 }
+
+
 /* ============================================================
    RENDER REPAIR
    ============================================================ */
@@ -3055,6 +3722,13 @@ function showIdle() {
     idle.style.display = "flex";
   }
 
+  var salesDisplay =
+    document.getElementById("salesDisplay");
+
+  if (salesDisplay) {
+    salesDisplay.style.display = "none";
+  }
+
 }
 
 
@@ -3075,6 +3749,7 @@ function hideIdle() {
   }
 
 }
+
 
 /* ============================================================
    DEVICE IMAGE
