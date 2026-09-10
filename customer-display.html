@@ -2316,6 +2316,275 @@ button {
   }
 }
 
+
+/* ============================================================
+   iPAD MINI LANDSCAPE 1024x768 — FULL SCREEN FIT
+   iOS 12 Safari reports the landscape width as ~1024px, so the
+   earlier max-width:850 rule does not apply. This rule targets
+   the actual iPad mini landscape viewport.
+   ============================================================ */
+@media (min-width:900px) and (max-width:1100px) and (max-height:800px) {
+
+  .salesDisplay {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .salesShell {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+
+  .salesTop {
+    flex: 0 0 78px;
+    height: 78px;
+    padding: 6px 12px;
+    border-radius: 11px;
+  }
+
+  .salesLogo {
+    width: 52px;
+    height: 60px;
+    flex-basis: 52px;
+    margin-right: 8px;
+  }
+
+  .salesBusiness {
+    font-size: 21px;
+    letter-spacing: -0.6px;
+  }
+
+  .salesSlogan {
+    margin-top: 2px;
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+
+  .salesThankYou {
+    width: 260px;
+    padding: 0 5px;
+  }
+
+  .salesThankScript {
+    font-size: 28px;
+  }
+
+  .salesThankSub {
+    margin-top: 2px;
+    font-size: 8px;
+    letter-spacing: 1.7px;
+  }
+
+  .salesThankLine {
+    width: 140px;
+    margin: 3px auto;
+  }
+
+  .salesSupport {
+    font-size: 7px;
+    letter-spacing: .8px;
+  }
+
+  .salesBody {
+    margin-top: 5px;
+    gap: 6px;
+    min-height: 0;
+  }
+
+  .salesPurchaseCard {
+    padding: 9px;
+    border-radius: 11px;
+  }
+
+  .salesPurchaseHeader {
+    min-height: 42px;
+  }
+
+  .salesCartIcon {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+    font-size: 19px;
+    margin-right: 7px;
+  }
+
+  .salesPurchaseTitle {
+    font-size: 19px;
+    letter-spacing: .6px;
+  }
+
+  .salesSaleMeta {
+    margin-top: 1px;
+    font-size: 8px;
+  }
+
+  .salesSaleMeta strong {
+    font-size: 10px;
+  }
+
+  .salesCustomerRow {
+    gap: 6px;
+    margin-top: 4px;
+    padding: 4px 6px;
+    border-radius: 6px;
+  }
+
+  .salesCustomerRow span {
+    font-size: 6px;
+  }
+
+  .salesCustomerRow strong {
+    margin-top: 1px;
+    font-size: 9px;
+  }
+
+  .salesTableHead {
+    grid-template-columns: 32px 1fr 64px 70px;
+    gap: 4px;
+    margin-top: 4px;
+    padding: 4px 5px;
+    border-radius: 5px;
+    font-size: 6px;
+  }
+
+  .salesItemRow {
+    grid-template-columns: 32px 1fr 64px 70px;
+    gap: 4px;
+    padding: 4px 5px;
+    font-size: 9px;
+  }
+
+  .salesPurchaseFooter {
+    flex: 0 0 50px;
+    margin-top: 4px;
+    padding: 5px 7px;
+    border-radius: 9px;
+  }
+
+  .salesFeatureIcon {
+    font-size: 25px;
+    margin-right: 5px;
+  }
+
+  .salesFeature strong {
+    font-size: 7px;
+    letter-spacing: .7px;
+  }
+
+  .salesFeature span {
+    font-size: 6px;
+    letter-spacing: .5px;
+    margin-top: 1px;
+  }
+
+  .salesFollowScript {
+    font-size: 16px;
+  }
+
+  .salesFollowLine {
+    width: 55px;
+    margin: 3px 0 2px auto;
+  }
+
+  .salesFollowLabel {
+    font-size: 6px;
+    letter-spacing: .7px;
+  }
+
+  .salesSocials span {
+    width: 15px;
+    height: 15px;
+    font-size: 7px;
+    margin-left: 2px;
+  }
+
+  .salesSummaryColumn {
+    gap: 5px;
+  }
+
+  .salesSummaryCard {
+    padding: 9px;
+    border-radius: 11px;
+  }
+
+  .salesReceiptIcon {
+    font-size: 21px;
+  }
+
+  .salesSummaryLabel {
+    font-size: 10px;
+    margin-top: 1px;
+  }
+
+  .salesTotalValue {
+    font-size: 26px;
+    margin-top: 1px;
+  }
+
+  .salesSummaryLine {
+    margin: 6px 0 5px;
+  }
+
+  .salesMoneyRow {
+    margin: 4px 0;
+    font-size: 8px;
+  }
+
+  .salesMoneyRow strong {
+    font-size: 10px;
+  }
+
+  .salesCompleteCard {
+    padding: 6px 8px;
+    border-radius: 10px;
+  }
+
+  .salesCheck {
+    width: 25px;
+    height: 25px;
+    font-size: 16px;
+    margin-right: 3px;
+  }
+
+  .salesCompleteTitle {
+    font-size: 13px;
+  }
+
+  .salesCompleteSub {
+    margin-top: 2px;
+    font-size: 6px;
+    letter-spacing: 1.5px;
+  }
+
+  .salesCompleteLine {
+    width: 90px;
+    margin: 3px auto;
+  }
+
+  .salesSeeYou {
+    font-size: 8px;
+    letter-spacing: .9px;
+  }
+
+  .salesCompleteCard strong {
+    margin-top: 1px;
+    font-size: 9px;
+  }
+
+  .salesDate {
+    font-size: 6px;
+    line-height: 1;
+    min-height: 7px;
+  }
+}
+
 </style>
 </head>
 
