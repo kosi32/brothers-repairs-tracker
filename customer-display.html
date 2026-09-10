@@ -2365,9 +2365,15 @@ function loadDisplay() {
     }
 
 
-    return loadRepair(
-      ticket
-    );
+    if (display.mode === "sales") {
+  return loadSale(
+    ticket
+  );
+}
+
+return loadRepair(
+  ticket
+);
 
   })
 
@@ -2425,7 +2431,220 @@ function loadRepair(ticket) {
 
 }
 
+/* ==========================================================
+   LOAD SALE
+   ========================================================== */
 
+function loadSale(saleNumber) {
+
+  var q =
+    "sale_number=eq." +
+    encodeURIComponent(saleNumber) +
+    "&select=*";
+
+  return supabaseGet(
+    "sales",
+    q
+  )
+  .then(function(rows) {
+
+    if (!rows || !rows.length) {
+      showIdle();
+      return;
+    }
+
+    var sale = rows[0];
+
+    var itemQuery =
+      "sale_id=eq." +
+      encodeURIComponent(sale.id) +
+      "&select=*" +
+      "&order=created_at.asc";
+
+    return supabaseGet(
+      "sale_items",
+      itemQuery
+    )
+    .then(function(items) {
+
+      renderSale(
+        sale,
+        items || []
+      );
+
+    });
+
+  });
+}
+  /* ============================================================
+   RENDER SALE
+   ============================================================ */
+
+function renderSale(sale, items) {
+
+  hideIdle();
+
+  var salesDisplay =
+    document.getElementById("salesDisplay");
+
+  if (salesDisplay) {
+    salesDisplay.style.display = "block";
+  }
+
+
+  /* SALE NUMBER */
+
+  setText(
+    "salesSaleNumber",
+    safe(
+      sale.sale_number,
+      "—"
+    )
+  );
+
+
+  /* ITEMS */
+
+  var itemsBox =
+    document.getElementById("salesItems");
+
+  if (itemsBox) {
+
+    itemsBox.innerHTML = "";
+
+    if (!items || !items.length) {
+
+      var emptyItem =
+        document.createElement("div");
+
+      emptyItem.style.fontSize = "20px";
+      emptyItem.style.textAlign = "center";
+      emptyItem.style.padding = "15px";
+
+      emptyItem.textContent =
+        "No items";
+
+      itemsBox.appendChild(
+        emptyItem
+      );
+
+    } else {
+
+      items.forEach(function(item) {
+
+        var row =
+          document.createElement("div");
+
+        row.style.display = "flex";
+        row.style.justifyContent =
+          "space-between";
+        row.style.alignItems = "center";
+        row.style.padding = "12px 15px";
+        row.style.borderRadius = "12px";
+        row.style.background =
+          "var(--panel)";
+        row.style.border =
+          "1px solid var(--border)";
+
+        var left =
+          document.createElement("div");
+
+        left.style.minWidth = "0";
+        left.style.fontSize = "20px";
+        left.style.fontWeight = "700";
+
+        var quantity =
+          Number(item.quantity);
+
+        if (!isFinite(quantity)) {
+          quantity = 0;
+        }
+
+        var itemName =
+          safe(
+            item.item_name,
+            "Item"
+          );
+
+        left.textContent =
+          quantity + " × " + itemName;
+
+
+        var right =
+          document.createElement("strong");
+
+        right.style.fontSize = "20px";
+        right.style.marginLeft = "15px";
+        right.style.whiteSpace =
+          "nowrap";
+
+        right.textContent =
+          money(item.total);
+
+        row.appendChild(left);
+        row.appendChild(right);
+
+        itemsBox.appendChild(row);
+
+      });
+
+    }
+
+  }
+
+
+  /* TOTAL */
+
+  setText(
+    "salesTotal",
+    money(sale.total)
+  );
+
+
+  /* PREVIOUS PAID */
+
+  setText(
+    "salesPreviousPaid",
+    money(sale.previous_paid)
+  );
+
+
+  /* PAYMENT RECEIVED */
+
+  setText(
+    "salesPaymentReceived",
+    money(sale.payment_received)
+  );
+
+
+  /* BALANCE */
+
+  setText(
+    "salesBalance",
+    money(sale.balance_due)
+  );
+
+
+  /* PAYMENT METHOD */
+
+  setText(
+    "salesPaymentMethod",
+    safe(
+      sale.payment_method,
+      "—"
+    )
+  );
+
+
+  /* UPDATED */
+
+  setText(
+    "updated",
+    new Date()
+      .toLocaleTimeString()
+  );
+
+}
 /* ============================================================
    RENDER REPAIR
    ============================================================ */
@@ -2848,8 +3067,14 @@ function hideIdle() {
     idle.style.display = "none";
   }
 
-}
+  var salesDisplay =
+    document.getElementById("salesDisplay");
 
+  if (salesDisplay) {
+    salesDisplay.style.display = "none";
+  }
+
+}
 
 /* ============================================================
    DEVICE IMAGE
