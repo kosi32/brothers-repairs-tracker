@@ -4321,71 +4321,102 @@ function hideIdle() {
    DEVICE IMAGE
    ============================================================ */
 
-function renderDeviceImage(r) {
-
-  var box =
-    document.getElementById(
-      "deviceImage"
-    );
-
-
-  var url =
-    r.device_image_url ||
-    r.front_photo_url ||
-    r.photo_url ||
-    "";
-
-
-  if (url) {
-
-    box.innerHTML =
-      "";
-
-    var img =
-      document.createElement(
-        "img"
-      );
-
-
-    img.src =
-      url;
-
-
-    img.alt =
-      safe(
-        r.model,
-        "Device"
-      );
-
-
-    img.onerror =
-      function() {
-
-        box.innerHTML =
-          phoneSVG(
-            r.color
-          );
-
-      };
-
-
-    box.appendChild(
-      img
-    );
-
-  }
-
-  else {
-
-    box.innerHTML =
-      phoneSVG(
-        r.color
-      );
-
-  }
-
+function deviceImageSlug(value) {
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, "and")
+    .replace(/[’']/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
+function renderDeviceImage(r) {
+
+  var box = document.getElementById("deviceImage");
+  if (!box) return;
+
+  var model = String(
+    r.model ||
+    r.device ||
+    r.device_type ||
+    r.device_name ||
+    ""
+  ).trim();
+
+  var color = String(
+    r.color ||
+    r.device_color ||
+    ""
+  ).trim();
+
+  var modelSlug = deviceImageSlug(model);
+  var colorSlug = deviceImageSlug(color);
+
+  var folderBase =
+    "https://raw.githubusercontent.com/kosi32/brothers-repairs-tracker/main/device-images/";
+
+  var candidates = [];
+
+  function addCandidate(url) {
+    if (url && candidates.indexOf(url) === -1) {
+      candidates.push(url);
+    }
+  }
+
+  /*
+    Exact model + selected color.
+    Example:
+    Model: iPhone 11
+    Color: Black
+    File: iphone-11-black.png
+  */
+  if (modelSlug && colorSlug) {
+    addCandidate(folderBase + modelSlug + "-" + colorSlug + ".png");
+    addCandidate(folderBase + modelSlug + "-" + colorSlug + ".jpg");
+    addCandidate(folderBase + modelSlug + "-" + colorSlug + ".jpeg");
+  }
+
+  /* Model-only fallback */
+  if (modelSlug) {
+    addCandidate(folderBase + modelSlug + ".png");
+    addCandidate(folderBase + modelSlug + ".jpg");
+    addCandidate(folderBase + modelSlug + ".jpeg");
+  }
+
+  /* Existing image URLs saved in Supabase */
+  addCandidate(r.device_image_url || "");
+  addCandidate(r.front_photo_url || "");
+  addCandidate(r.photo_url || "");
+
+  var index = 0;
+
+  function showNextImage() {
+
+    if (index >= candidates.length) {
+      box.innerHTML = phoneSVG(color);
+      return;
+    }
+
+    var url = candidates[index++];
+    var img = new Image();
+
+    img.onload = function() {
+      box.innerHTML = "";
+      img.alt = model + (color ? " " + color : "");
+      img.className = "device-folder-image";
+      box.appendChild(img);
+    };
+
+    img.onerror = function() {
+      showNextImage();
+    };
+
+    img.src = url;
+  }
+
+  showNextImage();
+}
 
 /* ============================================================
    FALLBACK PHONE
